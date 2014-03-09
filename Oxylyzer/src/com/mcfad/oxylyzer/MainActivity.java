@@ -2,6 +2,10 @@ package com.mcfad.oxylyzer;
 
 import java.util.Locale;
 
+import com.echo.holographlibrary.Line;
+import com.echo.holographlibrary.LineGraph;
+import com.echo.holographlibrary.LinePoint;
+import com.jjoe64.graphview.BarGraphView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
@@ -10,6 +14,7 @@ import com.jjoe64.graphview.GraphView.GraphViewData;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -56,11 +61,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager = (NonSwipeableViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
@@ -100,13 +104,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
-
 	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 	}
 
 	/**
@@ -114,32 +115,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	 * one of the sections/tabs/pages.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
-
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
 			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
 			return fragment;
 		}
-
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			return 2;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
 				return "Realtime";
@@ -155,12 +145,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	 * displays dummy text.
 	 */
 	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
 		public DummySectionFragment() {}
 
 		@Override
@@ -174,16 +158,30 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			// init example series data
 			final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {});
 
-			GraphView graphView = new LineGraphView(this.getActivity(), "GraphViewDemo");
+			/*final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
+				      new GraphViewData(1, 2.0d)
+				      , new GraphViewData(2, 1.5d)
+				      , new GraphViewData(3, 2.5d)
+				      , new GraphViewData(4, 1.0d)
+				});*/
+			
+			GraphView graphView = new BarGraphView(this.getActivity(), "GraphViewDemo");
 			graphView.addSeries(exampleSeries); // data
 			graphView.setScrollable(true);
-			graphView.setViewPort(0, 10);
-			graphView.setManualYAxis(true);
-			graphView.setManualYAxisBounds(1, 0);
+			//graphView.setViewPort(0, 10);
+			graphView.setManualYAxisBounds(3, 0);
 
-			LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
-			layout.addView(graphView);
+			/*LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
+			layout.addView(graphView);*/
 
+			
+			final Line line = new Line();
+			line.addPoint(new LinePoint());
+			final LineGraph li = (LineGraph) rootView.findViewById(R.id.graph);
+			li.addLine(line);
+			li.setRangeY(0, 10);
+			li.setLineToFill(0);
+			
 
 			final Handler handler = new Handler(Looper.getMainLooper());
 			Runnable graphUpdate = new Runnable() {
@@ -191,8 +189,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				@Override
 				public void run() {
 					x += 1d;
+					//if(x>20) return;
 					exampleSeries.appendData(new GraphViewData(x, Math.random()), true, 100);
 					handler.postDelayed(this, 200);
+					
+
+					//LinePoint p = new LinePoint();
+					//p.setX(x);
+					//p.setY(Math.random());
+					//l.addPoint(p);
+					//l.setColor(Color.parseColor("#FFBB33"));
+					li.addPointToLine(0, x, Math.random()); 
 				}
 			};
 			handler.postDelayed(graphUpdate, 1000);
