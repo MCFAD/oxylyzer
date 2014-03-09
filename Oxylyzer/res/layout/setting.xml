@@ -100,19 +100,6 @@
             android:layout_height="wrap_content" >
 
             <CheckedTextView
-                android:id="@+id/checkedTextView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="export data" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <CheckedTextView
                 android:id="@+id/checkedTextView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,7 +108,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow7"
+            android:id="@+id/tableRow6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
