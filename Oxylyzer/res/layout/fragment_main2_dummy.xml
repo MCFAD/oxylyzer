@@ -12,14 +12,20 @@
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" /> -->
+
     <LinearLayout
         android:id="@+id/graph1"
         android:layout_width="fill_parent"
         android:layout_height="250dip"
-        android:orientation="vertical" />
-    <com.echo.holographlibrary.LineGraph
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/graph"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <com.echo.holographlibrary.LineGraph
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>
