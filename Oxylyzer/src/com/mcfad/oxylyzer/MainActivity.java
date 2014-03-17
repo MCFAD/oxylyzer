@@ -15,6 +15,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
+import android.graphics.Paint.Align;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -152,42 +153,91 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		public void setupGraph(View rootView){
 			// init example series data
-			final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {});
-
-			/*final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
+			final GraphViewSeries spo2 = new GraphViewSeries(new GraphViewData[] {});
+			final GraphViewSeries bpm = new GraphViewSeries(new GraphViewData[] {});
+			final int NUM_OF_HORI_LABELS = 5;
+			final int WINDOW_SIZE = 15;
+			/*final GraphViewSeries exampleSeries1 = new GraphViewSeries(new GraphViewData[] {
 				      new GraphViewData(1, 2.0d)
 				      , new GraphViewData(2, 1.5d)
 				      , new GraphViewData(3, 2.5d)
 				      , new GraphViewData(4, 1.0d)
 				});*/
 			
-			GraphView graphView = new BarGraphView(this.getActivity(), "GraphViewDemo");
-			graphView.addSeries(exampleSeries); // data
+			final GraphView graphView = new LineGraphView(this.getActivity(), "GraphViewDemo");
+			graphView.addSeries(spo2); // oxygen level
+			graphView.addSeries(bpm); // beats per minutes
 			graphView.setScrollable(true);
+			graphView.setScalable(false);
+			graphView.setBackgroundColor(Color.LTGRAY);
+			
+			graphView.getGraphViewStyle().setNumHorizontalLabels(NUM_OF_HORI_LABELS);
+			graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
+			graphView.getGraphViewStyle().setVerticalLabelsColor(Color.RED);
+			graphView.getGraphViewStyle().setTextSize(15.5f);
+			graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
+			graphView.setShowLegend(true);
+			
+			
 			//graphView.setViewPort(0, 10);
-			graphView.setManualYAxisBounds(3, 0);
-
-			/*LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
-			layout.addView(graphView);*/
+			graphView.setManualYAxisBounds(100, 0);
+			graphView.setVerticalLabels(new String[] {"100%","75%", "50%", "25%", "0%"});
+			
+			LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
+			layout.addView(graphView);
 
 			
 			final Line line = new Line();
-			line.addPoint(new LinePoint());
+			//line.addPoint(new LinePoint());
 			final LineGraph li = (LineGraph) rootView.findViewById(R.id.graph);
 			li.addLine(line);
-			li.setRangeY(0, 10);
+			li.setRangeY(0, 100);
 			li.setLineToFill(0);
 			
 
 			final Handler handler = new Handler(Looper.getMainLooper());
 			Runnable graphUpdate = new Runnable() {
+				int x = 0;
+				String labels[] = new String[NUM_OF_HORI_LABELS];
 				@Override
 				public void run() {
-					timeTick(li);
-					handler.postDelayed(this, 200);
+					x += 1d;
+					//if(x>20) return;
+					
+					spo2.appendData(new GraphViewData(x, 80+20*Math.random()), false, WINDOW_SIZE);
+					bpm.appendData(new GraphViewData(x, 10+20*Math.random()), false, WINDOW_SIZE);
+					
+					int diference = WINDOW_SIZE/(NUM_OF_HORI_LABELS-1);
+					if(x>= WINDOW_SIZE+1)
+					{
+						labels[4] = x + "";
+						labels[3] = x-WINDOW_SIZE+3*diference+2 + "";
+						labels[2] = x-WINDOW_SIZE+2*diference+1 + "";
+						labels[1] = x-WINDOW_SIZE+1*diference + "";
+						labels[0] = x-WINDOW_SIZE + "";
+
+						for(int i = 0; i < NUM_OF_HORI_LABELS; i++)
+						{
+							int labelIntValue = Integer.parseInt(labels[i]);
+							if(labelIntValue >= 60)
+								labels[i] = labelIntValue/60 + ":" + labelIntValue % 60;
+						}
+
+						graphView.setHorizontalLabels(labels );
+						//graphView.setViewPort(x - windowSize, x);
+					}
+					graphView.redrawAll();
+					handler.postDelayed(this, 1000);
+					
+					//LinePoint p = new LinePoint();
+					//p.setX(x);
+					//p.setY(Math.random());
+					//l.addPoint(p);
+					//l.setColor(Color.parseColor("#FFBB33"));
+					li.addPointToLine(0, x, 100*Math.random());
 				}
 			};
-			handler.postDelayed(graphUpdate, 1000);
+			handler.post(graphUpdate);
 		}
 	}
 	public static class HistorySectionFragment extends Fragment {
