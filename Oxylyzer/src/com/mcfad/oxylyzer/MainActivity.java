@@ -1,18 +1,11 @@
 package com.mcfad.oxylyzer;
 
-import java.util.Locale;
-
-import com.echo.holographlibrary.Line;
-import com.echo.holographlibrary.LineGraph;
-import com.echo.holographlibrary.LinePoint;
-import com.jjoe64.graphview.BarGraphView;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
-import com.jjoe64.graphview.GraphView.GraphViewData;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
@@ -23,16 +16,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.echo.holographlibrary.Line;
+import com.echo.holographlibrary.LineGraph;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphView.GraphViewData;
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.LineGraphView;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -118,12 +114,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
+			realtimeGraph = new RealtimeSectionFragment();
+			historyGraph = new HistorySectionFragment();
 		}
 		@Override
 		public Fragment getItem(int position) {
 			if(position==0)
-				return new RealtimeSectionFragment();
-			return new HistorySectionFragment();
+				return realtimeGraph;
+			return historyGraph;
 		}
 		@Override
 		public int getCount() {
@@ -142,7 +140,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 	}
 
-	public static class RealtimeSectionFragment extends Fragment {
+	public static GraphFragment realtimeGraph;
+	public GraphFragment historyGraph;
+	public abstract static class GraphFragment extends Fragment {
+		GraphViewSeries spo2;
+		GraphViewSeries bpm;
+		GraphView graphView;
+		LineGraph li;
+	}
+	public class RealtimeSectionFragment extends GraphFragment {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,18 +159,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		public void setupGraph(View rootView){
 			// init example series data
-			final GraphViewSeries spo2 = new GraphViewSeries(new GraphViewData[] {});
-			final GraphViewSeries bpm = new GraphViewSeries(new GraphViewData[] {});
-			final int NUM_OF_HORI_LABELS = 5;
-			final int WINDOW_SIZE = 15;
-			/*final GraphViewSeries exampleSeries1 = new GraphViewSeries(new GraphViewData[] {
-				      new GraphViewData(1, 2.0d)
-				      , new GraphViewData(2, 1.5d)
-				      , new GraphViewData(3, 2.5d)
-				      , new GraphViewData(4, 1.0d)
-				});*/
+			spo2 = new GraphViewSeries(new GraphViewData[] {});
+			bpm = new GraphViewSeries(new GraphViewData[] {});
 			
-			final GraphView graphView = new LineGraphView(this.getActivity(), "GraphViewDemo");
+			graphView = new LineGraphView(this.getActivity(), "GraphViewDemo");
 			graphView.addSeries(spo2); // oxygen level
 			graphView.addSeries(bpm); // beats per minutes
 			graphView.setScrollable(true);
@@ -178,69 +176,32 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 			graphView.setShowLegend(true);
 			
-			
-			//graphView.setViewPort(0, 10);
 			graphView.setManualYAxisBounds(100, 0);
 			graphView.setVerticalLabels(new String[] {"100%","75%", "50%", "25%", "0%"});
 			
 			LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 			layout.addView(graphView);
 
-			
-			final Line line = new Line();
-			//line.addPoint(new LinePoint());
-			final LineGraph li = (LineGraph) rootView.findViewById(R.id.graph);
+			li = (LineGraph) rootView.findViewById(R.id.graph);
+			Line line = new Line();
 			li.addLine(line);
 			li.setRangeY(0, 100);
 			li.setLineToFill(0);
-			
 
 			final Handler handler = new Handler(Looper.getMainLooper());
 			Runnable graphUpdate = new Runnable() {
 				int x = 0;
-				String labels[] = new String[NUM_OF_HORI_LABELS];
 				@Override
 				public void run() {
-					x += 1d;
-					//if(x>20) return;
-					
-					spo2.appendData(new GraphViewData(x, 80+20*Math.random()), false, WINDOW_SIZE);
-					bpm.appendData(new GraphViewData(x, 10+20*Math.random()), false, WINDOW_SIZE);
-					
-					int diference = WINDOW_SIZE/(NUM_OF_HORI_LABELS-1);
-					if(x>= WINDOW_SIZE+1)
-					{
-						labels[4] = x + "";
-						labels[3] = x-WINDOW_SIZE+3*diference+2 + "";
-						labels[2] = x-WINDOW_SIZE+2*diference+1 + "";
-						labels[1] = x-WINDOW_SIZE+1*diference + "";
-						labels[0] = x-WINDOW_SIZE + "";
-
-						for(int i = 0; i < NUM_OF_HORI_LABELS; i++)
-						{
-							int labelIntValue = Integer.parseInt(labels[i]);
-							if(labelIntValue >= 60)
-								labels[i] = labelIntValue/60 + ":" + labelIntValue % 60;
-						}
-
-						graphView.setHorizontalLabels(labels );
-						//graphView.setViewPort(x - windowSize, x);
-					}
-					graphView.redrawAll();
+					MainActivity.this.postData(x,80+20*Math.random(),10+20*Math.random());
 					handler.postDelayed(this, 1000);
-					
-					//LinePoint p = new LinePoint();
-					//p.setX(x);
-					//p.setY(Math.random());
-					//l.addPoint(p);
-					//l.setColor(Color.parseColor("#FFBB33"));
-					li.addPointToLine(0, x, 100*Math.random());
+					x += 1;
 				}
 			};
 			handler.post(graphUpdate);
 		}
 	}
-	public static class HistorySectionFragment extends Fragment {
+	public static class HistorySectionFragment extends GraphFragment {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -252,14 +213,67 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		public void setupGraph(View rootView){
 		}
 	}
-
-	static int x = 0;
-	public static void timeTick(LineGraph li){
-		x += 1d;
-		//exampleSeries.appendData(new GraphViewData(x, Math.random()), true, 100);
-
-		li.addPointToLine(0, x, Math.random()); 
-		li.setRangeX(x-10, x);
+	
+	static FileOutputStream data_file;
+	static int[][] data = new int[2][60];
+	public void postData(int time,double spo2,double bpm){
+		
+		if(data_file==null){
+			try {
+				data_file = openFileOutput("data.csv", 0);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		if(time%60==0){
+			String buffer = "";
+			for(int x=0;x<60;x++){
+				String row = data[0][x]+","+data[1][x]+'\n';
+				buffer+=row;
+			}
+			System.out.print(buffer);
+			try {
+				data_file.write(buffer.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		data[0][time%60] = (int) spo2;
+		data[1][time%60] = (int) bpm;
+		updateGraph(time,spo2,bpm,realtimeGraph);
 	}
 
+	static final int WINDOW_SIZE = 15;
+	static final int NUM_OF_HORI_LABELS = 5;
+	static String labels[] = new String[NUM_OF_HORI_LABELS];
+	public static void updateGraph(int x,double spo2, double bpm, GraphFragment graph) {
+
+		graph.spo2.appendData(new GraphViewData(x, spo2), false, WINDOW_SIZE);
+		graph.bpm.appendData(new GraphViewData(x, bpm), false, WINDOW_SIZE);
+		
+		int diference = WINDOW_SIZE/(NUM_OF_HORI_LABELS-1);
+		if(x>= WINDOW_SIZE+1)
+		{
+			labels[4] = x + "";
+			labels[3] = x-WINDOW_SIZE+3*diference+2 + "";
+			labels[2] = x-WINDOW_SIZE+2*diference+1 + "";
+			labels[1] = x-WINDOW_SIZE+1*diference + "";
+			labels[0] = x-WINDOW_SIZE + "";
+
+			for(int i = 0; i < NUM_OF_HORI_LABELS; i++)
+			{
+				int labelIntValue = Integer.parseInt(labels[i]);
+				if(labelIntValue >= 60)
+					labels[i] = labelIntValue/60 + ":" + labelIntValue % 60;
+			}
+
+			graph.graphView.setHorizontalLabels(labels);
+			//graphView.setViewPort(x - windowSize, x);
+		}
+		graph.graphView.redrawAll();
+		
+		
+		graph.li.addPointToLine(0, x, 100*Math.random());
+	}
 }
