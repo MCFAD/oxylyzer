@@ -120,8 +120,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 		@Override
 		public Fragment getItem(int position) {
-			Fragment fragment = new DummySectionFragment();
-			return fragment;
+			if(position==0)
+				return new RealtimeSectionFragment();
+			return new HistorySectionFragment();
 		}
 		@Override
 		public int getCount() {
@@ -140,12 +141,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		public DummySectionFragment() {}
+	public static class RealtimeSectionFragment extends Fragment {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -185,25 +181,35 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 			final Handler handler = new Handler(Looper.getMainLooper());
 			Runnable graphUpdate = new Runnable() {
-				int x = 0;
 				@Override
 				public void run() {
-					x += 1d;
-					//if(x>20) return;
-					exampleSeries.appendData(new GraphViewData(x, Math.random()), true, 100);
+					timeTick(li);
 					handler.postDelayed(this, 200);
-					
-
-					//LinePoint p = new LinePoint();
-					//p.setX(x);
-					//p.setY(Math.random());
-					//l.addPoint(p);
-					//l.setColor(Color.parseColor("#FFBB33"));
-					li.addPointToLine(0, x, Math.random()); 
 				}
 			};
 			handler.postDelayed(graphUpdate, 1000);
 		}
+	}
+	public static class HistorySectionFragment extends Fragment {
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_history, container, false);
+			setupGraph(rootView);
+			return rootView;
+		}
+
+		public void setupGraph(View rootView){
+		}
+	}
+
+	static int x = 0;
+	public static void timeTick(LineGraph li){
+		x += 1d;
+		//exampleSeries.appendData(new GraphViewData(x, Math.random()), true, 100);
+
+		li.addPointToLine(0, x, Math.random()); 
+		li.setRangeX(x-10, x);
 	}
 
 }
