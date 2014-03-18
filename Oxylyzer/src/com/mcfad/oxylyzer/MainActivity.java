@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -91,6 +93,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.action_settings:
+	            return true;
+	        case R.id.action_connect:
+	        	startActivity(new Intent(this,ConnectActivity.class));
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	@Override
@@ -218,7 +232,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	static int[][] data = new int[2][60];
 	public void postData(int time,double spo2,double bpm){
 		
-		if(data_file==null){
+		/*if(data_file==null){
 			try {
 				data_file = openFileOutput("data.csv", 0);
 			} catch (FileNotFoundException e) {
@@ -238,9 +252,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				e.printStackTrace();
 			}
 		}
-		
 		data[0][time%60] = (int) spo2;
-		data[1][time%60] = (int) bpm;
+		data[1][time%60] = (int) bpm;*/
+		
 		updateGraph(time,spo2,bpm,realtimeGraph);
 	}
 
