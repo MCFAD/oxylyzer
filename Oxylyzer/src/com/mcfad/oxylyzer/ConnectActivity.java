@@ -2,6 +2,7 @@ package com.mcfad.oxylyzer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -86,10 +88,22 @@ public class ConnectActivity extends ListActivity {
 		BluetoothSocket socket = device.createRfcommSocketToServiceRecord(SSP_UUID);
 		socket.connect();
 		InputStream input = socket.getInputStream();
+		
+		byte[] bbuff = new byte[100];
 		while(true){
-			System.out.println(input.read());
+			int read = input.read(bbuff);
+			Log.d("PO",byteArrayToHex(Arrays.copyOfRange(bbuff, 0, read)));
 		}
 	}
+	String byteArrayToHex(byte[] bytes) {
+		   StringBuilder sb = new StringBuilder();
+		   for(byte b: bytes){
+			  String s = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0')+" ";
+			  //String s = String.format("%02x ", b&0xff);
+		      sb.append(s);
+		   }
+		   return sb.toString();
+		}
 	
 	protected void showPairedDevices()
 	{
