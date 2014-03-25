@@ -26,8 +26,11 @@
             android:name="com.mcfad.oxylyzer.ConnectActivity"
             android:label="@string/title_activity_connect" >
         </activity>
+        <service
+            android:name="OximeterService" >
+        </service>
     </application>
-  
-  	<uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
 </manifest>

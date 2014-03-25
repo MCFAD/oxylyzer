@@ -1,5 +1,6 @@
 package com.mcfad.oxylyzer;
 
+import com.mcfad.oxylyzer.OximeterService.OxBinder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -7,11 +8,15 @@ import java.util.Set;
 import java.util.UUID;
 
 import android.os.Bundle;
+import android.os.IBinder;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +34,24 @@ public class ConnectActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_connect);
+		
+		bindService(new Intent(this,OximeterService.class), null, 0);
+	}
+	OximeterService oxSrvc;
+	ServiceConnection oxConn = new ServiceConnection(){
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			oxSrvc = ((OxBinder)service).getService();
+			init();
+		}
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			oxSrvc = null;
+			finish();
+		}
+	};
 
+	protected void init() {
 		mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 		devicesAdapter = new DeviceAdapter(this);
 		getListView().setAdapter(devicesAdapter);
@@ -72,7 +94,7 @@ public class ConnectActivity extends ListActivity {
 					BluetoothDevice device = (BluetoothDevice)v.getTag();
 					
 					try {
-						connectDevice(device);
+						oxSrvc.connectDevice(device);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -81,30 +103,7 @@ public class ConnectActivity extends ListActivity {
 			return v;
 		}
 	}
-	
-	static final UUID SSP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	public void connectDevice(BluetoothDevice device) throws IOException{
-		//device.
-		BluetoothSocket socket = device.createRfcommSocketToServiceRecord(SSP_UUID);
-		socket.connect();
-		InputStream input = socket.getInputStream();
-		
-		byte[] bbuff = new byte[100];
-		while(true){
-			int read = input.read(bbuff);
-			Log.d("PO",byteArrayToHex(Arrays.copyOfRange(bbuff, 0, read)));
-		}
-	}
-	String byteArrayToHex(byte[] bytes) {
-		   StringBuilder sb = new StringBuilder();
-		   for(byte b: bytes){
-			  String s = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0')+" ";
-			  //String s = String.format("%02x ", b&0xff);
-		      sb.append(s);
-		   }
-		   return sb.toString();
-		}
-	
+
 	protected void showPairedDevices()
 	{
 		devicesAdapter.clear();
