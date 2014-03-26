@@ -23,6 +23,18 @@ public class NewProfileActivity extends Activity {
 
 		EditText text1 = (EditText) findViewById(R.id.FirstName);
 		editor.putString("FirstName", text1.getText().toString());
+		
+		EditText text2 = (EditText) findViewById(R.id.gender);
+		editor.putString("FirstName", text1.getText().toString());
+		
+		EditText text3 = (EditText) findViewById(R.id.age);
+		editor.putString("FirstName", text1.getText().toString());
+		
+		EditText text4 = (EditText) findViewById(R.id.height);
+		editor.putString("FirstName", text1.getText().toString());
+		
+		EditText text5 = (EditText) findViewById(R.id.weight);
+		editor.putString("FirstName", text1.getText().toString());
 
 		Button button3 = (Button) findViewById(R.id.button_save);
 		button3.setOnClickListener(new View.OnClickListener() {
