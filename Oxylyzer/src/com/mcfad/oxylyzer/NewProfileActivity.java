@@ -21,26 +21,21 @@ public class NewProfileActivity extends Activity {
 		final SharedPreferences.Editor editor = settings.edit();
 
 
-		EditText text1 = (EditText) findViewById(R.id.FirstName);
-		editor.putString("FirstName", text1.getText().toString());
 		
-		EditText text2 = (EditText) findViewById(R.id.gender);
-		editor.putString("FirstName", text1.getText().toString());
-		
-		EditText text3 = (EditText) findViewById(R.id.age);
-		editor.putString("FirstName", text1.getText().toString());
-		
-		EditText text4 = (EditText) findViewById(R.id.height);
-		editor.putString("FirstName", text1.getText().toString());
-		
-		EditText text5 = (EditText) findViewById(R.id.weight);
-		editor.putString("FirstName", text1.getText().toString());
 
 		Button button3 = (Button) findViewById(R.id.button_save);
 		button3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v3) {
 				EditText text1 = (EditText) findViewById(R.id.FirstName);
 				editor.putString("FirstName", text1.getText().toString());
+				EditText text2 = (EditText) findViewById(R.id.gender);
+				editor.putString("Gender", text2.getText().toString());
+				EditText text3 = (EditText) findViewById(R.id.age);
+				editor.putString("Age", text3.getText().toString());
+				EditText text4 = (EditText) findViewById(R.id.height);
+				editor.putString("Height", text4.getText().toString());
+				EditText text5 = (EditText) findViewById(R.id.weight);
+				editor.putString("Weight", text5.getText().toString());
 				
 				editor.putBoolean("ProfileSaved", true);
 
