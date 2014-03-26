@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
 		android:text="@string/pulse_title"
 		android:textSize="16dp"
-        android:textStyle="bold"/> />
+        android:textStyle="bold"/>
     
     <Spinner
     android:id="@+id/pulse_spinner"
@@ -79,6 +79,13 @@
         android:id="@+id/time_period"
         android:textSize="16dp"
         android:textStyle="bold"/>
+     
+      <Button
+	    android:id="@+id/button_view_report"
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:text="@string/view_report"
+	    android:onClick="showReport"/>
 
     
 </LinearLayout>

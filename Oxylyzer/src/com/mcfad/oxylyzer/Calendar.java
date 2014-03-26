@@ -88,6 +88,17 @@ public class Calendar extends Activity {
 		adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		spinner3.setAdapter(adapter3);
+		
+		
+		Button button4 = (Button) findViewById(R.id.button_view_report);
+		button4.setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v4) {
+		    	
+		    	Intent intent2 = new Intent(Calendar.this, Report.class);
+				Calendar.this.startActivity(intent2);
+		    	
+		    	}
+		});
 
 		
 	}

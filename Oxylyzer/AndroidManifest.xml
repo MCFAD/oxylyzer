@@ -16,30 +16,37 @@
         <activity
             android:name="com.mcfad.oxylyzer.MainActivity"
             android:label="@string/title_activity_main2" >
-            android:label="@string/app_name" >
+            android:label="@string/app_name" >
             
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.mcfad.oxylyzer.ConnectActivity"
             android:label="@string/title_activity_connect" >
         </activity>
+
         <service
-            android:name="com.mcfad.oxylyzer.OximeterService"  android:enabled="true">
+            android:name="com.mcfad.oxylyzer.OximeterService"
+            android:enabled="true" >
         </service>
+
         <activity
             android:name="com.mcfad.oxylyzer.Calendar"
             android:label="@string/title_activity_calendar" >
+                        <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name="com.mcfad.oxylyzer.NewProfileActivity"
             android:label="@string/title_activity_new_profile" >
         </activity>
-
+        <activity
+            android:name="com.mcfad.oxylyzer.Report"
+            android:label="@string/title_activity_report" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
