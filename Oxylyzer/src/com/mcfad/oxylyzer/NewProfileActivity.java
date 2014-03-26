@@ -25,37 +25,41 @@ public class NewProfileActivity extends Activity {
 		final SharedPreferences.Editor editor = settings.edit();
 
 
-		
+
 
 		Button button3 = (Button) findViewById(R.id.button_save);
 		button3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v3) {
 				EditText text1 = (EditText) findViewById(R.id.FirstName);
-				editor.putString("FirstName", text1.getText().toString());
 				EditText text2 = (EditText) findViewById(R.id.gender);
-				editor.putString("Gender", text2.getText().toString());
 				EditText text3 = (EditText) findViewById(R.id.age);
-				editor.putString("Age", text3.getText().toString());
 				EditText text4 = (EditText) findViewById(R.id.height);
-				editor.putInt("Height", Integer.parseInt(text4.getText().toString()));
 				EditText text5 = (EditText) findViewById(R.id.weight);
-				editor.putInt("Weight", Integer.parseInt(text5.getText().toString()));
-				
-				/*if(text1 == null || text2 == null  || text3 == null  || text4 == null  || text5 == null )
+
+
+				if(text1.getText().length()==0 || text2.getText().length()==0  || text3.getText().length()==0 ||text4.getText().length()==0|| text5.getText().length()==0 )
 				{
-					 AlertDialog builder = new AlertDialog.Builder(NewProfileActivity.this).create(); //Read Update
-				        builder.setMessage(R.string.reminder);
-					
-					builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-				           public void onClick(DialogInterface dialog, int id) {
-				               // User clicked OK button
-				           }
-				       });
-				       AlertDialog dialog = builder.create();
-				}*///Want to have a reminder come on the screen if no input to fields
-				
+					AlertDialog.Builder builder = new AlertDialog.Builder(NewProfileActivity.this); //Read Update
+
+					builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// User clicked OK button
+						}
+					});
+					builder.setMessage("Please fill out all the fields");
+					builder.show();
+					return;
+				}//Want to have a reminder come on the screen if no input to fields
+
+
+				editor.putInt("Height", Integer.parseInt(text4.getText().toString()));
+				editor.putString("Age", text3.getText().toString());
+				editor.putString("Gender", text2.getText().toString());
+				editor.putString("FirstName", text1.getText().toString());
+				editor.putInt("Weight", Integer.parseInt(text5.getText().toString()));
+
 				editor.putBoolean("ProfileSaved", true);
-				
+
 				Context context = getApplicationContext();
 				CharSequence text = "Profile Successfully Created!";
 				int duration = Toast.LENGTH_SHORT;

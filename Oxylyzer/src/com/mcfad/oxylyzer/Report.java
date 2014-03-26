@@ -20,7 +20,7 @@ public class Report extends Activity {
 
 		double BMI = weight/(height*height);
 		
-		TextView BMIval = new TextView(this);//why no values appear?
+		TextView BMIval = (TextView) findViewById(R.id.BMIval);
 		BMIval.setText(String.valueOf(BMI));
 
 }
