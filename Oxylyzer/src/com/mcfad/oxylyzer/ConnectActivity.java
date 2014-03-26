@@ -1,6 +1,7 @@
 package com.mcfad.oxylyzer;
 
 import com.mcfad.oxylyzer.OximeterService.OxBinder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.util.Log;
@@ -35,8 +37,15 @@ public class ConnectActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_connect);
 		
-		bindService(new Intent(this,OximeterService.class), null, 0);
+		bindService(new Intent(this,OximeterService.class), oxConn, Context.BIND_AUTO_CREATE);
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onStop();
+		unbindService(oxConn);
+	}
+
 	OximeterService oxSrvc;
 	ServiceConnection oxConn = new ServiceConnection(){
 		@Override

@@ -27,7 +27,7 @@
             android:label="@string/title_activity_connect" >
         </activity>
         <service
-            android:name="OximeterService" >
+            android:name="com.mcfad.oxylyzer.OximeterService"  android:enabled="true">
         </service>
     </application>
 
