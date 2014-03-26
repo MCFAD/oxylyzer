@@ -10,6 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.os.Handler;
+import android.os.Looper;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.echo.holographlibrary.LineGraph;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -41,9 +47,22 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+
+		SharedPreferences settings = getSharedPreferences("Profile", 0);
+		boolean profile = settings.getBoolean("ProfileSaved", false);
+		/*if(!profile)
+		{*/
+		Intent intent = new Intent(this, NewProfileActivity.class);
+		startActivity(intent);
+
+		//}
+
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// init example series data
+		final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {});
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -83,15 +102,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	        case R.id.action_settings:
-	            return true;
-	        case R.id.action_connect:
-	        	startActivity(new Intent(this,ConnectActivity.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			return true;
+		case R.id.action_connect:
+			startActivity(new Intent(this,ConnectActivity.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -146,7 +165,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		GraphView graphView;
 		//LineGraph li;
 	}
-	
+
 	public static class HistorySectionFragment extends GraphFragment {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

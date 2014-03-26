@@ -9,5 +9,38 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_connect">ConnectActivity</string>
+    <string name="title_activity_calendar">Calendar</string>
+    <string name="oxi_title">Oxygen levels</string>
+
+    <string-array name="oxi_array">
+        <item>All</item>
+        <item>90-100%</item>
+        <item>80-89.99999%</item>
+        <item>70-79.99999%</item>
+        <item>60-69.99999%</item>
+        <item>Dead</item>
+    </string-array>
+
+    <string name="pulse_title">Pulse Rates</string>
+
+    <string-array name="pulse_array">
+        <item>All</item>
+        <item>High</item>
+        <item>Med</item>
+        <item>Low</item>
+        <item>U Dead Bro</item>
+    </string-array>
+
+    <string name="button_start">Start\nRecording</string>
+    <string name="button_stop">Stop\nRecording</string>
+    <string name="records_title">Previous Recordings</string>
+    <string name="title_activity_new_profile">Create Profile</string>
+    <string name="enter_name">Name</string>
+    <string name="enter_age">Age</string>
+    <string name="enter_gender">Gender</string>
+    <string name="enter_weight">Weight</string>
+    <string name="enter_height">Height</string>
+    
+    <string name="buttonsave">Save Profile</string>
 
 </resources>
