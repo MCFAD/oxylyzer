@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.widget.LinearLayout;
 
@@ -20,6 +22,20 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+
+		SharedPreferences settings = getSharedPreferences("Profile", 0);
+		boolean profile = settings.getBoolean("ProfileSaved", false);
+		/*if(!profile)
+		{*/
+			Intent intent = new Intent(this, NewProfileActivity.class);
+			startActivity(intent);
+
+		//}
+
+
+
+
 
 		// init example series data
 		final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {});
