@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,7 @@ public class NewProfileActivity extends Activity {
 
 		// We need an Editor object to make preference changes.
 		// All objects are from android.context.Context
-		SharedPreferences settings = getSharedPreferences("Profile", 0);
+		final SharedPreferences settings = getSharedPreferences("Profile", 0);
 		final SharedPreferences.Editor editor = settings.edit();
 
 
@@ -35,9 +36,10 @@ public class NewProfileActivity extends Activity {
 				EditText text3 = (EditText) findViewById(R.id.age);
 				EditText text4 = (EditText) findViewById(R.id.height);
 				EditText text5 = (EditText) findViewById(R.id.weight);
+				EditText text6 = (EditText) findViewById(R.id.neck);				
 
 
-				if(text1.getText().length()==0 || text2.getText().length()==0  || text3.getText().length()==0 ||text4.getText().length()==0|| text5.getText().length()==0 )
+				if(text1.getText().length()==0 || text2.getText().length()==0  || text3.getText().length()==0 ||text4.getText().length()==0|| text5.getText().length()==0 || text6.getText().length()==0 )
 				{
 					AlertDialog.Builder builder = new AlertDialog.Builder(NewProfileActivity.this); //Read Update
 
@@ -53,10 +55,11 @@ public class NewProfileActivity extends Activity {
 
 
 				editor.putInt("Height", Integer.parseInt(text4.getText().toString()));
-				editor.putString("Age", text3.getText().toString());
+				editor.putInt("Age", Integer.parseInt(text3.getText().toString()));
 				editor.putString("Gender", text2.getText().toString());
 				editor.putString("FirstName", text1.getText().toString());
 				editor.putInt("Weight", Integer.parseInt(text5.getText().toString()));
+				editor.putInt("Neck", Integer.parseInt(text6.getText().toString()));
 
 				editor.putBoolean("ProfileSaved", true);
 
@@ -69,6 +72,7 @@ public class NewProfileActivity extends Activity {
 
 				// Commit the edits!
 				editor.commit();
+				
 				finish();
 			}
 		});

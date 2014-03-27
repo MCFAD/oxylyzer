@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.os.Handler;
 import android.os.Looper;
 import android.app.Activity;
@@ -17,8 +16,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.echo.holographlibrary.LineGraph;
 import com.jjoe64.graphview.GraphView;
@@ -48,14 +45,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		setContentView(R.layout.activity_main);
 
 
-		SharedPreferences settings = getSharedPreferences("Profile", 0);
-		boolean profile = settings.getBoolean("ProfileSaved", false);
-		/*if(!profile)
-		{*/
-		Intent intent = new Intent(this, NewProfileActivity.class);
-		startActivity(intent);
 
-		//}
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -164,17 +154,5 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		GraphViewSeries bpm;
 		GraphView graphView;
 		//LineGraph li;
-	}
-
-	public static class HistorySectionFragment extends GraphFragment {
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-			setupGraph(rootView);
-			return rootView;
-		}
-
-		public void setupGraph(View rootView){
-		}
 	}
 }

@@ -3,6 +3,7 @@ package com.mcfad.oxylyzer;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 
@@ -15,8 +16,9 @@ public class Report extends Activity {
 		
 		
 		SharedPreferences settings = getSharedPreferences("Profile", 0);
-		int height = settings.getInt("Height",0);
-		int weight = settings.getInt("Weight",0);
+		double height = settings.getInt("Height",0);
+		double weight = settings.getInt("Weight",0);
+		
 
 		double BMI = weight/(height*height);
 		
