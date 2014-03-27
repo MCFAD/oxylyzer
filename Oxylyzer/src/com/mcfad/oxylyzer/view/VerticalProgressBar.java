@@ -1,4 +1,4 @@
-package com.mcfad.oxylyzer;
+package com.mcfad.oxylyzer.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

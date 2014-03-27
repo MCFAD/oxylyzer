@@ -1,4 +1,4 @@
-<com.mcfad.oxylyzer.NonSwipeableViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcfad.oxylyzer.view.NonSwipeableViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pager"
     android:layout_width="match_parent"

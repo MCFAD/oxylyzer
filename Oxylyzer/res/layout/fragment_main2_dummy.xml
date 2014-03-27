@@ -68,7 +68,7 @@
             style="?android:attr/prograttr/progressBarStyleHorizontal"
         -->
 
-        <com.mcfad.oxylyzer.VerticalProgressBar
+        <com.mcfad.oxylyzer.view.VerticalProgressBar
             android:id="@+id/level"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"

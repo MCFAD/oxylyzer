@@ -22,6 +22,7 @@ import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.mcfad.oxylyzer.MainActivity.GraphFragment;
+import com.mcfad.oxylyzer.view.VerticalProgressBar;
 
 public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 
@@ -29,7 +30,7 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 	/*RealtimeSectionFragment(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 	}*/
-	RealtimeSectionFragment(){
+	public RealtimeSectionFragment(){
 		
 	}
 

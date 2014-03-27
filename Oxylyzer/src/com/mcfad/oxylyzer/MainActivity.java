@@ -3,6 +3,7 @@ package com.mcfad.oxylyzer;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,20 +11,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.os.Handler;
-import android.os.Looper;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.echo.holographlibrary.LineGraph;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
+import com.mcfad.oxylyzer.view.NonSwipeableViewPager;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -104,6 +100,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
+			
 			return true;
 		case R.id.action_connect:
 			startActivity(new Intent(this,ConnectActivity.class));

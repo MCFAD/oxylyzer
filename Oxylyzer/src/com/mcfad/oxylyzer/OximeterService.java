@@ -1,5 +1,6 @@
 package com.mcfad.oxylyzer;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +40,7 @@ public class OximeterService extends Service {
 	public IBinder onBind(Intent intent) {
 		return mBinder;
 	}
-
+	
 	public void connectDevice(final BluetoothDevice device) throws IOException {
 
 		new Thread(){
@@ -82,13 +83,6 @@ public class OximeterService extends Service {
 		return (int) ((new Date().getTime()-serviceStart)/1000);
 	}
 
-	public HashMap<String,Double> getOxDataMap(byte[] data){
-		HashMap<String,Double> map = new HashMap<String,Double>();
-		map.put("level", (double) (data[1]<<8 | data[2]));
-		map.put("bpm", (double) data[3]);
-		map.put("spo2", (double) data[4]);
-		return map;
-	}
 	// data format:
 	// L = level, B = bpm, S = spo2
 	// XX LL LL BB SS
@@ -103,9 +97,20 @@ public class OximeterService extends Service {
 	}
 	static FileOutputStream data_file;
 	static int[][] data = new int[2][60];
-	public void postData(int time,double spo2,double bpm){
+	
+	public void postData(byte[] data){
+		postData(getTime(),data[4],data[3],(data[1]<<8 | data[2]));
+	}
+	public void postData(int time,int spo2,int bpm,double level){
+
+		Intent intent = new Intent(BROADCAST);
+		intent.putExtra("time", getTime());
+		intent.putExtra("spo2", spo2);
+		intent.putExtra("bpm", bpm);
+		intent.putExtra("level", level);
+		OximeterService.this.sendBroadcast(intent);
 		
-		/*if(data_file==null){
+		if(data_file==null){
 			try {
 				data_file = openFileOutput("data.csv", 0);
 			} catch (FileNotFoundException e) {
@@ -126,7 +131,6 @@ public class OximeterService extends Service {
 			}
 		}
 		data[0][time%60] = (int) spo2;
-		data[1][time%60] = (int) bpm;*/
-		
+		data[1][time%60] = (int) bpm;
 	}
 }
