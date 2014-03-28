@@ -33,14 +33,18 @@
 
     <string name="button_start">Start\nRecording</string>
     <string name="button_stop">Stop\nRecording</string>
+    <string name="view_report">View Report</string>
     <string name="records_title">Previous Recordings</string>
+    <string name="BMI_title">BMI</string>
     <string name="title_activity_new_profile">Create Profile</string>
     <string name="enter_name">Name</string>
     <string name="enter_age">Age</string>
     <string name="enter_gender">Gender</string>
     <string name="enter_weight">Weight</string>
     <string name="enter_height">Height</string>
-    
+    <string name="reminder">Please fill out all of the fields!</string>
+    <string name="ok">OK</string>
     <string name="buttonsave">Save Profile</string>
+    <string name="title_activity_report">Report</string>
 
 </resources>

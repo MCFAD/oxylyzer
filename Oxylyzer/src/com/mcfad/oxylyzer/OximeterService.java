@@ -11,10 +11,14 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
+import com.mcfad.oxylyzer.db.OxContentProvider;
+
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.Parcelable;
@@ -25,6 +29,7 @@ public class OximeterService extends Service {
 	public static final String BROADCAST = "com.mcfad.oxylyzer.oxdata";
 
 	long serviceStart;
+	boolean connected = false;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -36,6 +41,7 @@ public class OximeterService extends Service {
 		}
 	}
 	private final IBinder mBinder = new OxBinder();
+	private Uri currentRecording;
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
@@ -57,6 +63,8 @@ public class OximeterService extends Service {
 					e.printStackTrace();
 					return;
 				}
+				connected = true;
+				postNewRecording();
 
 				byte[] data = new byte[5];
 				while(true){
@@ -65,6 +73,7 @@ public class OximeterService extends Service {
 						read = input.read(data);
 					} catch (IOException e) {
 						e.printStackTrace();
+						connected = false;
 						return;
 					}
 					//Log.d("PO",byteArrayToHex(Arrays.copyOfRange(data, 0, read)));
@@ -78,6 +87,12 @@ public class OximeterService extends Service {
 			}
 		}.start();
 	}
+	protected void postNewRecording() {
+		ContentValues values = new ContentValues();
+		values.put("time", new Date().getTime());
+		currentRecording = this.getContentResolver().insert(OxContentProvider.RECORDINGS_URI, values);
+	}
+
 	// time in seconds since the service started
 	private int getTime() {
 		return (int) ((new Date().getTime()-serviceStart)/1000);
@@ -110,6 +125,15 @@ public class OximeterService extends Service {
 		intent.putExtra("level", level);
 		OximeterService.this.sendBroadcast(intent);
 		
+		ContentValues values = new ContentValues();
+		values.put("time", getTime());
+		values.put("spo2", spo2);
+		values.put("bpm", bpm);
+		values.put("level", level);
+		
+		this.getContentResolver().insert(currentRecording, values);
+		
+		/*
 		if(data_file==null){
 			try {
 				data_file = openFileOutput("data.csv", 0);
@@ -131,6 +155,10 @@ public class OximeterService extends Service {
 			}
 		}
 		data[0][time%60] = (int) spo2;
-		data[1][time%60] = (int) bpm;
+		data[1][time%60] = (int) bpm;*/
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 }

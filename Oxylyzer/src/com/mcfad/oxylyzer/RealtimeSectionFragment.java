@@ -12,7 +12,9 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +33,6 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 		this.mainActivity = mainActivity;
 	}*/
 	public RealtimeSectionFragment(){
-		
 	}
 
 	TextView spo2Text;
@@ -39,13 +40,35 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 	VerticalProgressBar levelBar;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main2_dummy, container, false);
-		setupGraph(rootView);
+		View rootView = inflater.inflate(R.layout.fragment_realtime, container, false);
 		spo2Text = (TextView)rootView.findViewById(R.id.spo2);
 		bpmText = (TextView)rootView.findViewById(R.id.bpm);
 		levelBar = (VerticalProgressBar)rootView.findViewById(R.id.level);
 		levelBar.setMax(2^16);
+		if(((MainActivity)getActivity()).oxSrvc!=null)
+			init(rootView);
 		return rootView;
+	}
+
+	public void serviceConnected() {
+		if(getView()!=null)
+			init(getView());
+	}
+	public void init(View rootView){
+		Button connectButton = (Button)rootView.findViewById(R.id.connect_button);
+		if(((MainActivity)getActivity()).oxSrvc.isConnected()){
+			setupGraph();
+			connectButton.setVisibility(View.GONE);
+		}
+		else {
+			connectButton.setVisibility(View.VISIBLE);
+			connectButton.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(getActivity(),ConnectActivity.class));
+				}
+			});
+		}
 	}
 
 	@Override
@@ -59,7 +82,7 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 		getActivity().unregisterReceiver(oxReceiver);
 	}
 
-	public void setupGraph(View rootView){
+	public void setupGraph(){
 		// init example series data
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
 		bpm = new GraphViewSeries(new GraphViewData[] {});
@@ -81,7 +104,7 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 		graphView.setManualYAxisBounds(100, 0);
 		graphView.setVerticalLabels(new String[] {"100%","75%", "50%", "25%", "0%"});
 
-		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
+		LinearLayout layout = (LinearLayout) getView().findViewById(R.id.graph1);
 		layout.addView(graphView);
 
 		/*li = (LineGraph) rootView.findViewById(R.id.graph);
@@ -147,11 +170,11 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 			Log.i("PO", "time: "+time+" spo2 "+spo2+" bpm "+bpm+" level "+level);
 			if(time-lastTime>0)
 				postData(time,spo2,bpm);
-			
+
 			spo2Text.setText(spo2+"%"); 
 			bpmText.setText(bpm+"bpm");
 			levelBar.setProgress(level);
-			
+
 			lastTime = time;
 		}
 	};

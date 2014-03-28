@@ -19,6 +19,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,16 +27,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ConnectActivity extends ListActivity {
 
 	private BluetoothAdapter mBtAdapter;
 	DeviceAdapter devicesAdapter;
+	Spinner deviceSpinner;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_connect);
+		
+		deviceSpinner = (Spinner)findViewById(R.id.devices_spinner);
 		
 		bindService(new Intent(this,OximeterService.class), oxConn, Context.BIND_AUTO_CREATE);
 	}
@@ -63,15 +69,42 @@ public class ConnectActivity extends ListActivity {
 	protected void init() {
 		mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 		devicesAdapter = new DeviceAdapter(this);
-		getListView().setAdapter(devicesAdapter);
+		//getListView().setAdapter(devicesAdapter);
+		deviceSpinner.setAdapter(devicesAdapter);
+		
+		Button connect = (Button)findViewById(R.id.connect_button);
+		connect.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				BluetoothDevice device = (BluetoothDevice)v.getTag();
+				connect(device);
+			}
+		});
 		
 		showPairedDevices();
+	}
+	public void connect(BluetoothDevice device){
+		try {
+			oxSrvc.connectDevice(device);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		saveMAC(device.getAddress());
+	}
+	public void saveMAC(String address){
+		SharedPreferences prefs = getSharedPreferences("Profile", 0);
+		prefs.edit().putString("OximeterMAC", address);
+		prefs.edit().commit();
+	}
+	public String getMAC(){
+		SharedPreferences prefs = getSharedPreferences("Profile", 0);
+		return prefs.getString("OximeterMAC", "");
 	}
 	public class DeviceAdapter extends ArrayAdapter<BluetoothDevice> {
 		//private DeviceListActivity deviceActivity;
 
 		public DeviceAdapter(ConnectActivity context) {
-			super(context, R.layout.row_device);
+			super(context, android.R.layout.simple_spinner_item);
 			//deviceActivity = context;
 		}
 		
@@ -97,18 +130,6 @@ public class ConnectActivity extends ListActivity {
 				name.setText(deviceName);
 				address.setText(deviceAddress);
 			}
-			v.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					BluetoothDevice device = (BluetoothDevice)v.getTag();
-					
-					try {
-						oxSrvc.connectDevice(device);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			});
 			return v;
 		}
 	}
@@ -122,5 +143,7 @@ public class ConnectActivity extends ListActivity {
 		for (BluetoothDevice device : pairedDevices) {
 			devicesAdapter.add(device);
 		}
+		
+		//deviceSpinner.setSelection(selected);
 	}
 }

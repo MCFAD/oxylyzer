@@ -2,23 +2,24 @@ package com.mcfad.oxylyzer;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
+import com.mcfad.oxylyzer.OximeterService.OxBinder;
 import com.mcfad.oxylyzer.view.NonSwipeableViewPager;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -42,16 +43,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-
-		SharedPreferences settings = getSharedPreferences("Profile", 0);
-		boolean profile = settings.getBoolean("ProfileSaved", false);
-		/*if(!profile)
-		{*/
-		Intent intent = new Intent(this, NewProfileActivity.class);
-		startActivity(intent);
-
-		//}
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -88,7 +79,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+
+		bindService(new Intent(this,OximeterService.class), oxConn, Context.BIND_AUTO_CREATE);
 	}
+	@Override
+	protected void onDestroy() {
+		super.onStop();
+		unbindService(oxConn);
+	}
+
+	OximeterService oxSrvc;
+	ServiceConnection oxConn = new ServiceConnection(){
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			oxSrvc = ((OxBinder)service).getService();
+			realtimeView.serviceConnected();
+		}
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			oxSrvc = null;
+			finish();
+		}
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,9 +113,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			
-			return true;
-		case R.id.action_connect:
-			startActivity(new Intent(this,ConnectActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -128,14 +137,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
-			realtimeGraph = new RealtimeSectionFragment();//MainActivity.this);
-			historyGraph = new HistorySectionFragment();
+			realtimeView = new RealtimeSectionFragment();
+			historyView = new HistorySectionFragment();
 		}
 		@Override
 		public Fragment getItem(int position) {
 			if(position==0)
-				return realtimeGraph;
-			return historyGraph;
+				return realtimeView;
+			return historyView;
 		}
 		@Override
 		public int getCount() {
@@ -154,24 +163,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 	}
 
-	public static GraphFragment realtimeGraph;
-	public GraphFragment historyGraph;
+	public static RealtimeSectionFragment realtimeView;
+	public GraphFragment historyView;
 	public abstract static class GraphFragment extends Fragment {
 		GraphViewSeries spo2;
 		GraphViewSeries bpm;
 		GraphView graphView;
 		//LineGraph li;
-	}
-
-	public static class HistorySectionFragment extends GraphFragment {
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-			setupGraph(rootView);
-			return rootView;
-		}
-
-		public void setupGraph(View rootView){
-		}
 	}
 }

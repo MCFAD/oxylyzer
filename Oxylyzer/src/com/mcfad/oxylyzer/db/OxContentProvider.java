@@ -19,13 +19,13 @@ public class OxContentProvider extends ContentProvider {
 
 	private static final String AUTHORITY = "com.mcfad.oxylyzer.db";
 
-	private static final String BASE_PATH = "recordings";
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
+	private static final String RECORDINGS_PATH = "recordings";
+	public static final Uri RECORDINGS_URI = Uri.parse("content://" + AUTHORITY + "/" + RECORDINGS_PATH);
 
 	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-		sURIMatcher.addURI(AUTHORITY, BASE_PATH, RECORDINGS);
-		sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", RECORDING_ID);
+		sURIMatcher.addURI(AUTHORITY, RECORDINGS_PATH, RECORDINGS);
+		sURIMatcher.addURI(AUTHORITY, RECORDINGS_PATH + "/#", RECORDING_ID);
 	}
 
 	@Override
@@ -37,7 +37,9 @@ public class OxContentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
-		return null;
+		SQLiteDatabase sqlDB = database.getReadableDatabase();
+
+		return sqlDB.query(OxSQLiteHelper.TABLE_RECORDINGS, null, null, null, null, null, null);
 	}
 
 	@Override
@@ -50,15 +52,20 @@ public class OxContentProvider extends ContentProvider {
 		int uriType = sURIMatcher.match(uri);
 		SQLiteDatabase sqlDB = database.getWritableDatabase();
 		long id = 0;
+		Uri newUri = uri;
 		switch (uriType) {
 		case RECORDINGS:
 			id = sqlDB.insert(OxSQLiteHelper.TABLE_RECORDINGS, null, values);
+			newUri = Uri.parse(RECORDINGS_PATH + "/" + id);
+			break;
+		case RECORDING_ID:
+			sqlDB.insert(OxSQLiteHelper.TABLE_VALUES, null, values);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
 		getContext().getContentResolver().notifyChange(uri, null);
-		return Uri.parse(BASE_PATH + "/" + id);
+		return newUri;
 	}
 
 
