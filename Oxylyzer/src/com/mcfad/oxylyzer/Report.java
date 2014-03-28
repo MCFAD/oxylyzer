@@ -18,12 +18,22 @@ public class Report extends Activity {
 		SharedPreferences settings = getSharedPreferences("Profile", 0);
 		double height = settings.getInt("Height",0);
 		double weight = settings.getInt("Weight",0);
+		boolean metric = settings.getBoolean("Metric", false);
 		
-
-		double BMI = weight/(height*height);
-		
+		if(metric == true)
+		{
+		double BMI = weight/((height/100)*(height/100));
 		TextView BMIval = (TextView) findViewById(R.id.BMIval);
 		BMIval.setText(String.valueOf(BMI));
+		}
+		else
+		{
+		double BMI = (weight/(height*height))*703;
+		TextView BMIval = (TextView) findViewById(R.id.BMIval);
+		BMIval.setText(String.valueOf(BMI));
+		}
+		
+
 
 }
 }
