@@ -1,17 +1,10 @@
 package com.mcfad.oxylyzer;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
-
-import com.mcfad.oxylyzer.db.OxContentProvider;
 
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
@@ -21,8 +14,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.Parcelable;
 import android.util.Log;
+
+import com.mcfad.oxylyzer.db.OxContentProvider;
 
 public class OximeterService extends Service {
 	static final UUID SSP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -64,7 +58,7 @@ public class OximeterService extends Service {
 					return;
 				}
 				connected = true;
-				postNewRecording();
+				OxContentProvider.startNewRecording(OximeterService.this);
 
 				byte[] data = new byte[5];
 				while(true){
@@ -76,21 +70,10 @@ public class OximeterService extends Service {
 						connected = false;
 						return;
 					}
-					//Log.d("PO",byteArrayToHex(Arrays.copyOfRange(data, 0, read)));
-					Intent intent = new Intent(BROADCAST);
-					intent.putExtra("time", getTime());
-					intent.putExtra("spo2", (int)data[4]);
-					intent.putExtra("bpm", (int)data[3]);
-					intent.putExtra("level", (int)(data[1]<<8 | data[2]));
-					OximeterService.this.sendBroadcast(intent);
+					postData(data);
 				}
 			}
 		}.start();
-	}
-	protected void postNewRecording() {
-		ContentValues values = new ContentValues();
-		values.put("time", new Date().getTime());
-		currentRecording = this.getContentResolver().insert(OxContentProvider.RECORDINGS_URI, values);
 	}
 
 	// time in seconds since the service started
@@ -117,13 +100,6 @@ public class OximeterService extends Service {
 		postData(getTime(),data[4],data[3],(data[1]<<8 | data[2]));
 	}
 	public void postData(int time,int spo2,int bpm,double level){
-
-		Intent intent = new Intent(BROADCAST);
-		intent.putExtra("time", getTime());
-		intent.putExtra("spo2", spo2);
-		intent.putExtra("bpm", bpm);
-		intent.putExtra("level", level);
-		OximeterService.this.sendBroadcast(intent);
 		
 		ContentValues values = new ContentValues();
 		values.put("time", getTime());
@@ -131,31 +107,14 @@ public class OximeterService extends Service {
 		values.put("bpm", bpm);
 		values.put("level", level);
 		
-		this.getContentResolver().insert(currentRecording, values);
-		
-		/*
-		if(data_file==null){
-			try {
-				data_file = openFileOutput("data.csv", 0);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		if(time%60==0){
-			String buffer = "";
-			for(int x=0;x<60;x++){
-				String row = data[0][x]+","+data[1][x]+'\n';
-				buffer+=row;
-			}
-			System.out.print(buffer);
-			try {
-				data_file.write(buffer.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		data[0][time%60] = (int) spo2;
-		data[1][time%60] = (int) bpm;*/
+		getContentResolver().insert(currentRecording, values);
+
+		Intent intent = new Intent(BROADCAST);
+		intent.putExtra("time", getTime());
+		intent.putExtra("spo2", spo2);
+		intent.putExtra("bpm", bpm);
+		intent.putExtra("level", level);
+		OximeterService.this.sendBroadcast(intent);
 	}
 
 	public boolean isConnected() {

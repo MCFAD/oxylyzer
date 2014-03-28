@@ -137,8 +137,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
-			realtimeView = new RealtimeSectionFragment();
-			historyView = new HistorySectionFragment();
+			realtimeView = new RealtimeFragment();
+			historyView = new HistoryFragment();
 		}
 		@Override
 		public Fragment getItem(int position) {
@@ -163,7 +163,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		}
 	}
 
-	public static RealtimeSectionFragment realtimeView;
+	public static RealtimeFragment realtimeView;
 	public GraphFragment historyView;
 	public abstract static class GraphFragment extends Fragment {
 		GraphViewSeries spo2;

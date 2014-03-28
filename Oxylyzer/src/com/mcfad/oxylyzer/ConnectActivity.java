@@ -1,28 +1,19 @@
 package com.mcfad.oxylyzer;
 
-import com.mcfad.oxylyzer.OximeterService.OxBinder;
-
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.UUID;
 
-import android.os.Bundle;
-import android.os.IBinder;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -30,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.mcfad.oxylyzer.OximeterService.OxBinder;
 
 public class ConnectActivity extends ListActivity {
 

@@ -1,8 +1,11 @@
 package com.mcfad.oxylyzer.db;
 
 
+import java.util.Date;
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,8 +41,15 @@ public class OxContentProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
 		SQLiteDatabase sqlDB = database.getReadableDatabase();
-
-		return sqlDB.query(OxSQLiteHelper.TABLE_RECORDINGS, null, null, null, null, null, null);
+		int uriType = sURIMatcher.match(uri);
+		switch (uriType) {
+		case RECORDINGS:
+			return sqlDB.query(OxSQLiteHelper.TABLE_RECORDINGS, projection, selection, selectionArgs, null, null, sortOrder);
+		case RECORDING_ID:
+			return sqlDB.query(OxSQLiteHelper.TABLE_VALUES, projection, selection, selectionArgs, null, null, sortOrder);
+		default:
+			throw new IllegalArgumentException("Unknown URI: " + uri);
+		}
 	}
 
 	@Override
@@ -79,4 +89,14 @@ public class OxContentProvider extends ContentProvider {
 		return 0;
 	}
 
+	public static Uri startNewRecording(Context context) {
+		ContentValues values = new ContentValues();
+		values.put("time", new Date().getTime());
+		return context.getContentResolver().insert(OxContentProvider.RECORDINGS_URI, values);
+	}
+	public static Uri postDatapoint(Context context) {
+		ContentValues values = new ContentValues();
+		values.put("time", new Date().getTime());
+		return context.getContentResolver().insert(OxContentProvider.RECORDINGS_URI, values);
+	}
 } 

@@ -18,21 +18,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.echo.holographlibrary.Line;
-import com.echo.holographlibrary.LineGraph;
+import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
-import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.mcfad.oxylyzer.MainActivity.GraphFragment;
 import com.mcfad.oxylyzer.view.VerticalProgressBar;
 
-public class RealtimeSectionFragment extends MainActivity.GraphFragment {
+public class RealtimeFragment extends MainActivity.GraphFragment {
 
 	//private final MainActivity mainActivity;
 	/*RealtimeSectionFragment(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 	}*/
-	public RealtimeSectionFragment(){
+	public RealtimeFragment(){
 	}
 
 	TextView spo2Text;
