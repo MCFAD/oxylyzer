@@ -29,7 +29,7 @@ public class RealtimeSectionFragment extends MainActivity.GraphFragment {
 	/*RealtimeSectionFragment(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 	}*/
-	RealtimeSectionFragment(){
+	public RealtimeSectionFragment(){
 		
 	}
 

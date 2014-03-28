@@ -31,6 +31,17 @@
         <item>U Dead Bro</item>
     </string-array>
 
+    <string-array name="gender_array">
+        <item>Born Male</item>
+        <item>Born Female</item>
+        <item>Born Other</item>
+    </string-array>
+    
+    <string-array name="measure_array">
+        <item>Metric (cm, kg)</item>
+        <item>Imperial (in, lb)</item>
+    </string-array>
+    
     <string name="button_start">Start\nRecording</string>
     <string name="button_stop">Stop\nRecording</string>
     <string name="view_report">View Report</string>

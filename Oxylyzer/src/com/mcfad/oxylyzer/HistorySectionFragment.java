@@ -97,10 +97,9 @@ public class HistorySectionFragment extends GraphFragment {
 
 				
 				SharedPreferences settings = activity.getSharedPreferences("Profile", 0);
-				/*settings.edit().clear();//for checking with empty profile
-				settings.edit().commit();
-				settings = activity.getSharedPreferences("Profile", 0);*/
-				boolean profile = settings.getBoolean("ProfileSaved", false);
+				
+				//boolean profile = settings.getBoolean("ProfileSaved", false);
+				boolean profile = false;
 				if(!profile)
 				{
 					Intent intent = new Intent(activity, NewProfileActivity.class);
