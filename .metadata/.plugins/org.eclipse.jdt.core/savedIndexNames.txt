@@ -1,5 +1,0 @@
-INDEX VERSION 1.126+/Users/jianxizhang/Downloads/oxylyzer/.metadata/.plugins/org.eclipse.jdt.core
-222584054.index
-2380138931.index
-1124584908.index
-3263178125.index
