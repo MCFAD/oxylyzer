@@ -99,6 +99,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
+            <CheckedTextView
+                android:id="@+id/checkedTextView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="waking tone" />
+
         </TableRow>
 
         <TableRow
