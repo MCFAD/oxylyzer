@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.ConnectActivity"
+            android:name="com.mcfad.oxylyzer.ConnectFragment"
             android:label="@string/title_activity_connect" >
         </activity>
 
@@ -43,6 +43,10 @@
             android:name="com.mcfad.oxylyzer.Report"
             android:label="@string/title_activity_report" >
         </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.Prefs"
+            android:label="Preferences" >
+        </activity>
 
         <provider
             android:name="com.mcfad.oxylyzer.db.OxContentProvider"
@@ -51,5 +55,6 @@
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
 </manifest>

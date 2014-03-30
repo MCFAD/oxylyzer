@@ -4,83 +4,80 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/connect_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Connect Oximeter"/>
-    
     <LinearLayout
+        android:id="@+id/connected"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible" >
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SPO2" />
-            <TextView
-                android:id="@+id/spo2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="100" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BPM" />
-            <TextView
-                android:id="@+id/bpm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="100" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dip"
-        android:orientation="horizontal" >
-
-        <LinearLayout
-            android:id="@+id/graph1"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:orientation="vertical" >
-        </LinearLayout>
-        <!--
-             <com.echo.holographlibrary.LineGraph
-            android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
-            style="?android:attr/progressBarStyleLarge"
-            style="?android:attr/prograttr/progressBarStyleHorizontal"
-        -->
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal" >
 
-        <com.mcfad.oxylyzer.view.VerticalProgressBar
-            android:id="@+id/level"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:progress="100" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SPO2" />
+
+                <TextView
+                    android:id="@+id/spo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BPM" />
+
+                <TextView
+                    android:id="@+id/bpm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dip"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/graph1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="4"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <com.mcfad.oxylyzer.view.VerticalProgressBar
+                android:id="@+id/level"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:progress="100" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

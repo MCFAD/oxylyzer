@@ -1,5 +1,8 @@
 package com.mcfad.oxylyzer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -7,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -32,40 +36,70 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
-		final MainActivity activity = (MainActivity) getActivity();
-
-		Button button = (Button) rootView.findViewById(R.id.button_start);
-		button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				OxContentProvider.startNewRecording(activity);
-			}
-		});
-
 		recordsSpinner = (Spinner) rootView.findViewById(R.id.records);
 		
 		Button reportButton = (Button) rootView.findViewById(R.id.button_view_report);
 		reportButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v4) {
-				SharedPreferences settings = activity.getSharedPreferences("Profile", 0);
-				
-				//boolean profile = settings.getBoolean("ProfileSaved", false);
-				boolean profile = false;
-				if(!profile)
-				{
-					Intent intent = new Intent(activity, NewProfileActivity.class);
-					startActivityForResult(intent, 0);
-				}
-				else
-				{
-					Intent intent2 = new Intent(activity, Report.class);
-					HistoryFragment.this.startActivity(intent2);
-				}
+				viewReport();
+			}
+		});
+		Button exportButton = (Button) rootView.findViewById(R.id.button_export);
+		exportButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v4) {
+				export();
 			}
 		});
 
-		activity.getSupportLoaderManager().initLoader(0, null, this);
+		getActivity().getSupportLoaderManager().initLoader(0, null, this);
 
 		return rootView;
+	}
+	public void viewReport(){
+		SharedPreferences settings = getActivity().getSharedPreferences("Profile", 0);
+		
+		//boolean profile = settings.getBoolean("ProfileSaved", false);
+		boolean profile = false;
+		if(!profile)
+		{
+			Intent intent = new Intent(getActivity(), NewProfileActivity.class);
+			startActivityForResult(intent, 0);
+		}
+		else
+		{
+			Intent intent2 = new Intent(getActivity(), Report.class);
+			HistoryFragment.this.startActivity(intent2);
+		}
+	}
+	String[] dataProjection = new String[]{"time","bpm","spo2"};
+	public void export(){
+		Uri recordingUri = (Uri)recordsSpinner.getSelectedView().getTag();
+		Cursor dataCursor = getActivity().getContentResolver().query(recordingUri, dataProjection, null, null, null);
+		StringBuffer buffer = new StringBuffer();
+		while(dataCursor.moveToNext()){
+			long time = dataCursor.getLong(0);
+			int bpm = dataCursor.getInt(1);
+			int spo2 = dataCursor.getInt(2);
+			
+			String row = time+","+spo2+","+bpm+'\n';
+			buffer.append(row);
+		}
+		try {
+			FileOutputStream data_file = getActivity().openFileOutput("data.csv", 0);
+			data_file.write(buffer.toString().getBytes());
+			data_file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		File file = getActivity().getFileStreamPath("data.csv");
+		file.setReadable(true, false);
+		Uri fileUri = Uri.fromFile(file);
+		
+		Intent sendIntent = new Intent(Intent.ACTION_SEND);
+		sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Oximeter Recording");
+		sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+		sendIntent.setType("text/html");
+		startActivity(sendIntent);
 	}
 
 	@Override
@@ -99,11 +133,15 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			TextView text = (TextView) view.findViewById(android.R.id.text1);
+			int id = cursor.getInt(0);
+			long time = cursor.getLong(1);
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm:ss a",Locale.US);
-			String dateStringStart = sdf.format(cursor.getLong(1));
+			view.setTag(Uri.withAppendedPath(OxContentProvider.RECORDINGS_URI, "/"+id));
+			
+			TextView text = (TextView) view.findViewById(android.R.id.text1);
+			String dateStringStart = sdf.format(time);
 			text.setText(dateStringStart);
 		}
 	}
+	SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm:ss a",Locale.US);
 }

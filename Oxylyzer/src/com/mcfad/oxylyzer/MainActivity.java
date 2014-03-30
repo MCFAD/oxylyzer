@@ -2,9 +2,12 @@ package com.mcfad.oxylyzer;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,6 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
@@ -48,16 +52,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		// init example series data
-		final GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {});
-
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (NonSwipeableViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
 
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -82,10 +82,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		bindService(new Intent(this,OximeterService.class), oxConn, Context.BIND_AUTO_CREATE);
 	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+	    registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_CONNECTION_STATE));
+	}
 	@Override
 	protected void onDestroy() {
 		super.onStop();
 		unbindService(oxConn);
+		unregisterReceiver(oxReceiver);
 	}
 
 	OximeterService oxSrvc;
@@ -93,7 +100,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			oxSrvc = ((OxBinder)service).getService();
-			realtimeView.serviceConnected();
+
+			mViewPager.setAdapter(mSectionsPagerAdapter); // so that it doesn't initialize the realtime view until after the service is bound
 		}
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
@@ -107,12 +115,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
-	}
+	} 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			
+			startActivity(new Intent(this,Prefs.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -137,14 +145,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
-			realtimeView = new RealtimeFragment();
-			historyView = new HistoryFragment();
 		}
 		@Override
 		public Fragment getItem(int position) {
-			if(position==0)
-				return realtimeView;
-			return historyView;
+			if(position==0) {
+				if(oxSrvc.isConnected())
+					return realtimeView = new RealtimeFragment();
+				else
+					return connectView = new ConnectFragment();
+			}
+			return historyView = new HistoryFragment();
 		}
 		@Override
 		public int getCount() {
@@ -161,8 +171,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			}
 			return null;
 		}
+	    @Override
+	    public int getItemPosition(Object object)
+	    {
+	        return POSITION_NONE;
+	    }
 	}
 
+	public Fragment connectView;
 	public static RealtimeFragment realtimeView;
 	public GraphFragment historyView;
 	public abstract static class GraphFragment extends Fragment {
@@ -170,5 +186,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		GraphViewSeries bpm;
 		GraphView graphView;
 		//LineGraph li;
+	}
+
+	private final BroadcastReceiver oxReceiver = new BroadcastReceiver() {
+	    @Override
+	    public void onReceive(Context context, Intent intent) {
+	    	boolean connected = intent.getBooleanExtra("state", false);
+	    	if(connected) {
+	    		onConnect();
+	    	} else {
+	    		String message = intent.getStringExtra("message");
+				Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+				onDisconnect();
+	    	}
+	    }
+	};
+	public void onConnect() {
+		getSupportFragmentManager().beginTransaction().remove(connectView).commit();
+		mSectionsPagerAdapter.notifyDataSetChanged();
+	}
+	public void onDisconnect() {
+		getSupportFragmentManager().beginTransaction().remove(realtimeView).commit();
+		mSectionsPagerAdapter.notifyDataSetChanged();
 	}
 }

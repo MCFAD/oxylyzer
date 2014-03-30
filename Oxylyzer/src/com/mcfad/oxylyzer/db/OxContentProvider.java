@@ -66,7 +66,7 @@ public class OxContentProvider extends ContentProvider {
 		switch (uriType) {
 		case RECORDINGS:
 			id = sqlDB.insert(OxSQLiteHelper.TABLE_RECORDINGS, null, values);
-			newUri = Uri.parse(RECORDINGS_PATH + "/" + id);
+			newUri = Uri.withAppendedPath(uri, "/" + id);
 			break;
 		case RECORDING_ID:
 			sqlDB.insert(OxSQLiteHelper.TABLE_VALUES, null, values);
@@ -97,6 +97,8 @@ public class OxContentProvider extends ContentProvider {
 	public static Uri postDatapoint(Context context) {
 		ContentValues values = new ContentValues();
 		values.put("time", new Date().getTime());
-		return context.getContentResolver().insert(OxContentProvider.RECORDINGS_URI, values);
+		values.put("spo2", 100);
+		values.put("bpm", 100);
+		return context.getContentResolver().insert(Uri.withAppendedPath(OxContentProvider.RECORDINGS_URI, "/0"), values);
 	}
 } 

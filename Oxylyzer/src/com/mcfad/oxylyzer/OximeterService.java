@@ -14,20 +14,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mcfad.oxylyzer.db.OxContentProvider;
 
 public class OximeterService extends Service {
 	static final UUID SSP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	public static final String BROADCAST = "com.mcfad.oxylyzer.oxdata";
+	public static final String BROADCAST_DATA = "com.mcfad.oxylyzer.oxdata";
+	public static final String BROADCAST_CONNECTION_STATE = "com.mcfad.oxylyzer.oxconn";
 
 	long serviceStart;
 	boolean connected = false;
+	LocalBroadcastManager lBroadMan;
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		serviceStart = new Date().getTime();
+		lBroadMan = LocalBroadcastManager.getInstance(this);
 	}
 	public class OxBinder extends Binder {
 		OximeterService getService() {
@@ -40,40 +45,68 @@ public class OximeterService extends Service {
 	public IBinder onBind(Intent intent) {
 		return mBinder;
 	}
-	
-	public void connectDevice(final BluetoothDevice device) throws IOException {
+	BluetoothDevice currentDevice;
+	public class ConnectThread extends Thread {
+		@Override
+		public void run() {
+			BluetoothSocket socket;
+			InputStream input = null;
+			try {
+				socket = currentDevice.createRfcommSocketToServiceRecord(SSP_UUID);
+				socket.connect();
+				input = socket.getInputStream();
+				Log.d("PO", "Bluetooth oximeter connected");
+			} catch (IOException e) {
+				e.printStackTrace();
+				broadcastConnectionState(false,e.getMessage());
+				return;
+			}
+			onConnect();
 
-		new Thread(){
-			@Override
-			public void run() {
-				BluetoothSocket socket;
-				InputStream input = null;
+			byte[] data = new byte[5];
+			while(connected){
+				int read = 0;
 				try {
-					socket = device.createRfcommSocketToServiceRecord(SSP_UUID);
-					socket.connect();
-					input = socket.getInputStream();
-					Log.d("PO", "Bluetooth oximeter connected");
+					read = input.read(data);
 				} catch (IOException e) {
 					e.printStackTrace();
-					return;
+					connected = false;
 				}
-				connected = true;
-				OxContentProvider.startNewRecording(OximeterService.this);
-
-				byte[] data = new byte[5];
-				while(true){
-					int read = 0;
-					try {
-						read = input.read(data);
-					} catch (IOException e) {
-						e.printStackTrace();
-						connected = false;
-						return;
-					}
-					postData(data);
-				}
+				postData(data);
 			}
-		}.start();
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			broadcastConnectionState(false,"Disconnected");
+		}
+	};
+	ConnectThread connectThread;
+	public void connectDevice(BluetoothDevice device) throws IOException {
+		if(connectThread!=null&&connectThread.isAlive())
+			return;
+		
+		currentDevice = device;
+		connectThread = new ConnectThread();
+		connectThread.start();
+	}
+
+	public void disconnect() {
+		connected = false;
+	}
+
+	public void onConnect(){
+		connected = true;
+		currentRecording = OxContentProvider.startNewRecording(OximeterService.this);
+		broadcastConnectionState(true,null);
+	}
+	public void broadcastConnectionState(boolean state, String message){
+		Intent intent = new Intent(BROADCAST_CONNECTION_STATE);
+		intent.putExtra("state",state);
+		intent.putExtra("message",message);
+		OximeterService.this.sendBroadcast(intent);
+
 	}
 
 	// time in seconds since the service started
@@ -95,29 +128,34 @@ public class OximeterService extends Service {
 	}
 	static FileOutputStream data_file;
 	static int[][] data = new int[2][60];
-	
-	public void postData(byte[] data){
-		postData(getTime(),data[4],data[3],(data[1]<<8 | data[2]));
-	}
-	public void postData(int time,int spo2,int bpm,double level){
-		
-		ContentValues values = new ContentValues();
-		values.put("time", getTime());
-		values.put("spo2", spo2);
-		values.put("bpm", bpm);
-		values.put("level", level);
-		
-		getContentResolver().insert(currentRecording, values);
 
-		Intent intent = new Intent(BROADCAST);
-		intent.putExtra("time", getTime());
-		intent.putExtra("spo2", spo2);
-		intent.putExtra("bpm", bpm);
+	public void postData(byte[] data){
+		postData(data[4],data[3],(data[1]<<8 | data[2]));
+	}
+	static long lastTime = 0;
+	public void postData(int spo2,int bpm,int level){
+
+		long time = new Date().getTime();
+		Intent intent = new Intent(BROADCAST_DATA);
 		intent.putExtra("level", level);
-		OximeterService.this.sendBroadcast(intent);
+		if(time-lastTime>=1000){
+			ContentValues values = new ContentValues();
+			values.put("time", time);
+			values.put("spo2", spo2);
+			values.put("bpm", bpm);
+			//values.put("level", level);
+	
+			getContentResolver().insert(currentRecording, values);
+	
+			intent.putExtra("time", time);
+			intent.putExtra("spo2", spo2);
+			intent.putExtra("bpm", bpm);
+			lastTime = time;
+		}
+		lBroadMan.sendBroadcast(intent);
 	}
 
 	public boolean isConnected() {
 		return connected;
 	}
-}
+} 

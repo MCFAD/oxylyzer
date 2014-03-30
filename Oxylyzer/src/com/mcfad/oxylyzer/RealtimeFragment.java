@@ -9,6 +9,7 @@ import android.graphics.Paint.Align;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,45 +43,23 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		spo2Text = (TextView)rootView.findViewById(R.id.spo2);
 		bpmText = (TextView)rootView.findViewById(R.id.bpm);
 		levelBar = (VerticalProgressBar)rootView.findViewById(R.id.level);
-		levelBar.setMax(2^16);
-		if(((MainActivity)getActivity()).oxSrvc!=null)
-			init(rootView);
+		levelBar.setMax(2^15);
+		setupGraph(rootView);
 		return rootView;
-	}
-
-	public void serviceConnected() {
-		if(getView()!=null)
-			init(getView());
-	}
-	public void init(View rootView){
-		Button connectButton = (Button)rootView.findViewById(R.id.connect_button);
-		if(((MainActivity)getActivity()).oxSrvc.isConnected()){
-			setupGraph();
-			connectButton.setVisibility(View.GONE);
-		}
-		else {
-			connectButton.setVisibility(View.VISIBLE);
-			connectButton.setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(getActivity(),ConnectActivity.class));
-				}
-			});
-		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		getActivity().registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST));
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_DATA));
 	}
 	@Override
 	public void onPause() {
 		super.onPause();
-		getActivity().unregisterReceiver(oxReceiver);
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(oxReceiver);
 	}
 
-	public void setupGraph(){
+	public void setupGraph(View rootView){
 		// init example series data
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
 		bpm = new GraphViewSeries(new GraphViewData[] {});
@@ -97,19 +76,13 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		graphView.getGraphViewStyle().setVerticalLabelsColor(Color.RED);
 		graphView.getGraphViewStyle().setTextSize(15.5f);
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
-		graphView.setShowLegend(true);
+		//graphView.setShowLegend(true);
 
 		graphView.setManualYAxisBounds(100, 0);
 		graphView.setVerticalLabels(new String[] {"100%","75%", "50%", "25%", "0%"});
 
-		LinearLayout layout = (LinearLayout) getView().findViewById(R.id.graph1);
+		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 		layout.addView(graphView);
-
-		/*li = (LineGraph) rootView.findViewById(R.id.graph);
-		Line line = new Line();
-		li.addLine(line);
-		li.setRangeY(0, 100);
-		li.setLineToFill(0);*/
 
 		final Handler handler = new Handler(Looper.getMainLooper());
 		Runnable graphUpdate = new Runnable() {
@@ -124,24 +97,24 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		//handler.post(graphUpdate);
 	}
 	public void postData(int time,double spo2,double bpm){
-		updateGraph(time,spo2,bpm,this);
+		updateGraph(time,spo2,bpm);
 	}
 	static final int WINDOW_SIZE = 15;
 	static final int NUM_OF_HORI_LABELS = 5;
 	static String labels[] = new String[NUM_OF_HORI_LABELS];
-	public static void updateGraph(int x,double spo2, double bpm, GraphFragment graph) {
+	public void updateGraph(int time,double spo2Val, double bpmVal) {
 
-		graph.spo2.appendData(new GraphViewData(x, spo2), false, WINDOW_SIZE);
-		graph.bpm.appendData(new GraphViewData(x, bpm), false, WINDOW_SIZE);
+		spo2.appendData(new GraphViewData(time, spo2Val), false, WINDOW_SIZE);
+		bpm.appendData(new GraphViewData(time, bpmVal), false, WINDOW_SIZE);
 
 		int diference = WINDOW_SIZE/(NUM_OF_HORI_LABELS-1);
-		if(x>= WINDOW_SIZE+1)
+		if(time>= WINDOW_SIZE+1)
 		{
-			labels[4] = x + "";
-			labels[3] = x-WINDOW_SIZE+3*diference+2 + "";
-			labels[2] = x-WINDOW_SIZE+2*diference+1 + "";
-			labels[1] = x-WINDOW_SIZE+1*diference + "";
-			labels[0] = x-WINDOW_SIZE + "";
+			labels[4] = time + "";
+			labels[3] = time-WINDOW_SIZE+3*diference+2 + "";
+			labels[2] = time-WINDOW_SIZE+2*diference+1 + "";
+			labels[1] = time-WINDOW_SIZE+1*diference + "";
+			labels[0] = time-WINDOW_SIZE + "";
 
 			for(int i = 0; i < NUM_OF_HORI_LABELS; i++)
 			{
@@ -150,30 +123,30 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 					labels[i] = labelIntValue/60 + ":" + labelIntValue % 60;
 			}
 
-			graph.graphView.setHorizontalLabels(labels);
+			graphView.setHorizontalLabels(labels);
 			//graphView.setViewPort(x - windowSize, x);
 		}
-		graph.graphView.redrawAll();
+		graphView.redrawAll();
 
 		//graph.li.addPointToLine(0, x, 100*Math.random());
 	}
 	BroadcastReceiver oxReceiver = new BroadcastReceiver() {
-		int lastTime = 0;
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			int time = intent.getExtras().getInt("time");
-			int spo2 = intent.getExtras().getInt("spo2");
-			int bpm = intent.getExtras().getInt("bpm");
+			
 			int level = intent.getExtras().getInt("level");
-			Log.i("PO", "time: "+time+" spo2 "+spo2+" bpm "+bpm+" level "+level);
-			if(time-lastTime>0)
-				postData(time,spo2,bpm);
-
-			spo2Text.setText(spo2+"%"); 
-			bpmText.setText(bpm+"bpm");
 			levelBar.setProgress(level);
 
-			lastTime = time;
+			if(intent.hasExtra("spo2")){
+				long time = intent.getExtras().getLong("time");
+				int spo2 = intent.getExtras().getInt("spo2");
+				int bpm = intent.getExtras().getInt("bpm");
+				//Log.i("PO", "time: "+time+" spo2 "+spo2+" bpm "+bpm+" level "+level);
+				postData((int)time/1000,spo2,bpm);
+
+				spo2Text.setText(spo2+"%"); 
+				bpmText.setText(bpm+"bpm");
+			}
 		}
 	};
 }
