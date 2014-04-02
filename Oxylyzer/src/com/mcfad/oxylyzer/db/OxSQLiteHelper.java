@@ -8,11 +8,15 @@ import android.util.Log;
 public class OxSQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "recordings.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	public static final String TABLE_RECORDINGS = "recordings";
 	public static final String TABLE_VALUES = "data_points";
 	public static final String COLUMN_ID = "_id";
+	public static final String COLUMN_START = "start";
+	public static final String COLUMN_END = "end";
+	public static final String COLUMN_DESC = "desc";
+	
 	public static final String COLUMN_TIME = "time";
 	public static final String COLUMN_SPO2 = "spo2";
 	public static final String COLUMN_BPM = "bpm";
@@ -21,7 +25,9 @@ public class OxSQLiteHelper extends SQLiteOpenHelper {
 	private static final String CREATE_RECORDINGS = "create table if not exists "
 			+ TABLE_RECORDINGS + " (" 
 			+ COLUMN_ID + " integer primary key autoincrement, " 
-			+ COLUMN_TIME + " text not null"
+			+ COLUMN_START + " integer, " 
+			+ COLUMN_END + " integer, " 
+			+ COLUMN_DESC + " text"
 					+ ");";
 			
 	private static final String CREATE_VALUES = "create table if not exists "

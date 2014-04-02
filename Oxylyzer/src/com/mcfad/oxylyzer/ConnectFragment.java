@@ -71,7 +71,7 @@ public class ConnectFragment extends Fragment {
 			}
 		}
 		
-		OxContentProvider.postDatapoint(getActivity());
+		//OxContentProvider.postDatapoint(getActivity());
 
 		return rootView;
 	}
