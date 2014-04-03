@@ -5,6 +5,8 @@
         android:defaultValue="true"
         android:summary="Screen will be turned off with no activity in 3 minutes."
         android:key="screenOfTracking" />
-    
-
+    <Preference
+        android:title="Edit Profile"
+        android:summary="Use this to edit your previously created profile"
+        android:key="editProfile" />
 </PreferenceScreen>

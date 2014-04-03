@@ -15,7 +15,8 @@ import android.widget.Toast;
 public class NewProfileActivity extends Activity {
 
 	//ArrayAdapter<String> adaptergender;
-	
+	protected int spinnerGenderIndex;
+	protected int spinnerMetricIndex;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +45,20 @@ public class NewProfileActivity extends Activity {
 		// Apply the adapter to the spinner
 		spinnermeasure.setAdapter(adaptermeasure);
 		
+		EditText text1 = (EditText) findViewById(R.id.FirstName);
+		EditText text3 = (EditText) findViewById(R.id.age);
+		EditText text4 = (EditText) findViewById(R.id.height);
+		EditText text5 = (EditText) findViewById(R.id.weight);
+		EditText text6 = (EditText) findViewById(R.id.neck);
+		
+		text1.setText(settings.getString("FirstName", null));
+		text3.setText(""+settings.getInt("Age", 0));
+		spinnergender.setSelection(settings.getInt("spinnerGenderIndex",0));
+		spinnermeasure.setSelection(settings.getInt("spinnerMetricIndex",0));
+		text4.setText(""+settings.getInt("Height",0));
+		text5.setText(""+settings.getInt("Weight",0));
+		text6.setText(""+settings.getInt("Neck",0));
+		
 
 		Button button3 = (Button) findViewById(R.id.button_save);
 		button3.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +74,7 @@ public class NewProfileActivity extends Activity {
 				EditText text4 = (EditText) findViewById(R.id.height);
 				EditText text5 = (EditText) findViewById(R.id.weight);
 				EditText text6 = (EditText) findViewById(R.id.neck);				
+				
 
 
 				if(text1.getText().length()==0 || text3.getText().length()==0 ||text4.getText().length()==0|| text5.getText().length()==0 || text6.getText().length()==0 )
@@ -112,16 +128,16 @@ public class NewProfileActivity extends Activity {
 
 				Toast profile_created = Toast.makeText(context, text, duration);
 				profile_created.show();
-
+				
+				editor.putInt("spinnerGenderIndex",spinnergender.getSelectedItemPosition());
+				editor.putInt("spinnerMetricIndex",spinnermeasure.getSelectedItemPosition());
+				
 				// Commit the edits!
 				editor.commit();
 				
 				finish();
 			}
 		});
-
-
-
-
+		
 	}
 }

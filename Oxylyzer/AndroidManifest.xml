@@ -8,12 +8,9 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
-    
-    
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -24,6 +21,7 @@
             android:label="Oxylyzer" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -58,8 +56,15 @@
             android:name="com.mcfad.oxylyzer.db.OxContentProvider"
             android:authorities="com.mcfad.oxylyzer.db" >
         </provider>
-    </application>
 
-    
+        <activity
+            android:name="com.mcfad.oxylyzer.MedicalQuestionnaire"
+            android:label="@string/title_activity_medical_questionnaire" >
+        </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.QuestionnaireForm1"
+            android:label="@string/title_activity_questionnaire_form1" >
+        </activity>
+    </application>
 
 </manifest>

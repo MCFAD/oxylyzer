@@ -98,6 +98,13 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 				delete();
 			}
 		});
+		Button questionnaireButton = (Button) rootView.findViewById(R.id.button_questionnaire);
+		questionnaireButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v4) {
+				Intent intent = new Intent(getActivity(), MedicalQuestionnaire.class);
+				startActivityForResult(intent, 0);
+			}
+		});
 		recordingDescription = (EditText) rootView.findViewById(R.id.description);
 
 		//getActivity().getSupportLoaderManager().initLoader(0, null, this);
@@ -132,8 +139,8 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	public void viewReport(){
 		SharedPreferences settings = getActivity().getSharedPreferences("Profile", 0);
 
-		//boolean profile = settings.getBoolean("ProfileSaved", false);
-		boolean profile = false;
+		boolean profile = settings.getBoolean("ProfileSaved", false);
+		//boolean profile = false;
 		if(!profile)
 		{
 			Intent intent = new Intent(getActivity(), NewProfileActivity.class);
