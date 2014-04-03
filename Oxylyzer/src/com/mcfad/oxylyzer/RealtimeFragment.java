@@ -89,16 +89,6 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 
 		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 		layout.addView(graphView);
-		graphView.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				clicked = true;
-				return false;
-			}
-			
-		});
 		final Handler handler = new Handler(Looper.getMainLooper());
 		Runnable graphUpdate = new Runnable() {
 			int x = 0;
@@ -150,10 +140,11 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 			
 			//graphView.setViewPort(x - windowSize, x);
 		}*/
-		if(!clicked)
+		;
+		if(!graphView.isPressed())
 		{
 			graphView.setViewPort(time - 15, 15);
-		graphView.redrawAll();
+			graphView.redrawAll();
 		}
 	}
 	BroadcastReceiver oxReceiver = new BroadcastReceiver() {
