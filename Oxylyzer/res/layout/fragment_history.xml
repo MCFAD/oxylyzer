@@ -3,16 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Calendar" >
+    android:padding="16dp" >
+
+    <LinearLayout
+        android:id="@+id/no_recordings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="You haven&apos;t made any recordings yet.\nConnect a Pulse Oximeter and then disconnect it to complete a recording"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/records_title"
+        android:text="Previous Recordings:"
         android:textSize="16dp"
         android:textStyle="bold" />
 
@@ -21,19 +32,27 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/description_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Recording Description:"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/description"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
-        android:textSize="16dp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/time_period"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textStyle="bold" />
+        android:textSize="16dp" />
+
+    <LinearLayout
+        android:id="@+id/graph1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical" >
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_view_report"
@@ -41,11 +60,13 @@
         android:layout_height="wrap_content"
         android:onClick="showReport"
         android:text="@string/view_report" />
+
     <Button
         android:id="@+id/button_export"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Export" />
+
     <Button
         android:id="@+id/button_delete"
         android:layout_width="fill_parent"
