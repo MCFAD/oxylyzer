@@ -94,7 +94,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 				x += 1;
 			}
 		};
-		//handler.post(graphUpdate);
+		handler.post(graphUpdate);
 	}
 	public void postData(int time,double spo2,double bpm){
 		updateGraph(time,spo2,bpm);
