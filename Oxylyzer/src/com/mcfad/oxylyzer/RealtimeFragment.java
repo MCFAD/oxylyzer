@@ -78,8 +78,8 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		//graphView.setShowLegend(true);
 
-		graphView.setManualYAxisBounds(100, 0);
-		graphView.setVerticalLabels(new String[] {"100%","75%", "50%", "25%", "0%"});
+		graphView.setManualYAxisBounds(100, 70);
+		graphView.setVerticalLabels(new String[] {"100%","85%", "70%"});
 
 		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 		layout.addView(graphView);
@@ -89,23 +89,28 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 			int x = 0;
 			@Override
 			public void run() {
-				postData(x,80+20*Math.random(),10+20*Math.random());
+				postData(x,(int)(85+15*Math.random()),(int)(40+215*Math.random()));
 				handler.postDelayed(this, 1000);
 				x += 1;
 			}
 		};
-		handler.post(graphUpdate);
+		//handler.post(graphUpdate);
+		
 	}
-	public void postData(int time,double spo2,double bpm){
+	public void postData(int time,int spo2,int bpm){
 		updateGraph(time,spo2,bpm);
 	}
 	static final int WINDOW_SIZE = 15;
 	static final int NUM_OF_HORI_LABELS = 5;
 	static String labels[] = new String[NUM_OF_HORI_LABELS];
-	public void updateGraph(int time,double spo2Val, double bpmVal) {
+	public void updateGraph(int time,int spo2Val, int bpmVal) {
 
+		double bpmInPercentage = (6/43) * bpmVal + (2770/43);	
+		
+		spo2Text.setText(spo2Val+"%"); 
+		bpmText.setText(bpmVal+"bpm");
 		spo2.appendData(new GraphViewData(time, spo2Val), false, WINDOW_SIZE);
-		bpm.appendData(new GraphViewData(time, bpmVal), false, WINDOW_SIZE);
+		bpm.appendData(new GraphViewData(time, bpmInPercentage), false, WINDOW_SIZE);
 
 		int diference = WINDOW_SIZE/(NUM_OF_HORI_LABELS-1);
 		if(time>= WINDOW_SIZE+1)
@@ -144,8 +149,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 				//Log.i("PO", "time: "+time+" spo2 "+spo2+" bpm "+bpm+" level "+level);
 				postData((int)time/1000,spo2,bpm);
 
-				spo2Text.setText(spo2+"%"); 
-				bpmText.setText(bpm+"bpm");
+				
 			}
 		}
 	};
