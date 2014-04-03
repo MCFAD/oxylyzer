@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SPO2" />
+                    android:text="SPO2(%)" />
 
                 <TextView
                     android:id="@+id/spo2"
@@ -46,7 +46,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BPM" />
+                    android:text="Heart Rate(bpm)" />
 
                 <TextView
                     android:id="@+id/bpm"
