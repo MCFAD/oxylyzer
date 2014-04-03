@@ -184,8 +184,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 	public Fragment connectView;
-	public static RealtimeFragment realtimeView;
-	public GraphFragment historyView;
+	public Fragment realtimeView;
+	public Fragment historyView;
 	public abstract static class GraphFragment extends Fragment {
 		GraphViewSeries spo2;
 		GraphViewSeries bpm;

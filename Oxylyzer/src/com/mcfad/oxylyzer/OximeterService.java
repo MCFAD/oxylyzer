@@ -43,6 +43,9 @@ public class OximeterService extends Service {
 	private BluetoothDevice currentDevice;
 	private boolean connected = false;
 	public class ConnectThread extends Thread {
+		public ConnectThread(){
+			super("OximeterConnectThread");
+		}
 		@Override
 		public void run() {
 			BluetoothSocket socket;
