@@ -36,9 +36,10 @@ public class ConnectFragment extends Fragment {
 	DeviceAdapter devicesAdapter;
 	Spinner deviceSpinner;
 	Button connectButton;
+	View rootView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_connect, container, false);
+		rootView = inflater.inflate(R.layout.fragment_connect, container, false);
 
 		mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 		statusText = (TextView)rootView.findViewById(R.id.bt_status);
@@ -47,33 +48,36 @@ public class ConnectFragment extends Fragment {
 				showBluetoothState();
 				mBtAdapter.enable();
 			} else {
-				rootView.findViewById(R.id.bt_unavailable).setVisibility(View.GONE);
-				deviceSpinner = (Spinner)rootView.findViewById(R.id.devices_spinner);
-				devicesAdapter = new DeviceAdapter(this);
-				//getListView().setAdapter(devicesAdapter);
-				deviceSpinner.setAdapter(devicesAdapter);
-
-				connectButton = (Button)rootView.findViewById(R.id.connect_button);
-				connectButton.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View v) {
-						BluetoothDevice device = (BluetoothDevice)deviceSpinner.getSelectedItem();
-						if(!getSrvc().isConnected()){
-							connect(device);
-							connectButton.setText("Connecting");
-						} else {
-							getSrvc().disconnect();
-						}
-					}
-				});
-
-				showPairedDevices();
+				bluetoothEnabled();
 			}
 		}
 		
 		//OxContentProvider.postDatapoint(getActivity());
 
 		return rootView;
+	}
+	public void bluetoothEnabled(){
+		rootView.findViewById(R.id.bt_unavailable).setVisibility(View.GONE);
+		deviceSpinner = (Spinner)rootView.findViewById(R.id.devices_spinner);
+		devicesAdapter = new DeviceAdapter(this);
+		//getListView().setAdapter(devicesAdapter);
+		deviceSpinner.setAdapter(devicesAdapter);
+
+		connectButton = (Button)rootView.findViewById(R.id.connect_button);
+		connectButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				BluetoothDevice device = (BluetoothDevice)deviceSpinner.getSelectedItem();
+				if(!getSrvc().isConnected()){
+					connect(device);
+					connectButton.setText("Connecting");
+				} else {
+					getSrvc().disconnect();
+				}
+			}
+		});
+
+		showPairedDevices();
 	}
 	@Override
 	public void onResume(){
@@ -166,7 +170,7 @@ public class ConnectFragment extends Fragment {
 			statusText.setText("Bluetooth is Turning On..");
 			break;
 		case BluetoothAdapter.STATE_ON:
-
+			bluetoothEnabled();
 			break;
 		}
 	}

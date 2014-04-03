@@ -149,10 +149,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		@Override
 		public Fragment getItem(int position) {
 			if(position==0) {
-				if(oxSrvc.isConnected())
-					return realtimeView = new RealtimeFragment();
-				else
-					return connectView = new ConnectFragment();
+				if(oxSrvc.isConnected()){
+					if(realtimeView==null)
+						realtimeView = new RealtimeFragment();
+					return realtimeView;
+				} else {
+					if(connectView==null)
+						connectView = new ConnectFragment();
+					return connectView;
+				}
 			}
 			return historyView = new HistoryFragment();
 		}
@@ -202,11 +207,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	    }
 	};
 	public void onConnect() {
-		getSupportFragmentManager().beginTransaction().remove(connectView).commit();
+		if(connectView!=null){
+			getSupportFragmentManager().beginTransaction().remove(connectView).commit();
+			connectView = null;
+		}
 		mSectionsPagerAdapter.notifyDataSetChanged();
 	}
 	public void onDisconnect() {
-		getSupportFragmentManager().beginTransaction().remove(realtimeView).commit();
+		if(realtimeView!=null){
+			getSupportFragmentManager().beginTransaction().remove(realtimeView).commit();
+			realtimeView = null;
+		}
 		mSectionsPagerAdapter.notifyDataSetChanged();
 	}
 }
