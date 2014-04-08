@@ -143,7 +143,7 @@ public class OximeterService extends Service {
 			intent.putExtra("bpm", bpm);
 			lastTime = time;
 		}
-		Log.d("OximeterService", "time: "+time+" spo2: "+spo2+" bpm: "+bpm);
+		//Log.d("OximeterService", "time: "+time+" spo2: "+spo2+" bpm: "+bpm);
 		lBroadMan.sendBroadcast(intent);
 	}
 

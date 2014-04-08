@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:text="100" />
             </LinearLayout>
-
+            
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -54,6 +54,15 @@
                     android:layout_height="wrap_content"
                     android:text="100" />
             </LinearLayout>
+
+            
+
+            <com.mcfad.oxylyzer.view.VerticalProgressBar
+                android:id="@+id/level"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:progress="100" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,14 +78,6 @@
                 android:layout_weight="4"
                 android:orientation="vertical" >
             </LinearLayout>
-
-            <com.mcfad.oxylyzer.view.VerticalProgressBar
-                android:id="@+id/level"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:progress="100" />
         </LinearLayout>
     </LinearLayout>
 
