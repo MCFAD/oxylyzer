@@ -95,6 +95,14 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 			   }
 			});
 		
+		graphView.getChildAt(1).setOnTouchListener(new OnTouchListener(){
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				Log.d("RT", "onTouch");
+				return true;
+			}
+		});
+		
 		graphView.addSeries(spo2); // oxygen level
 		graphView.addSeries(bpm); // beats per minutes
 		graphView.setScrollable(true);
@@ -177,6 +185,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 					levelBar.setMax(level);
 				}
 				levelBar.setProgress(level);
+				levelBar.invalidate();
 			}
 
 			if(intent.hasExtra("spo2")){
