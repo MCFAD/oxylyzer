@@ -32,6 +32,14 @@ public class MedicalQuestionnaire extends Activity {
 		});
 		
 		
+		Button questionnaire3Button = (Button) findViewById(R.id.button_questionnaire3);
+		questionnaire3Button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v4) {
+				viewQuestionnaire3();
+			}
+		});
+		
+		
 		final SharedPreferences questionnaire = getSharedPreferences("Questionnaire", 0);		
 		int Q1Score = questionnaire.getInt("Q1Score", 0);
 		
@@ -41,6 +49,10 @@ public class MedicalQuestionnaire extends Activity {
 		int Q2Score = questionnaire.getInt("Q2Score", 0);
 		TextView score2 = (TextView) findViewById(R.id.Score2Display);
 		score2.setText(String.valueOf(Q2Score));
+		
+		int Q3Score = questionnaire.getInt("Q3Score", 0);
+		TextView score3 = (TextView) findViewById(R.id.Score3Display);
+		score2.setText(String.valueOf(Q3Score));
 		
 		/*Button questionnaire2Button = (Button) findViewById(R.id.button_questionnaire2);
 		questionnaire2Button.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +98,18 @@ public class MedicalQuestionnaire extends Activity {
 			Intent intent = new Intent(MedicalQuestionnaire.this, QuestionnaireForm2.class);
 			startActivityForResult(intent, 0);
 		}
-		
+	}
 
+	public void viewQuestionnaire3(){
+		SharedPreferences questionnaires = getSharedPreferences("Answers", 0);
+
+		boolean question3 = questionnaires.getBoolean("Answers3Saved", false);
+		//boolean profile = false;
+		if(!question3)
+		{
+			Intent intent = new Intent(MedicalQuestionnaire.this, QuestionnaireForm3.class);
+			startActivityForResult(intent, 0);
+		}
 	}
 	
 	@Override
@@ -102,6 +124,10 @@ public class MedicalQuestionnaire extends Activity {
 		int Q2score = questionnaire.getInt("Q2Score", 0);
 		TextView score2 = (TextView) findViewById(R.id.Score2Display);
 		score2.setText(String.valueOf(Q2score));
+		
+		int Q3score = questionnaire.getInt("Q3Score", 0);
+		TextView score3 = (TextView) findViewById(R.id.Score3Display);
+		score3.setText(String.valueOf(Q3score));
 		
 	}
 	

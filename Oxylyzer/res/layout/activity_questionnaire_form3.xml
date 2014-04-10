@@ -14,378 +14,408 @@
         android:id="@+id/questionnaire3Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:text="Berlin Questionnaire for Sleep Apnea" />
+     
+     <TextView
+        android:id="@+id/questionnaire3Cat1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The questionnaire consists of 3 categories related to the risk of having sleep 
+apnea. Please choose the correct response to each question. " />
     
      <TextView
         android:id="@+id/questionnaire3Desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="The questionnaire consists of 3 categories related to the risk of having sleep 
-apnea" />
-    
+        android:text="Category 1" />
+     
     <TextView
         android:id="@+id/question3text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" Sitting and reading" />
+        android:text="Do you snore?" />
 
     <RadioGroup
         android:id="@+id/question3_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q1_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Yes" />
 
         <RadioButton
             android:id="@+id/radioQ3q1_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="No" />
         <RadioButton
             android:id="@+id/radioQ3q1_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="Don't Know" />
     </RadioGroup>
 
     <TextView
         android:id="@+id/question3text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" Watching television
+        android:text="Your snoring is:
          " />
 
     <RadioGroup
         android:id="@+id/question3_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q2_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Slightly louder than breathing 
+            " />
 
         <RadioButton
             android:id="@+id/radioQ3q2_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="As loud as talking " />
         <RadioButton
             android:id="@+id/radioQ3q2_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="Louder than talking" />
          <RadioButton
             android:id="@+id/radioQ3q2_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="Very loud – can be heard in adjacent rooms" />
     </RadioGroup>
 
      <TextView
         android:id="@+id/question3text3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" Sitting inactive in a public place (e.g. a theater or meeting)
-" />
+        android:text="How often do you snore?" />
 
     <RadioGroup
         android:id="@+id/question3_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q3_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Nearly every day" />
 
         <RadioButton
             android:id="@+id/radioQ3q3_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="3-4 times a week " />
         <RadioButton
             android:id="@+id/radioQ3q3_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="1-2 times a week" />
         <RadioButton
             android:id="@+id/radioQ3q3_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="1-2 times a month " />
+        <RadioButton
+            android:id="@+id/radioQ3q3_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never or nearly never " />
     </RadioGroup>
 
     <TextView
         android:id="@+id/question3text4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  As a passenger in a car for an hour without a break
-" />
+        android:text="Has your snoring ever bothered other people? " />
 
     <RadioGroup
         android:id="@+id/question3_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q4_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Yes" />
 
         <RadioButton
             android:id="@+id/radioQ3q4_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="No " />
         <RadioButton
             android:id="@+id/radioQ3q4_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
-         <RadioButton
-            android:id="@+id/radioQ3q4_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="Don’t Know" />
     </RadioGroup>
     
       <TextView
         android:id="@+id/question3text5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" Lying down to rest in the afternoon when circumstances permit
-" />
+        android:text="Has anyone noticed that you quit 
+breathing during your sleep? " />
 
     <RadioGroup
         android:id="@+id/question3_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q5_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Nearly every day" />
 
         <RadioButton
             android:id="@+id/radioQ3q5_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="3-4 times a week" />
         <RadioButton
             android:id="@+id/radioQ3q5_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="1-2 times a week " />
         <RadioButton
             android:id="@+id/radioQ3q5_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="1-2 times a month " />
+        <RadioButton
+            android:id="@+id/radioQ3q5_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never or nearly never " />
     </RadioGroup>
-
+	
+    <TextView
+   android:id="@+id/questionnaire3DescCat2"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:textStyle="bold"
+   android:text="Category 2" />
+    
     <TextView
         android:id="@+id/question3text6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sitting and talking to someone" />
+        android:text="How often do you feel tired or 
+fatigued after your sleep? " />
 
     <RadioGroup
         android:id="@+id/question3_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q6_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Nearly every day " />
 
         <RadioButton
             android:id="@+id/radioQ3q6_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="3-4 times a week" />
         <RadioButton
             android:id="@+id/radioQ3q6_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="1-2 times a week " />
          <RadioButton
             android:id="@+id/radioQ3q6_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="1-2 times a month" />
+         <RadioButton
+           android:id="@+id/radioQ3q6_4"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Never or nearly never " />
     </RadioGroup>
 
      <TextView
         android:id="@+id/question3text7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sitting quietly after a lunch without alcohol
-" />
+        android:text="During your waking time, do you feel tired, fatigued or not up to par? " />
 
     <RadioGroup
         android:id="@+id/question3_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q7_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Nearly every day" />
 
         <RadioButton
             android:id="@+id/radioQ3q7_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="3-4 times a week" />
         <RadioButton
             android:id="@+id/radioQ3q7_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="1-2 times a week" />
         <RadioButton
             android:id="@+id/radioQ3q7_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="1-2 times a month" />
+        <RadioButton
+            android:id="@+id/radioQ3q7_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never or nearly never " />
     </RadioGroup>
 
     <TextView
         android:id="@+id/question3text8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  In a car, while stopped for a few minutes in the traffic
-" />
+        android:text="Have you ever nodded off or fallen 
+asleep while driving a vehicle? " />
 
     <RadioGroup
         android:id="@+id/question3_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q8_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Yes" />
 
         <RadioButton
             android:id="@+id/radioQ3q8_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
-        <RadioButton
-            android:id="@+id/radioQ3q8_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-         <RadioButton
-            android:id="@+id/radioQ3q8_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="No " />
     </RadioGroup>
 
+      <TextView
+        android:id="@+id/question3textif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic|bold"
+        android:text="If yes:" />
+            
       <TextView
         android:id="@+id/question3text9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sitting quietly after a lunch without alcohol
-" />
+        android:text="How often does this occur?" />
 
     <RadioGroup
         android:id="@+id/question3_9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
             android:id="@+id/radioQ3q9_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Nearly every day " />
 
         <RadioButton
             android:id="@+id/radioQ3q9_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="3-4 times a week " />
         <RadioButton
             android:id="@+id/radioQ3q9_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
+            android:text="1-2 times a week" />
         <RadioButton
             android:id="@+id/radioQ3q9_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="1-2 times a month" />
+        <RadioButton
+            android:id="@+id/radioQ3q9_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never or nearly never " />
     </RadioGroup>
-
+	
     <TextView
-        android:id="@+id/question3text9"
+	   android:id="@+id/questionnaire3DescCat3"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:textStyle="bold"
+	   android:text="Category 3" />
+    
+    <TextView
+        android:id="@+id/question3text10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  In a car, while stopped for a few minutes in the traffic
-" />
+        android:text="Do you have high blood pressure?" />
 
     <RadioGroup
-        android:id="@+id/question3_9"
+        android:id="@+id/question3_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 	>
         <RadioButton
-            android:id="@+id/radioQ3q9_0"
+            android:id="@+id/radioQ3q10_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="0" />
+            android:text="Yes " />
 
         <RadioButton
-            android:id="@+id/radioQ3q9_1"
+            android:id="@+id/radioQ3q10_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1" />
+            android:text="No" />
         <RadioButton
-            android:id="@+id/radioQ3q9_2"
+            android:id="@+id/radioQ3q10_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
-         <RadioButton
-            android:id="@+id/radioQ3q9_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
+            android:text="Don't Know" />
     </RadioGroup>
     
     <Button
