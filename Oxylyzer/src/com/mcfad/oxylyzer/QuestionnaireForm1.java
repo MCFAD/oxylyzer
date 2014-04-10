@@ -65,8 +65,8 @@ public class QuestionnaireForm1 extends Activity {
 				editor.putInt("Q1Q3", yesOrNo);
 
 				RadioGroup question4 = (RadioGroup) findViewById(R.id.question4);
-				radioSexButton = (RadioButton) findViewById(selectedId);
 				selectedId = question4.getCheckedRadioButtonId();
+				radioSexButton = (RadioButton) findViewById(selectedId);
 				if(radioSexButton.getText().toString().equals("YES")){
 					yesOrNo = 1;
 					score++;

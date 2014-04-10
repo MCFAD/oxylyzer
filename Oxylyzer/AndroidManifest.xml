@@ -51,7 +51,7 @@
             android:name="com.mcfad.oxylyzer.Prefs"
             android:label="Preferences" >
         </activity>
-
+		
         <provider
             android:name="com.mcfad.oxylyzer.db.OxContentProvider"
             android:authorities="com.mcfad.oxylyzer.db" >
@@ -64,6 +64,10 @@
         <activity
             android:name="com.mcfad.oxylyzer.QuestionnaireForm1"
             android:label="@string/title_activity_questionnaire_form1" >
+        </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.QuestionnaireForm2"
+            android:label="@string/title_activity_questionnaire_form2" >
         </activity>
     </application>
 

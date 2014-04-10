@@ -1,0 +1,318 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.mcfad.oxylyzer.MedicalQuestionnaire"
+    tools:ignore="MergeRootFrame">
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/questionnaire2Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How likely are you to doze off or fall asleep in the following situations, in contrast to feeling just tired? This refers to your usual 
+way of life in recent times. Even if you have not done some of these things recently try to work out how they would have affected 
+you. Use the following scale to choose the most appropriate number for each situation:" />
+    
+    <TextView
+        android:id="@+id/question2text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Sitting and reading" />
+
+    <RadioGroup
+        android:id="@+id/question2_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q1_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/question2text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Watching television
+         " />
+
+    <RadioGroup
+        android:id="@+id/question2_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q2_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q2_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q2_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+         <RadioButton
+            android:id="@+id/radioQ2q2_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+
+     <TextView
+        android:id="@+id/question2text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Sitting inactive in a public place (e.g. a theater or meeting)
+" />
+
+    <RadioGroup
+        android:id="@+id/question2_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q3_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q3_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q3_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+        <RadioButton
+            android:id="@+id/radioQ2q3_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/question2text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  As a passenger in a car for an hour without a break
+" />
+
+    <RadioGroup
+        android:id="@+id/question2_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q4_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q4_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q4_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+         <RadioButton
+            android:id="@+id/radioQ2q4_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+    
+      <TextView
+        android:id="@+id/question2text5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Lying down to rest in the afternoon when circumstances permit
+" />
+
+    <RadioGroup
+        android:id="@+id/question2_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q5_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q5_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q5_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+        <RadioButton
+            android:id="@+id/radioQ2q5_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/question2text6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sitting and talking to someone" />
+
+    <RadioGroup
+        android:id="@+id/question2_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q6_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q6_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q6_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+         <RadioButton
+            android:id="@+id/radioQ2q6_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+
+     <TextView
+        android:id="@+id/question2text7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sitting quietly after a lunch without alcohol
+" />
+
+    <RadioGroup
+        android:id="@+id/question2_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q7_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q7_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q7_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+        <RadioButton
+            android:id="@+id/radioQ2q7_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/question2text8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  In a car, while stopped for a few minutes in the traffic
+" />
+
+    <RadioGroup
+        android:id="@+id/question2_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+	>
+        <RadioButton
+            android:id="@+id/radioQ2q8_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="0" />
+
+        <RadioButton
+            android:id="@+id/radioQ2q8_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1" />
+        <RadioButton
+            android:id="@+id/radioQ2q8_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2" />
+         <RadioButton
+            android:id="@+id/radioQ2q8_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/saveQuestionnaire2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onButtonClicked"
+        android:text="Save this Data!!!!!!!" />
+
+</LinearLayout>
+</ScrollView>

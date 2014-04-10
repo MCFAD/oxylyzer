@@ -24,11 +24,24 @@ public class MedicalQuestionnaire extends Activity {
 			}
 		});
 		
+		Button questionnaire2Button = (Button) findViewById(R.id.button_questionnaire2);
+		questionnaire2Button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v4) {
+				viewQuestionnaire2();
+			}
+		});
+		
+		
 		final SharedPreferences questionnaire = getSharedPreferences("Questionnaire", 0);		
 		int Q1Score = questionnaire.getInt("Q1Score", 0);
 		
 		TextView score1 = (TextView) findViewById(R.id.Score1Display);
 		score1.setText(String.valueOf(Q1Score));
+		
+		int Q2Score = questionnaire.getInt("Q2Score", 0);
+		TextView score2 = (TextView) findViewById(R.id.Score2Display);
+		score2.setText(String.valueOf(Q2Score));
+		
 		/*Button questionnaire2Button = (Button) findViewById(R.id.button_questionnaire2);
 		questionnaire2Button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v4) {
@@ -59,8 +72,24 @@ public class MedicalQuestionnaire extends Activity {
 			Intent intent = new Intent(MedicalQuestionnaire.this, QuestionnaireForm1.class);
 			startActivityForResult(intent, 0);
 		}
+		
 
 	}
+	
+	public void viewQuestionnaire2(){
+		SharedPreferences questionnaires = getSharedPreferences("Answers", 0);
+
+		boolean question2 = questionnaires.getBoolean("Answers2Saved", false);
+		//boolean profile = false;
+		if(!question2)
+		{
+			Intent intent = new Intent(MedicalQuestionnaire.this, QuestionnaireForm2.class);
+			startActivityForResult(intent, 0);
+		}
+		
+
+	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -69,6 +98,11 @@ public class MedicalQuestionnaire extends Activity {
 		int Q1Score = questionnaire.getInt("Q1Score", 0);
 		TextView score1 = (TextView) findViewById(R.id.Score1Display);
 		score1.setText(String.valueOf(Q1Score));
+		
+		int Q2score = questionnaire.getInt("Q2Score", 0);
+		TextView score2 = (TextView) findViewById(R.id.Score2Display);
+		score2.setText(String.valueOf(Q2score));
+		
 	}
 	
 	/*public void viewQuestionnaire2(){

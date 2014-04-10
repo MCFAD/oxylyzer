@@ -57,5 +57,6 @@
     <string name="title_activity_report">Report</string>
     <string name="title_activity_medical_questionnaire">MedicalQuestionnaire</string>
     <string name="title_activity_questionnaire_form1">QuestionnaireForm1</string>
+    <string name="title_activity_questionnaire_form2">QuestionnaireForm2</string>
 
 </resources>

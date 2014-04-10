@@ -210,11 +210,11 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		recordingsAdapter.changeCursor(cursor);
-		if(cursor.getCount()>0) {
+		//if(cursor.getCount()>0) {
 			noRecordingsLayout.setVisibility(View.GONE);
-		} else {
-			noRecordingsLayout.setVisibility(View.VISIBLE);
-		}
+		//} else {
+		//	noRecordingsLayout.setVisibility(View.VISIBLE);
+		//}
 	}
 
 	@Override
