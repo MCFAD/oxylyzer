@@ -70,8 +70,13 @@
             android:label="@string/title_activity_questionnaire_form2" >
         </activity>
         <activity
+<<<<<<< HEAD
             android:name="com.mcfad.oxylyzer.QuestionnaireForm4"
             android:label="@string/title_activity_questionnaire_form4" >
+=======
+            android:name="com.mcfad.oxylyzer.QuestionnaireForm3"
+            android:label="@string/title_activity_questionnaire_form3" >
+>>>>>>> 06ac8dad237d2a99de251dce023848558aeacfb7
         </activity>
     </application>
 

@@ -58,6 +58,10 @@
     <string name="title_activity_medical_questionnaire">MedicalQuestionnaire</string>
     <string name="title_activity_questionnaire_form1">QuestionnaireForm1</string>
     <string name="title_activity_questionnaire_form2">QuestionnaireForm2</string>
+<<<<<<< HEAD
     <string name="title_activity_questionnaire_form4">QuestionnaireForm4</string>
+=======
+    <string name="title_activity_questionnaire_form3">QuestionnaireForm3</string>
+>>>>>>> 06ac8dad237d2a99de251dce023848558aeacfb7
 
 </resources>
