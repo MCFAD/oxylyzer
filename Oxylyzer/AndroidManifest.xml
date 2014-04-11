@@ -69,6 +69,10 @@
             android:name="com.mcfad.oxylyzer.QuestionnaireForm2"
             android:label="@string/title_activity_questionnaire_form2" >
         </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.QuestionnaireForm4"
+            android:label="@string/title_activity_questionnaire_form4" >
+        </activity>
     </application>
 
 </manifest>
