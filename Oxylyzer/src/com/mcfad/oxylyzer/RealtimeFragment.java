@@ -1,9 +1,6 @@
 package com.mcfad.oxylyzer;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -53,11 +50,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		levelBar = (VerticalProgressBar)rootView.findViewById(R.id.level);
 		levelBar.setMax(0);
 		setupGraph(rootView); 
-		
-		initiatingTime = (new java.util.Date()).getTime();
-		Date date = new Date(initiatingTime);
-		initiatingTime = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
-		remainRefreshTime = 0;
+		seconds = (new java.util.Date()).getTime();
 		
 		//array = new ArrayList<thisdata>();
 		return rootView;
@@ -75,6 +68,8 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		super.onPause();
 		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(oxReceiver);
 	}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("h:mm:ss",Locale.US);
@@ -83,14 +78,14 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		   
 		   public String formatLabel(double value, boolean isValueX) {
 			   
-			   
+			  int label = (int)value;
 			   
 		      if (isValueX) {
 		    	  //return sdf.format(new Date((long)value*1000));
 		    	  
 		    	  if(value < 0)
 		    		  return "";
-		    	  int label = (int)value;
+		    	  
 		    	  
 		    	  if(label >= 3600)
 		    		  return label/3600 + ":" + label%3600/60 + ":" + label%3600%60;
@@ -99,9 +94,13 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		    	  return "" + label;
 		      
 		      }
-		      return null; // let graphview generate Y-axis label for us
+		      return label + "%"; // let graphview generate Y-axis label for us
 		   }
 		}
+=======
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
 
 	public void setupGraph(View rootView){
 		// init example series data
@@ -111,13 +110,29 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		bpm.getStyle().color = Color.RED;
 		graphView = new LineGraphView(this.getActivity(), "");
 		
-		graphView.setCustomLabelFormatter(new LabelFormatter());
+		graphView.setCustomLabelFormatter(new CustomLabelFormatter() {
+			   @Override
+			   public String formatLabel(double value, boolean isValueX) {
+			      if (isValueX) {
+			    	  if(value < 0)
+			    		  return "";
+			    	  int label = (int)value;
+			    	  
+			    	  if(label >= 3600)
+			    		  return label/3600 + ":" + label%3600/60 + ":" + label%3600%60;
+			    	  if(label >= 60)
+			    		  return label/60 + ":" + label%60;
+			    	  return "" + label;
+			      }
+			      return null; // let graphview generate Y-axis label for us
+			   }
+			});
 		
 		graphView.getChildAt(1).setOnTouchListener(new OnTouchListener(){
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				remainRefreshTime = (new java.util.Date()).getTime();
-				return false;
+				Log.d("RT", "onTouch");
+				return true;
 			}
 		});
 		
@@ -139,21 +154,18 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 
 		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 		layout.addView(graphView);
-		/*
-		final Handler handler = new Handler(Looper.getMainLooper());
+/*		final Handler handler = new Handler(Looper.getMainLooper());
 		Runnable graphUpdate = new Runnable() {
 			int x = 0;
 			@Override
 			public void run() {
-				/*
 				postData(x,(int)(85+15*Math.random()),(int)(40+215*Math.random()));
 				handler.postDelayed(this, 1000);
 				x += 1;
-				
 			}
-		};*/
-		//handler.post(graphUpdate);
-	
+		};
+		handler.post(graphUpdate);
+	*/
 	}
 	public void postData(long time,int spo2,int bpm){
 		updateGraph(time,spo2,bpm);
@@ -163,28 +175,52 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 	static final int WINDOW_SIZE = 15;
 	static final int NUM_OF_HORI_LABELS = 5;
 	static String labels[] = new String[NUM_OF_HORI_LABELS];
+	/*
+	private ArrayList<thisdata> array;
 	
+	private class thisdata
+	{
+		public thisdata(long t, int o2, int bpm)
+		{
+			time = t;
+			spo2Val = o2;
+			bpmVal = bpm;
+		}
+		public long time;
+		public int spo2Val;
+		public int bpmVal;
+	}
+	*/
 	public void updateGraph(long time,int spo2Val, int bpmVal) {
-		
+		Log.i("PO", "time: "+time+" spo2 "+spo2Val+" bpm "+bpmVal);
 		double bpmInPercentage = bpmVal*0.1395348837 + 64.4186;	
 	
 		spo2Text.setText("" + spo2Val); 
 		bpmText.setText("" + bpmVal);
+		time = time/1000;
 		//array.add(new thisdata(time, spo2Val, bpmVal));
-		Date date = new Date(time);
-		time = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
 		spo2.appendData(new GraphViewData(time, spo2Val), false);
 		bpm.appendData(new GraphViewData(time, bpmInPercentage), false);
+<<<<<<< HEAD
+<<<<<<< HEAD
 		
 		
 		
 		//Log.i("PO", "time: "+time+" initiatingTime "+initiatingTime);
 		
-		if((new java.util.Date()).getTime() - remainRefreshTime > 15000)
+		if((new java.util.Date()).getTime() - remainRefreshTime > 5000)
 		{
 			graphView.setViewPort( (time-initiatingTime < 60)? initiatingTime : time-60, 60);
 			graphView.redrawAll();
 		}
+=======
+		graphView.setViewPort( (time < 60)? 0 : time-60, 60);
+		graphView.redrawAll();
+>>>>>>> FETCH_HEAD
+=======
+		graphView.setViewPort( (time < 60)? 0 : time-60, 60);
+		graphView.redrawAll();
+>>>>>>> FETCH_HEAD
 	}
 	BroadcastReceiver oxReceiver = new BroadcastReceiver() {
 		int level;
@@ -210,14 +246,14 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 				
 				
 				
-				updateGraph(time,spo2,bpm);
+				postData((time-seconds),spo2,bpm);
 			}
 			
 		}
 	};
-	private long remainRefreshTime;
+	
 	private TextView spo2Text;
 	private TextView bpmText;
 	private VerticalProgressBar levelBar;
-	private long initiatingTime;
+	private long seconds;
 }

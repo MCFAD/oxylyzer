@@ -55,7 +55,7 @@
     <LinearLayout
         android:id="@+id/graph1"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         android:orientation="vertical" >
     </LinearLayout>
 
@@ -66,17 +66,23 @@
         android:onClick="showReport"
         android:text="@string/view_report" />
 
-    <Button
-        android:id="@+id/button_export"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Export" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/button_delete"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete" />
+        <Button
+            android:id="@+id/button_export"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="Export" />
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+
+    </LinearLayout>
 	<Button
         android:id="@+id/button_questionnaire"
         android:layout_width="fill_parent"
