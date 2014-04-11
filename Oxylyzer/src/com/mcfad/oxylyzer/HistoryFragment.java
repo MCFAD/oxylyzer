@@ -1,6 +1,7 @@
 package com.mcfad.oxylyzer;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import android.content.Context;
@@ -49,6 +50,7 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	Spinner recordingsSpinner;
 	CursorAdapter recordingsAdapter;
 	EditText recordingDescription;
+	private GraphViewSeries apnea;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_history, container, false);
@@ -118,6 +120,9 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 
 		getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
+		array = new java.util.ArrayList<thisdata>();
+		
+		
 		return rootView;
 	}
 	public void setupGraph(){
@@ -132,15 +137,6 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 		graphView.setCustomLabelFormatter(new RealtimeFragment.LabelFormatter());
 		//graphView.setShowLegend(true);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> FETCH_HEAD
-		graphView.setManualYAxisBounds(100, 0);
-		graphView.setVerticalLabels(new String[] {"100%","75%", "50%", "25%", "0%"});
-
->>>>>>> FETCH_HEAD
 		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 		layout.addView(graphView);
 	}
@@ -149,8 +145,6 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
 		spo2.getStyle().color = Color.BLUE;
 		bpm = new GraphViewSeries(new GraphViewData[] {});
-<<<<<<< HEAD
-<<<<<<< HEAD
 		bpm.getStyle().color = Color.RED;
 		
 		graphView.removeAllSeries();
@@ -207,32 +201,6 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 			}
 			previousSPO2 = dataPoint.spo2;
 			
-=======
-
-		graphView.removeAllSeries();
-		graphView.addSeries(spo2); // oxygen level
-		graphView.addSeries(bpm); // beats per minutes
-
-		Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
-		Cursor dataCursor = recording.queryDatapoints(getActivity());
-		while(dataCursor.moveToNext()){
-			DataPoint dataPoint = new DataPoint(dataCursor);
-			spo2.appendData(new GraphViewData(dataPoint.time, dataPoint.spo2), false, 1000);
-			bpm.appendData(new GraphViewData(dataPoint.time, dataPoint.bpm), false, 1000);
->>>>>>> FETCH_HEAD
-=======
-
-		graphView.removeAllSeries();
-		graphView.addSeries(spo2); // oxygen level
-		graphView.addSeries(bpm); // beats per minutes
-
-		Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
-		Cursor dataCursor = recording.queryDatapoints(getActivity());
-		while(dataCursor.moveToNext()){
-			DataPoint dataPoint = new DataPoint(dataCursor);
-			spo2.appendData(new GraphViewData(dataPoint.time, dataPoint.spo2), false, 1000);
-			bpm.appendData(new GraphViewData(dataPoint.time, dataPoint.bpm), false, 1000);
->>>>>>> FETCH_HEAD
 		}
 		graphView.addSeries(spo2); // oxygen level
 		graphView.addSeries(bpm); // beats per minutes
@@ -241,6 +209,24 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 		graphView.setFocusable(true);
 		graphView.redrawAll();
 	}
+	
+	private java.util.ArrayList<thisdata> array;
+	
+	private class thisdata
+	{
+		public thisdata(long t, int o2, int bpm)
+		{
+			time = t;
+			spo2 = o2;
+			this.bpm = bpm;
+		}
+		public long time;
+		public int spo2;
+		public int bpm;
+	}
+	
+	
+	
 	@Override
 	public void onPause(){
 		super.onPause();
