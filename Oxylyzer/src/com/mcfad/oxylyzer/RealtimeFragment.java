@@ -31,6 +31,7 @@ import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 import com.mcfad.oxylyzer.MainActivity.GraphFragment;
+import com.mcfad.oxylyzer.view.VerticalBar;
 import com.mcfad.oxylyzer.view.VerticalProgressBar;
 
 public class RealtimeFragment extends MainActivity.GraphFragment {
@@ -46,11 +47,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		View rootView = inflater.inflate(R.layout.fragment_realtime, container, false);
 		spo2Text = (TextView)rootView.findViewById(R.id.spo2);
 		bpmText = (TextView)rootView.findViewById(R.id.bpm);
-		spo2Text.setTextColor(Color.BLUE);
-		spo2Text.setTextSize(100);
-		bpmText.setTextColor(Color.RED);
-		bpmText.setTextSize(100);
-		levelBar = (VerticalProgressBar)rootView.findViewById(R.id.level);
+		levelBar = (VerticalBar)rootView.findViewById(R.id.level);
 		levelBar.setMax(0);
 		setupGraph(rootView); 
 		
@@ -165,7 +162,8 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 	static String labels[] = new String[NUM_OF_HORI_LABELS];
 	
 	public void updateGraph(long time,int spo2Val, int bpmVal) {
-		
+		//Log.i("PO", "time: "+time+" spo2 "+spo2Val+" bpm "+bpmVal);
+
 		double bpmInPercentage = bpmVal*0.1395348837 + 64.4186;	
 	
 		spo2Text.setText("" + spo2Val); 
@@ -199,7 +197,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 					progressBarMax = level;
 					levelBar.setMax(level);
 				}
-				levelBar.setProgress(level);
+				levelBar.setCurrentVal(level);
 				levelBar.invalidate();
 			}
 
@@ -218,6 +216,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 	private long remainRefreshTime;
 	private TextView spo2Text;
 	private TextView bpmText;
-	private VerticalProgressBar levelBar;
 	private long initiatingTime;
+	private VerticalBar levelBar;
+	private long seconds;
 }
