@@ -11,8 +11,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -51,6 +49,8 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	CursorAdapter recordingsAdapter;
 	EditText recordingDescription;
 	private GraphViewSeries apnea;
+	private java.util.ArrayList<DataPoint> array;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_history, container, false);
@@ -120,7 +120,8 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 
 		getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
-		array = new java.util.ArrayList<thisdata>();
+		array = new java.util.ArrayList<DataPoint>();
+		//This array stores only one event of apnea, it the array is cleared out one user go back to normal state
 		
 		
 		return rootView;
@@ -129,9 +130,8 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 		graphView = new LineGraphView(this.getActivity(), "");
 		
 		graphView.setBackgroundColor(Color.LTGRAY);
-
 		graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
-		graphView.getGraphViewStyle().setVerticalLabelsColor(Color.RED);
+		//graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
 		graphView.getGraphViewStyle().setTextSize(15.5f);
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		graphView.setCustomLabelFormatter(new RealtimeFragment.LabelFormatter());
@@ -143,74 +143,69 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	public void updateGraph(){
 		// init example series data
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
-		spo2.getStyle().color = Color.BLUE;
 		bpm = new GraphViewSeries(new GraphViewData[] {});
-		bpm.getStyle().color = Color.RED;
-		
 		graphView.removeAllSeries();
 		
-		
-		//int minY = 70;
 		Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
 		Cursor dataCursor = recording.queryDatapoints(getActivity());
-		int startTime = Integer.MAX_VALUE;
-		int baseLine = 97;
-		int previousSPO2 = 100;//Set this to baseLine If baseline is available
+		int apneaStartTime = Integer.MAX_VALUE;
+		int baseLine = 98;//Set this to baseLine If baseline is available
+		int apneaClassificationTime = 10;  //change this to a lower value if you want to see a premature apnea event
+		int previousSPO2 = 0;
+		DataPoint previousDataPoint = null;
 		while(dataCursor.moveToNext()){
 			DataPoint dataPoint = new DataPoint(dataCursor);
-			if(dataPoint.spo2 >= 127)
+			
+			if(dataPoint.spo2 >= 127)//skip all the invalid data point
 				continue;
-			/*
-			if(dataPoint.spo2 < minY) //set the upper bound for Y 
-			{
-				minY = dataPoint.spo2;
-				graphView.setManualYAxisBounds(100, minY);
-			}
-			*/
+			
 			Date date = new Date(dataPoint.time);
 			int currentTime = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
 			spo2.appendData(new GraphViewData(currentTime, dataPoint.spo2), false);
 			bpm.appendData(new GraphViewData(currentTime, dataPoint.bpm), false);
 			
-			if(dataPoint.spo2 < previousSPO2 && baseLine-dataPoint.spo2 >= 3)
+			if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
 			{
-				array.add(new thisdata(currentTime, dataPoint.spo2, dataPoint.bpm));
-				
+				array.add(previousDataPoint);
 			}
 			else
 			{
 				
-				if(currentTime - startTime > 1 && !array.isEmpty())
+				if(currentTime - apneaStartTime > apneaClassificationTime && !array.isEmpty())
 				{
+					array.add(previousDataPoint); //the last datapoint of an apnea event
 					apnea = new GraphViewSeries(new GraphViewData[] {});
-					apnea.getStyle().color = Color.YELLOW;
+					apnea.getStyle().color = Color.MAGENTA;
 					apnea.getStyle().thickness = 10;
 					graphView.addSeries(apnea); //indicates where the apnea period.
 					for(int i = 0; i < array.size(); i++)
 					{
-						long thisTime = array.get(i).time;
+						Date d = new Date(array.get(i).time);
+						int thisTime = d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
 						int s = array.get(i).spo2;
-						//int b = array.get(i).bpm;
 						apnea.appendData(new GraphViewData(thisTime, s), false);
 					}
 					
 				}
+				
+				//reset the apnea data point and time after highlighting the apnea event
 				array.clear();
-				startTime = currentTime;
+				apneaStartTime = currentTime; 
 			
 			}
+			previousDataPoint = dataPoint;
 			previousSPO2 = dataPoint.spo2;
 			
 		}
 		graphView.addSeries(spo2); // oxygen level
+		spo2.getStyle().color = Color.BLUE;
 		graphView.addSeries(bpm); // beats per minutes
+		bpm.getStyle().color = Color.RED;
 		graphView.setScrollable(true);
 		graphView.setScalable(true);
-		graphView.setFocusable(true);
+		//graphView.setFocusable(true);
 		graphView.redrawAll();
 	}
-	
-	private java.util.ArrayList<thisdata> array;
 	
 	private class thisdata
 	{

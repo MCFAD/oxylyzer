@@ -83,20 +83,15 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 			  int label = (int)value;
 			   
 		      if (isValueX) {
-		    	  //return sdf.format(new Date((long)value*1000));
-		    	  
 		    	  if(value < 0)
 		    		  return "";
-		    	  
-		    	  
 		    	  if(label >= 3600)
 		    		  return label/3600 + ":" + label%3600/60 + ":" + label%3600%60;
 		    	  if(label >= 60)
 		    		  return label/60 + ":" + label%60;
 		    	  return "" + label;
-		      
 		      }
-		      return label + "%"; // let graphview generate Y-axis label for us
+		      return label + "%, " + (int)((value-64.4186)/0.1395348837) + "bpm";
 		   }
 		}
 
@@ -124,42 +119,24 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		graphView.setScalable(true);
 		graphView.setBackgroundColor(Color.LTGRAY);
 
-		graphView.getGraphViewStyle().setNumHorizontalLabels(NUM_OF_HORI_LABELS);
+		//graphView.getGraphViewStyle().setNumHorizontalLabels(NUM_OF_HORI_LABELS);
 		graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
-		graphView.getGraphViewStyle().setVerticalLabelsColor(Color.RED);
+		//graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
 		graphView.getGraphViewStyle().setTextSize(15.5f);
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		//graphView.setShowLegend(true);
 
-		graphView.setManualYAxisBounds(100, 70);
-		graphView.setVerticalLabels(new String[] {"100%","85%", "70%"});
+		//graphView.setManualYAxisBounds(100, 70);
+		//graphView.setVerticalLabels(new String[] {"100%","85%", "70%"});
 
 		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
 		layout.addView(graphView);
-		/*
-		final Handler handler = new Handler(Looper.getMainLooper());
-		Runnable graphUpdate = new Runnable() {
-			int x = 0;
-			@Override
-			public void run() {
-				/*
-				postData(x,(int)(85+15*Math.random()),(int)(40+215*Math.random()));
-				handler.postDelayed(this, 1000);
-				x += 1;
-				
-			}
-		};*/
-		//handler.post(graphUpdate);
 	
 	}
 	public void postData(long time,int spo2,int bpm){
 		updateGraph(time,spo2,bpm);
 	}
 	
-	
-	static final int WINDOW_SIZE = 15;
-	static final int NUM_OF_HORI_LABELS = 5;
-	static String labels[] = new String[NUM_OF_HORI_LABELS];
 	
 	public void updateGraph(long time,int spo2Val, int bpmVal) {
 		//Log.i("PO", "time: "+time+" spo2 "+spo2Val+" bpm "+bpmVal);
@@ -168,7 +145,6 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 	
 		spo2Text.setText("" + spo2Val); 
 		bpmText.setText("" + bpmVal);
-		//array.add(new thisdata(time, spo2Val, bpmVal));
 		Date date = new Date(time);
 		time = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
 		spo2.appendData(new GraphViewData(time, spo2Val), false);
@@ -178,7 +154,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		
 		//Log.i("PO", "time: "+time+" initiatingTime "+initiatingTime);
 		
-		if((new java.util.Date()).getTime() - remainRefreshTime > 5000)
+		if((new java.util.Date()).getTime() - remainRefreshTime > 5000) //after 5 second of inactivity, the graph will refresh
 		{
 			graphView.setViewPort( (time-initiatingTime < 60)? initiatingTime : time-60, 60);
 			graphView.redrawAll();
@@ -192,10 +168,10 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 			if(intent.hasExtra("level"))
 			{
 				level = intent.getExtras().getInt("level");
-				if(progressBarMax < level)
+				if(progressBarMax < level) //increase the maximum of the progress bar when there is a higher level
 				{
 					progressBarMax = level;
-					levelBar.setMax(level);
+					levelBar.setMax(progressBarMax);
 				}
 				levelBar.setCurrentVal(level);
 				levelBar.invalidate();
@@ -206,13 +182,12 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 				int spo2 = intent.getExtras().getInt("spo2");
 				int bpm = intent.getExtras().getInt("bpm");
 				
-				
-				
 				updateGraph(time,spo2,bpm);
 			}
 			
 		}
 	};
+	static final int NUM_OF_HORI_LABELS = 5;
 	private long remainRefreshTime;
 	private TextView spo2Text;
 	private TextView bpmText;
