@@ -132,14 +132,16 @@ public class OximeterService extends Service {
 	static long time = new Date().getTime();
 	static long lastTime = 0;
 	public void postData(byte[] data){
-		Log.i("OS", byteArrayToHex(data));
+		//Log.i("OS", byteArrayToHex(data));
 		DataMessage msg = new DataMessage(data);
+		Log.i("OS", msg.toString());
+		
 		if(!msg.isValid())
 			return;
 
 		long time = new Date().getTime();
 		Intent intent = new Intent(BROADCAST_DATA);
-		intent.putExtra("level", msg.barGraph);
+		intent.putExtra("level", msg.pleth);
 		if(time-lastTime>=1000){
 			OxContentProvider.postDatapoint(this, currentRecording, msg.spO2, msg.pulseRate);
 	
@@ -162,12 +164,12 @@ public class OximeterService extends Service {
 		boolean noSignal;
 		int strength;
 		Integer pleth;
-		boolean pulseHigh;
 		boolean pulseResearch;
 		boolean sensorOff;
-		Integer barGraph;
 		Integer pulseRate;
 		Integer spO2;
+		
+		boolean invalidReading = false;
 		// Message format:
 		// 1BUN KKKK  0PPP PPPP  0HRO GGGG  0HHH HHHH  0SSS SSSS
 		public DataMessage(byte data[]) {
@@ -178,44 +180,43 @@ public class OximeterService extends Service {
 			
 			pleth = data[1]&0x7F; 						// P
 			
-			pulseHigh = ((data[2]>>6)&0x01)==1; 		// H
 			pulseResearch = ((data[2]>>5)&0x01)==1; 	// R
 			sensorOff = ((data[2]>>4)&0x01)==1; 		// O
-			barGraph = data[2]&0x0F; 					// G
 			
-			pulseRate = data[3]&0x7F; 					// H
+			pulseRate = (((data[2]>>6)&0x01)<<7) + data[3]&0x7F; 	// H
 			
 			spO2 = data[4]&0x7F; 						// S
 			
+			// invalid values
 			if(pleth==0) pleth = null;
-			if(barGraph==0) barGraph = null;
 			if(pulseRate==0xFF) pulseRate = null;
 			if(spO2==0x7F) spO2 = null;
+			
+			invalidReading = pleth==null||spO2==null||pulseRate==null||unplugged||noSignal||pulseResearch||sensorOff;
 		}
 		public boolean isValid() {
-			return spO2==null||pulseRate==null;
+			return !invalidReading;
+		}
+		public String toString(){
+			return "spo02: "+spO2+" bpm:"+pulseRate+" pleth:"+pleth+" strength:"+strength+
+					" beep:"+pulseBeep+" unplugged:"+unplugged+" nosignal:"+noSignal+
+					" scanning:"+pulseResearch+" sensorOff:"+sensorOff;
 		}
 	}
 	// 
 /*
-				 // 1BUN KKKK  0PPP PPPP  0HRO GGGG  0HHH HHHH  0SSS SSSS
-	disconnected: 	1000 1111  0000 0000  0111 0000  0111 1111  0111 1111
-	connected: 		0000 1000  0000 0000  0111 0000  0111 1111  0111 1111
-	black: 			XXXX XXXX  0110 0100  XXXX 1111  XXXX XXXX  XXXX XXXX
-	
-	Invalid pleth=0
-	Invalid Bargraph=0
-	Invalid Pulse Rate=0xff
-	invalid Spo2=%0x7F
+Message Format:
+1BUN KKKK  0PPP PPPP  0HRO GGGG  0HHH HHHH  0SSS SSSS
 
-1	0~3	    Signal strength (0~8)
-	4	    1=no signal, 0=OK
-	5	    1=probe unplugged, 0=OK
-	6	    1=pulse beep
+From documentation:
+1	0~3	    K: Signal strength (0~8)
+	4	    N: 1=no signal, 0=OK
+	5	    U: 1=probe unplugged, 0=OK
+	6	    B: 1=pulse beep
 	7	    Sync bit=1
-2	0~6	    Pleth(0-100, invalid pleth=0)
+2	0~6	    P: Pleth(0-100, invalid pleth=0)
 	7	    Sync bit=0
-3	0~3	    Bargraph(0-15, invalid bar=0)
+3	0~3	    G: Bargraph(0-15, invalid bar=0) 	seems to be the same value as pleth, with low precision
 	4	    Sensor off=1, 0=OK
 	5	    Pulse research=1, 0=OK
 	6	    Bit 6 of Byte 3 is bit 7 of the Pulse Rate
@@ -224,5 +225,8 @@ public class OximeterService extends Service {
 	7	    Sync=0
 5	0~6	    SpO2(0-100%)
 	7	    Sync=0
+	
+Invalid Pulse Rate=0xff
+invalid Spo2=%0x7F
 */
 } 

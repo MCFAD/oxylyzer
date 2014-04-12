@@ -13,7 +13,7 @@ public class VerticalBar extends View {
 	protected float currentVal;
 	protected float maxVal;
 
-	protected Paint shapePaint = null;
+	protected Paint barPaint = null;
 	protected Rect rect = null;
 
 	public VerticalBar(Context context) {
@@ -29,16 +29,15 @@ public class VerticalBar extends View {
 		initShape();
 	}
 	protected void initShape(){
-		shapePaint = new Paint();
-		shapePaint.setAntiAlias(true);
-		shapePaint.setDither(true);
-		shapePaint.setStyle(Style.STROKE);
-		shapePaint.setStrokeWidth(30);
-		shapePaint.setColor(Color.RED);
-		rect = new Rect();
+		barPaint = new Paint();
+		barPaint.setAntiAlias(true);
+		barPaint.setDither(true);
+		barPaint.setStyle(Style.STROKE);
+		barPaint.setStrokeWidth(30);
+		barPaint.setColor(Color.RED);
 	}
 
-	public void setMax(float max){
+	public void setMaxVal(float max){
 		maxVal = max;
 		invalidate();
 	}
@@ -49,11 +48,14 @@ public class VerticalBar extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		canvas.getClipBounds(rect);
+		if(rect==null){
+			rect = new Rect();
+			canvas.getClipBounds(rect);
+		}
 		float ratio = Math.min(1.0f, currentVal/maxVal); 
 		int x = (rect.left+rect.right)/2;
 		int y = rect.bottom;
 		int height = (int) ((rect.top-rect.bottom)*ratio);
-		canvas.drawLine(x,y,x,y+height*ratio,shapePaint);
+		canvas.drawLine(x,y,x,y+height*ratio,barPaint);
 	}
 }
