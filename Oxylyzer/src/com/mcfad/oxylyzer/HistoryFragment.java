@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -30,10 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
-import com.mcfad.oxylyzer.MainActivity.GraphFragment;
 import com.mcfad.oxylyzer.db.DataPoint;
 import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.OxSQLiteHelper;
@@ -41,28 +42,29 @@ import com.mcfad.oxylyzer.db.Recording;
 import com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire;
 import com.mcfad.oxylyzer.diagnosis.NewProfileActivity;
 import com.mcfad.oxylyzer.diagnosis.Report;
+import com.mcfad.oxylyzer.view.OxGraph;
 
-public class HistoryFragment extends GraphFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class HistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	View rootView;
 	// view to hide after there are recordings found
 	View noRecordingsLayout;
-	
+
 	Spinner recordingsSpinner;
 	CursorAdapter recordingsAdapter;
 	EditText recordingDescription;
-	private GraphViewSeries apnea;
-	private java.util.ArrayList<DataPoint> array;
-	
+
+	HistoryOxGraph graph;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
 		noRecordingsLayout = (View) rootView.findViewById(R.id.no_recordings);
-		
+
 		recordingsSpinner = (Spinner) rootView.findViewById(R.id.records);
 		recordingsSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
-			
+
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
@@ -70,12 +72,12 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 				Cursor dataCursor = recording.queryDatapoints(getActivity());
 				Log.d("REC", 
 						"start: "+recording.startTime+" end: "+recording.endTime+", "
-						+ (recording.endTime-recording.startTime)/1000+" seconds, "
-						+ "desc: "+recording.description+", #points: "+dataCursor.getCount());
+								+ (recording.endTime-recording.startTime)/1000+" seconds, "
+								+ "desc: "+recording.description+", #points: "+dataCursor.getCount());
 				dataCursor.close();
 
 				recordingDescription.setText(recording.description);
-				updateGraph();
+				graph.updateGraph();
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {		
@@ -119,97 +121,102 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 		});
 		recordingDescription = (EditText) rootView.findViewById(R.id.description);
 
-		setupGraph();
+		LinearLayout graphLayout = (LinearLayout) rootView.findViewById(R.id.graph1);
+		graph = new HistoryOxGraph(getActivity(),graphLayout);
 
 		getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
-		array = new java.util.ArrayList<DataPoint>();
 		//This array stores only one event of apnea, it the array is cleared out one user go back to normal state
-		
-		
+
 		return rootView;
 	}
-	public void setupGraph(){
-		graphView = new LineGraphView(this.getActivity(), "");
-		
-		graphView.setBackgroundColor(Color.LTGRAY);
-		graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
-		//graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
-		graphView.getGraphViewStyle().setTextSize(15.5f);
-		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
-		graphView.setCustomLabelFormatter(new RealtimeFragment.LabelFormatter());
-		//graphView.setShowLegend(true);
+	class HistoryOxGraph extends OxGraph {
 
-		LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.graph1);
-		layout.addView(graphView);
-	}
-	public void updateGraph(){
-		// init example series data
-		spo2 = new GraphViewSeries(new GraphViewData[] {});
-		bpm = new GraphViewSeries(new GraphViewData[] {});
-		graphView.removeAllSeries();
+		private GraphViewSeries apnea;
+		private java.util.ArrayList<DataPoint> array;
 		
-		Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
-		Cursor dataCursor = recording.queryDatapoints(getActivity());
-		int apneaStartTime = Integer.MAX_VALUE;
-		int baseLine = 98;//Set this to baseLine If baseline is available
-		int apneaClassificationTime = 10;  //change this to a lower value if you want to see a premature apnea event
-		int previousSPO2 = 0;
-		DataPoint previousDataPoint = null;
-		while(dataCursor.moveToNext()){
-			DataPoint dataPoint = new DataPoint(dataCursor);
-			
-			if(dataPoint.spo2 >= 127)//skip all the invalid data point
-				continue;
-			
-			Date date = new Date(dataPoint.time);
-			int currentTime = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
-			spo2.appendData(new GraphViewData(currentTime, dataPoint.spo2), false);
-			bpm.appendData(new GraphViewData(currentTime, dataPoint.bpm), false);
-			
-			if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
-			{
-				array.add(previousDataPoint);
-			}
-			else
-			{
-				
-				if(currentTime - apneaStartTime > apneaClassificationTime && !array.isEmpty())
+		public HistoryOxGraph(Context context, LinearLayout parent) {
+			super();
+			graphView = new LineGraphView(context, "");
+
+			graphView.setBackgroundColor(Color.LTGRAY);
+			graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
+			//graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
+			graphView.getGraphViewStyle().setTextSize(15.5f);
+			graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
+			graphView.setCustomLabelFormatter(new OxGraph.LabelFormatter());
+			//graphView.setShowLegend(true);
+
+			parent.addView(graphView);
+			array = new java.util.ArrayList<DataPoint>();
+		}	
+
+		public void updateGraph(){
+			// init example series data
+			spo2 = new GraphViewSeries(new GraphViewData[] {});
+			bpm = new GraphViewSeries(new GraphViewData[] {});
+			graphView.removeAllSeries();
+
+			Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
+			Cursor dataCursor = recording.queryDatapoints(getActivity());
+			int apneaStartTime = Integer.MAX_VALUE;
+			int baseLine = 98;//Set this to baseLine If baseline is available
+			int apneaClassificationTime = 10;  //change this to a lower value if you want to see a premature apnea event
+			int previousSPO2 = 0;
+			DataPoint previousDataPoint = null;
+			while(dataCursor.moveToNext()){
+				DataPoint dataPoint = new DataPoint(dataCursor);
+
+				if(dataPoint.spo2 >= 127)//skip all the invalid data point
+					continue;
+
+				Date date = new Date(dataPoint.time);
+				int currentTime = date.getHours()*3600+date.getMinutes()*60+date.getSeconds();
+				spo2.appendData(new GraphViewData(currentTime, dataPoint.spo2), false);
+				bpm.appendData(new GraphViewData(currentTime, dataPoint.bpm), false);
+
+				if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
 				{
-					array.add(previousDataPoint); //the last datapoint of an apnea event
-					apnea = new GraphViewSeries(new GraphViewData[] {});
-					apnea.getStyle().color = Color.MAGENTA;
-					apnea.getStyle().thickness = 10;
-					graphView.addSeries(apnea); //indicates where the apnea period.
-					for(int i = 0; i < array.size(); i++)
-					{
-						Date d = new Date(array.get(i).time);
-						int thisTime = d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
-						int s = array.get(i).spo2;
-						apnea.appendData(new GraphViewData(thisTime, s), false);
-					}
-					
+					array.add(previousDataPoint);
 				}
-				
-				//reset the apnea data point and time after highlighting the apnea event
-				array.clear();
-				apneaStartTime = currentTime; 
-			
+				else
+				{
+					if(currentTime - apneaStartTime > apneaClassificationTime && !array.isEmpty())
+					{
+						array.add(previousDataPoint); //the last datapoint of an apnea event
+						apnea = new GraphViewSeries(new GraphViewData[] {});
+						apnea.getStyle().color = Color.MAGENTA;
+						apnea.getStyle().thickness = 10;
+						graphView.addSeries(apnea); //indicates where the apnea period.
+						for(int i = 0; i < array.size(); i++)
+						{
+							Date d = new Date(array.get(i).time);
+							int thisTime = d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+							int s = array.get(i).spo2;
+							apnea.appendData(new GraphViewData(thisTime, s), false);
+						}
+					}
+
+					//reset the apnea data point and time after highlighting the apnea event
+					array.clear();
+					apneaStartTime = currentTime; 
+
+				}
+				previousDataPoint = dataPoint;
+				previousSPO2 = dataPoint.spo2;
+
 			}
-			previousDataPoint = dataPoint;
-			previousSPO2 = dataPoint.spo2;
-			
+			graphView.addSeries(spo2); // oxygen level
+			spo2.getStyle().color = Color.BLUE;
+			graphView.addSeries(bpm); // beats per minutes
+			bpm.getStyle().color = Color.RED;
+			graphView.setScrollable(true);
+			graphView.setScalable(true);
+			//graphView.setFocusable(true);
+			graphView.redrawAll();
 		}
-		graphView.addSeries(spo2); // oxygen level
-		spo2.getStyle().color = Color.BLUE;
-		graphView.addSeries(bpm); // beats per minutes
-		bpm.getStyle().color = Color.RED;
-		graphView.setScrollable(true);
-		graphView.setScalable(true);
-		//graphView.setFocusable(true);
-		graphView.redrawAll();
 	}
-	
+
 	private class thisdata
 	{
 		public thisdata(long t, int o2, int bpm)
@@ -222,9 +229,9 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 		public int spo2;
 		public int bpm;
 	}
-	
-	
-	
+
+
+
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -280,7 +287,7 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		recordingsAdapter.changeCursor(cursor);
 		//if(cursor.getCount()>0) {
-			noRecordingsLayout.setVisibility(View.GONE);
+		noRecordingsLayout.setVisibility(View.GONE);
 		//} else {
 		//	noRecordingsLayout.setVisibility(View.VISIBLE);
 		//}
@@ -302,7 +309,7 @@ public class HistoryFragment extends GraphFragment implements LoaderManager.Load
 			view.setTag(recording);
 
 			TextView text = (TextView) view.findViewById(R.id.text1);
-			
+
 			text.setText(recording.getListTitle());
 		}
 

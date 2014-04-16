@@ -134,7 +134,7 @@ public class OximeterService extends Service {
 	public void postData(byte[] data){
 		//Log.i("OS", byteArrayToHex(data));
 		DataMessage msg = new DataMessage(data);
-		Log.i("OS", msg.toString());
+		//Log.i("OS", msg.toString());
 		
 		if(!msg.isValid())
 			return;
@@ -155,10 +155,13 @@ public class OximeterService extends Service {
 	}
 
 	public boolean isConnected() {
+		if(MainActivity.OximeterTest) 
+			return true;
 		return connected; 
 	}
 	
 	public class DataMessage {
+		
 		boolean pulseBeep;
 		boolean unplugged;
 		boolean noSignal;
