@@ -10,10 +10,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.LinearLayout;
 
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
-import com.mcfad.oxylyzer.view.OxGraph.LabelFormatter;
+import com.jjoe64.graphview.GraphViewSeries;
 
 public class RealtimeOxGraph extends OxGraph {
 	private long lastTouchTime;
@@ -41,7 +39,7 @@ public class RealtimeOxGraph extends OxGraph {
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		//graphView.setShowLegend(true);
 
-		//graphView.setManualYAxisBounds(100, 70);
+		graphView.setManualYAxisBounds(100, 70);
 		//graphView.setVerticalLabels(new String[] {"100%","85%", "70%"});
 		
 		graphView.getChildAt(1).setOnTouchListener(new OnTouchListener(){

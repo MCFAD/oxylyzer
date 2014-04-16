@@ -28,7 +28,7 @@ public class OxGraph {
 	public OxGraph(Context context,LinearLayout parent){
 		secondsOffset = -1;
 		
-		graphView = new LineGraphView(context, "");
+		graphView = new CustomGraphView(context, "");
 		graphView.setCustomLabelFormatter(new LabelFormatter());
 		parent.addView(graphView);
 	}
