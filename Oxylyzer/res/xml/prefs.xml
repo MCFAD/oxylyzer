@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <CheckBoxPreference
-        android:title="Screen Off Tracking"
-        android:defaultValue="true"
-        android:summary="Screen will be turned off with no activity in 3 minutes."
-        android:key="screenOfTracking" />
+    <Preference
+        android:title="Import Data"
+        android:summary="Import oximeter recordings (.csv) from your 'Downloads' folder"
+        android:key="import" />
     <Preference
         android:title="Edit Profile"
         android:summary="Use this to edit your previously created profile"

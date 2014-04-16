@@ -96,12 +96,12 @@ public class OximeterService extends Service {
 
 	public void onConnect(){
 		connected = true;
-		currentRecording = OxContentProvider.startNewRecording(OximeterService.this);
+		currentRecording = OxContentProvider.startNewRecording(OximeterService.this,new Date().getTime());
 		broadcastConnectionState(true,null);
 	}
 	public void onDisconnect() {
 		connected = false;
-		OxContentProvider.endRecording(OximeterService.this,currentRecording);
+		OxContentProvider.endRecording(OximeterService.this,currentRecording, new Date().getTime());
 		broadcastConnectionState(false,"Disconnected");
 		
 	}
@@ -143,7 +143,7 @@ public class OximeterService extends Service {
 		Intent intent = new Intent(BROADCAST_DATA);
 		intent.putExtra("level", msg.pleth);
 		if(time-lastTime>=1000){
-			OxContentProvider.postDatapoint(this, currentRecording, msg.spO2, msg.pulseRate);
+			OxContentProvider.postDatapoint(this, currentRecording, time, msg.spO2, msg.pulseRate);
 	
 			intent.putExtra("time", time);
 			intent.putExtra("spo2", msg.spO2);

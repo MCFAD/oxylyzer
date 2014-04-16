@@ -1,7 +1,5 @@
 package com.mcfad.oxylyzer;
 
-import java.util.Date;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,15 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnTouchListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jjoe64.graphview.GraphView.GraphViewData;
-import com.mcfad.oxylyzer.view.OxGraph;
+import com.mcfad.oxylyzer.view.RealtimeOxGraph;
 import com.mcfad.oxylyzer.view.VerticalBar;
 
 public class RealtimeFragment extends Fragment {
@@ -29,7 +24,7 @@ public class RealtimeFragment extends Fragment {
 	private TextView spo2Text;
 	private TextView bpmText;
 	private VerticalBar levelBar;
-	OxGraph graph;
+	RealtimeOxGraph graph;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +34,7 @@ public class RealtimeFragment extends Fragment {
 		levelBar = (VerticalBar)rootView.findViewById(R.id.level);
 		levelBar.setMaxVal(100); // max value for pleth is 100
 		LinearLayout graphLayout = (LinearLayout) rootView.findViewById(R.id.graph1);
-		graph = new OxGraph(getActivity(),graphLayout);
+		graph = new RealtimeOxGraph(getActivity(),graphLayout);
 
 		return rootView;
 	}
@@ -77,40 +72,4 @@ public class RealtimeFragment extends Fragment {
 			}
 		}
 	};
-	
-	class RealtimeOxGraph extends OxGraph {
-		private long lastTouchTime;
-		private int viewportWidth = 30; // width of graph in seconds
-		
-		public RealtimeOxGraph(Context context, LinearLayout parent) {
-			super(context, parent);
-
-			graphView.getChildAt(1).setOnTouchListener(new OnTouchListener(){
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					lastTouchTime = new Date().getTime();
-					return false;
-				}
-			});
-		}
-
-		public void updateGraph(long time,int spo2Val, int bpmVal) {
-			double bpmInPercentage = bpmVal*0.1395348837 + 64.4186;	
-
-			// if not set, this is the first datapoint in the graph, set it at x = 0
-			if(secondsOffset==-1)
-				secondsOffset = time/1000;
-			
-			double seconds = (double) ((time/1000)-secondsOffset);
-
-			spo2.appendData(new GraphViewData(seconds, spo2Val), false);
-			bpm.appendData(new GraphViewData(seconds, bpmInPercentage), false);
-
-			if(new Date().getTime() - lastTouchTime > 5000) //after 5 second of inactivity, the graph will refresh
-			{
-				graphView.setViewPort( (seconds < viewportWidth)? 0 : seconds-viewportWidth, viewportWidth);
-				graphView.redrawAll();
-			}
-		}
-	}
 }

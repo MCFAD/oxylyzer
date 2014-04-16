@@ -26,41 +26,12 @@ public class OxGraph {
 	protected long secondsOffset;
 	
 	public OxGraph(Context context,LinearLayout parent){
-
 		secondsOffset = -1;
 		
-		// init example series data
-		spo2 = new GraphViewSeries(new GraphViewData[] {});
-		spo2.getStyle().color = Color.BLUE;
-		bpm = new GraphViewSeries(new GraphViewData[] {});
-		bpm.getStyle().color = Color.RED;
 		graphView = new LineGraphView(context, "");
-
 		graphView.setCustomLabelFormatter(new LabelFormatter());
-
-		graphView.addSeries(spo2); // oxygen level
-		graphView.addSeries(bpm); // beats per minutes
-		graphView.setScrollable(true);
-		graphView.setScalable(true);
-		graphView.setBackgroundColor(Color.LTGRAY);
-
-		//graphView.getGraphViewStyle().setNumHorizontalLabels(NUM_OF_HORI_LABELS);
-		graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
-		//graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
-		graphView.getGraphViewStyle().setTextSize(15.5f);
-		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
-		//graphView.setShowLegend(true);
-
-		//graphView.setManualYAxisBounds(100, 70);
-		//graphView.setVerticalLabels(new String[] {"100%","85%", "70%"});
-
 		parent.addView(graphView);
 	}
-
-
-	public OxGraph() {
-	}
-
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("h:mm:ss",Locale.US);
 	public class LabelFormatter implements CustomLabelFormatter 

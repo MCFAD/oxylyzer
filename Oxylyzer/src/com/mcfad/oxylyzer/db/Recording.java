@@ -1,8 +1,12 @@
 package com.mcfad.oxylyzer.db;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -11,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.mcfad.oxylyzer.HistoryFragment;
 
@@ -74,11 +80,39 @@ public class Recording {
 		Intent sendIntent = new Intent(Intent.ACTION_SEND);
 		sendIntent.putExtra(Intent.EXTRA_SUBJECT, 
 				"Oximeter Recording: "+
-				sdf.format(new Date(startTime))+"-"+sdf.format(new Date(endTime))+
-				" "+description);
+						sdf.format(new Date(startTime))+"-"+sdf.format(new Date(endTime))+
+						" "+description);
 		sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
 		sendIntent.setType("text/html");
 		context.startActivity(sendIntent);
+	}
+	public static void importFromFile(Context context,String file) throws FileNotFoundException, IOException{
+		
+		FileInputStream fis = new FileInputStream(file);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+		Uri recordingUri = null;
+		long time = 0;
+		try {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] RowData = line.split(",");
+				time = Long.parseLong(RowData[0]);
+				int spO2 = Integer.parseInt(RowData[1]);
+				int bpm = Integer.parseInt(RowData[2]);
+				if(recordingUri==null){
+					recordingUri = OxContentProvider.startNewRecording(context,time);
+				}
+				OxContentProvider.postDatapoint(context, recordingUri, time, spO2, bpm);
+			}
+		}
+		finally {
+			fis.close();
+		}
+		if(recordingUri!=null&&time!=0){
+			OxContentProvider.endRecording(context, recordingUri,time);
+			Toast.makeText(context, "Succesfully imported "+file, Toast.LENGTH_LONG).show();
+		}
+		
 	}
 	static SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm:ss a",Locale.US);
 }

@@ -120,14 +120,14 @@ public class OxContentProvider extends ContentProvider {
 		return updated;
 	}
 
-	public static Uri startNewRecording(Context context) {
+	public static Uri startNewRecording(Context context,long time) {
 		ContentValues values = new ContentValues();
-		values.put(OxSQLiteHelper.COLUMN_START, new Date().getTime());
+		values.put(OxSQLiteHelper.COLUMN_START, time);
 		return context.getContentResolver().insert(RECORDINGS_URI, values);
 	}
-	public static void endRecording(Context context, Uri recording) {
+	public static void endRecording(Context context, Uri recording, long time) {
 		ContentValues values = new ContentValues();
-		values.put(OxSQLiteHelper.COLUMN_END, new Date().getTime());
+		values.put(OxSQLiteHelper.COLUMN_END, time);
 		context.getContentResolver().update(recording, values, null, null);
 	}
 	public static int deleteRecording(Context context, Uri recording) {
@@ -138,9 +138,9 @@ public class OxContentProvider extends ContentProvider {
 		values.put(OxSQLiteHelper.COLUMN_DESC, description);
 		context.getContentResolver().update(recording, values, null, null);
 	}
-	public static Uri postDatapoint(Context context, Uri recording, int spo2,int bpm) {
+	public static Uri postDatapoint(Context context, Uri recording, long time,int spo2,int bpm) {
 		ContentValues values = new ContentValues();
-		values.put(OxSQLiteHelper.COLUMN_TIME, new Date().getTime());
+		values.put(OxSQLiteHelper.COLUMN_TIME, time);
 		values.put(OxSQLiteHelper.COLUMN_SPO2, spo2);
 		values.put(OxSQLiteHelper.COLUMN_BPM, bpm);
 		return context.getContentResolver().insert(DATA_POINTS_URI, values);
