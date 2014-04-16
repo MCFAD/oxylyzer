@@ -1,5 +1,7 @@
 package com.mcfad.oxylyzer;
 
+import com.mcfad.oxylyzer.diagnosis.NewProfileActivity;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;

@@ -1,4 +1,9 @@
-package com.mcfad.oxylyzer;
+package com.mcfad.oxylyzer.diagnosis;
+
+import com.mcfad.oxylyzer.R;
+import com.mcfad.oxylyzer.R.array;
+import com.mcfad.oxylyzer.R.id;
+import com.mcfad.oxylyzer.R.layout;
 
 import android.app.Activity;
 import android.app.AlertDialog;

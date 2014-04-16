@@ -40,43 +40,42 @@
             android:label="@string/title_activity_calendar" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.NewProfileActivity"
+            android:name="com.mcfad.oxylyzer.diagnosis.NewProfileActivity"
             android:label="@string/title_activity_new_profile" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.Report"
+            android:name="com.mcfad.oxylyzer.diagnosis.Report"
             android:label="@string/title_activity_report" >
         </activity>
         <activity
             android:name="com.mcfad.oxylyzer.Prefs"
             android:label="Preferences" >
         </activity>
-		
+
         <provider
             android:name="com.mcfad.oxylyzer.db.OxContentProvider"
             android:authorities="com.mcfad.oxylyzer.db" >
         </provider>
 
         <activity
-            android:name="com.mcfad.oxylyzer.MedicalQuestionnaire"
+            android:name="com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire"
             android:label="@string/title_activity_medical_questionnaire" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.QuestionnaireForm1"
+            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm1"
             android:label="@string/title_activity_questionnaire_form1" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.QuestionnaireForm2"
+            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm2"
             android:label="@string/title_activity_questionnaire_form2" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.QuestionnaireForm4"
+            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm4"
             android:label="@string/title_activity_questionnaire_form4" >
-          </activity>  
-          <activity
-            android:name="com.mcfad.oxylyzer.QuestionnaireForm3"
+        </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm3"
             android:label="@string/title_activity_questionnaire_form3" >
         </activity>
     </application>
-
 </manifest>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mcfad.oxylyzer.Report"
+    tools:context="com.mcfad.oxylyzer.diagnosis.Report"
     tools:ignore="MergeRootFrame" >
 
     <TextView

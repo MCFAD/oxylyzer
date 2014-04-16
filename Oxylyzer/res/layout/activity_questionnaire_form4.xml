@@ -3,450 +3,527 @@
     android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    tools:context="com.mcfad.oxylyzer.MedicalQuestionnaire"
-    tools:ignore="MergeRootFrame">
-<LinearLayout 
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:padding="15dp" >
 
-    <TextView
-        android:id="@+id/questionnaire4Title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="What's Your Snore Score?" />
-    
-     <TextView
-        android:id="@+id/questionnaire4Desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Answer the questions by choosing the number that most appropriately describes your situation (1 being never, 5 being always):" />
-    
-    <TextView
-        android:id="@+id/question4text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" How often have you been told you snore?" />
+        android:orientation="vertical" >
 
-    <RadioGroup
-        android:id="@+id/question4_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-        <RadioButton
-            android:id="@+id/radioQ4q1_1"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/questionnaire4Title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            android:gravity="center"
+            android:text="What&apos;s Your Snore Score?"
+            android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q1_2"
+        <TextView
+            android:id="@+id/questionnaire4Desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q1_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q1_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q1_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            android:gravity="center"
+            android:text="Answer the questions by choosing the number that most appropriately describes your situation\n(1 being never, 5 being always)"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/question4text2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Does your snoring disturb your bed partner?
-         " />
+        <TextView
+            android:id="@+id/question4text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="How often have you been told you snore?" />
 
-    <RadioGroup
-        android:id="@+id/question4_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-       <RadioButton
-            android:id="@+id/radioQ4q2_1"
+        <RadioGroup
+            android:id="@+id/question4_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
 
-        <RadioButton
-            android:id="@+id/radioQ4q2_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q2_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q2_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q2_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioQ4q1_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
 
-     <TextView
-        android:id="@+id/question4text3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Does your snoring disturb others in the next room?
-" />
+            <RadioButton
+                android:id="@+id/radioQ4q1_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
 
-    <RadioGroup
-        android:id="@+id/question4_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-        <RadioButton
-            android:id="@+id/radioQ4q3_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            <RadioButton
+                android:id="@+id/radioQ4q1_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q3_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q3_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q3_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q3_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioQ4q1_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
 
-    <TextView
-        android:id="@+id/question4text4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  Has your snoring progressively worsened? " />
+            <RadioButton
+                android:id="@+id/radioQ4q1_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
 
-    <RadioGroup
-        android:id="@+id/question4_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-        <RadioButton
-            android:id="@+id/radioQ4q4_1"
+        <TextView
+            android:id="@+id/question4text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Does your snoring disturb your bed partner?" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q4_2"
+        <RadioGroup
+            android:id="@+id/question4_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q4_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q4_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q4_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
-    
-      <TextView
-        android:id="@+id/question4text5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" Do you snore when you sleep on your back?
-" />
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
 
-    <RadioGroup
-        android:id="@+id/question4_5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-       <RadioButton
-            android:id="@+id/radioQ4q5_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            <RadioButton
+                android:id="@+id/radioQ4q2_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q5_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q5_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q5_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q5_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioQ4q2_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
 
-    <TextView
-        android:id="@+id/question4text6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Do you snore when you sleep in all positions?" />
+            <RadioButton
+                android:id="@+id/radioQ4q2_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
 
-    <RadioGroup
-        android:id="@+id/question4_6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-       <RadioButton
-            android:id="@+id/radioQ4q6_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            <RadioButton
+                android:id="@+id/radioQ4q2_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q6_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q6_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q6_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q6_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioQ4q2_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
 
-     <TextView
-        android:id="@+id/question4text7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Have you been told that you stop breathing for long periods between snores?
-" />
+        <TextView
+            android:id="@+id/question4text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Does your snoring disturb others in the next room?" />
 
-    <RadioGroup
-        android:id="@+id/question4_7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-       <RadioButton
-            android:id="@+id/radioQ4q7_1"
+        <RadioGroup
+            android:id="@+id/question4_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
 
-        <RadioButton
-            android:id="@+id/radioQ4q7_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q7_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q7_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q7_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioQ4q3_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
 
-    <TextView
-        android:id="@+id/question4text8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  Has your snoring ever caused you to wake up suddenly?
-" />
+            <RadioButton
+                android:id="@+id/radioQ4q3_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
 
-    <RadioGroup
-        android:id="@+id/question4_8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-        <RadioButton
-            android:id="@+id/radioQ4q8_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            <RadioButton
+                android:id="@+id/radioQ4q3_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q8_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q8_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q8_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q8_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioQ4q3_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
 
-      <TextView
-        android:id="@+id/question4text9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Does your bedroom partner leave the room to sleep elsewhere because of your snoring?
-" />
+            <RadioButton
+                android:id="@+id/radioQ4q3_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
 
-    <RadioGroup
-        android:id="@+id/question4_9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-       <RadioButton
-            android:id="@+id/radioQ4q9_1"
+        <TextView
+            android:id="@+id/question4text4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Has your snoring progressively worsened?" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q9_2"
+        <RadioGroup
+            android:id="@+id/question4_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q9_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q9_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q9_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
 
-    <TextView
-        android:id="@+id/question4text10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="  Has your snoring caused you social embarrassment on vacations, at conferences or while staying in hotels?
-" />
+            <RadioButton
+                android:id="@+id/radioQ4q4_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
 
-    <RadioGroup
-        android:id="@+id/question4_10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-	>
-       <RadioButton
-            android:id="@+id/radioQ4q10_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="1" />
+            <RadioButton
+                android:id="@+id/radioQ4q4_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
 
-        <RadioButton
-            android:id="@+id/radioQ4q10_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2" />
-        <RadioButton
-            android:id="@+id/radioQ4q10_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3" />
-        <RadioButton
-            android:id="@+id/radioQ4q10_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4" />
-        <RadioButton
-            android:id="@+id/radioQ4q10_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5" />
-    </RadioGroup>
-    
-    <Button
-        android:id="@+id/saveQuestionnaire4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onButtonClicked"
-        android:text="Save this Data!!!!!!!" />
+            <RadioButton
+                android:id="@+id/radioQ4q4_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
 
-</LinearLayout>
+            <RadioButton
+                android:id="@+id/radioQ4q4_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q4_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/question4text5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text=" Do you snore when you sleep on your back?" />
+
+        <RadioGroup
+            android:id="@+id/question4_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <RadioButton
+                android:id="@+id/radioQ4q5_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q5_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q5_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q5_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q5_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/question4text6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Do you snore when you sleep in all positions?" />
+
+        <RadioGroup
+            android:id="@+id/question4_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <RadioButton
+                android:id="@+id/radioQ4q6_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q6_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q6_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q6_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q6_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/question4text7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Have you been told that you stop breathing for long periods between snores?" />
+
+        <RadioGroup
+            android:id="@+id/question4_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <RadioButton
+                android:id="@+id/radioQ4q7_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q7_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q7_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q7_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q7_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/question4text8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Has your snoring ever caused you to wake up suddenly?" />
+
+        <RadioGroup
+            android:id="@+id/question4_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <RadioButton
+                android:id="@+id/radioQ4q8_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q8_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q8_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q8_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q8_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/question4text9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Does your bedroom partner leave the room to sleep elsewhere because of your snoring?" />
+
+        <RadioGroup
+            android:id="@+id/question4_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <RadioButton
+                android:id="@+id/radioQ4q9_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q9_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q9_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q9_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q9_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/question4text10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Has your snoring caused you social embarrassment on vacations, at conferences or while staying in hotels?" />
+
+        <RadioGroup
+            android:id="@+id/question4_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp" >
+
+            <RadioButton
+                android:id="@+id/radioQ4q10_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="1" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q10_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q10_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q10_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/radioQ4q10_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/saveQuestionnaire"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onButtonClicked"
+            android:layout_marginTop="15dp"
+            android:text="Save" />
+    </LinearLayout>
+
 </ScrollView>

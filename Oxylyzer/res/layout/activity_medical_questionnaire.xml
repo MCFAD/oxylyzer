@@ -3,8 +3,9 @@
     android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    tools:context="com.mcfad.oxylyzer.MedicalQuestionnaire"
-    tools:ignore="MergeRootFrame" >
+    tools:context="com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire"
+    tools:ignore="MergeRootFrame"
+    android:padding="20dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"

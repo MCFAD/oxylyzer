@@ -38,6 +38,9 @@ import com.mcfad.oxylyzer.db.DataPoint;
 import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.OxSQLiteHelper;
 import com.mcfad.oxylyzer.db.Recording;
+import com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire;
+import com.mcfad.oxylyzer.diagnosis.NewProfileActivity;
+import com.mcfad.oxylyzer.diagnosis.Report;
 
 public class HistoryFragment extends GraphFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
