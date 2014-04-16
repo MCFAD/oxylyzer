@@ -48,7 +48,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 		spo2Text = (TextView)rootView.findViewById(R.id.spo2);
 		bpmText = (TextView)rootView.findViewById(R.id.bpm);
 		levelBar = (VerticalBar)rootView.findViewById(R.id.level);
-		levelBar.setMax(0);
+		levelBar.setMaxVal(0);
 		setupGraph(rootView); 
 		
 		initiatingTime = (new java.util.Date()).getTime();
@@ -171,7 +171,7 @@ public class RealtimeFragment extends MainActivity.GraphFragment {
 				if(progressBarMax < level) //increase the maximum of the progress bar when there is a higher level
 				{
 					progressBarMax = level;
-					levelBar.setMax(progressBarMax);
+					levelBar.setMaxVal(progressBarMax);
 				}
 				levelBar.setCurrentVal(level);
 				levelBar.invalidate();
