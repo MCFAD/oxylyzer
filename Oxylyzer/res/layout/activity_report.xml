@@ -113,7 +113,12 @@
         android:textStyle="normal"
     />
  	
-    
+    <LinearLayout
+        android:id="@+id/graph1"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical" >
+    </LinearLayout>
 	
 </LinearLayout>
 </ScrollView>
