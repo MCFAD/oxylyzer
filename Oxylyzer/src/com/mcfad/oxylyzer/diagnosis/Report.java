@@ -3,19 +3,29 @@ package com.mcfad.oxylyzer.diagnosis;
 import com.mcfad.oxylyzer.R;
 import com.mcfad.oxylyzer.R.id;
 import com.mcfad.oxylyzer.R.layout;
+import com.mcfad.oxylyzer.view.HistoryOxGraph;
+import com.mcfad.oxylyzer.view.ReportOxGraph;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 public class Report extends Activity {
 
+	ReportOxGraph graph;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_report);
+		
+		LinearLayout graphLayout = (LinearLayout) findViewById(R.id.graph1);
+		graph = new ReportOxGraph(this, graphLayout);
+		graph.updateGraph(context, recording)
 		
 		
 		SharedPreferences PSettings = getSharedPreferences("Profile", 0);
