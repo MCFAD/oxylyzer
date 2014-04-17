@@ -18,25 +18,69 @@ public class Report extends Activity {
 		setContentView(R.layout.activity_report);
 		
 		
-		SharedPreferences settings = getSharedPreferences("Profile", 0);
-		double height = settings.getInt("Height",0);
-		double weight = settings.getInt("Weight",0);
-		boolean metric = settings.getBoolean("Metric", false);
+		SharedPreferences PSettings = getSharedPreferences("Profile", 0);
+		SharedPreferences.Editor editor = PSettings.edit();
+		SharedPreferences questionnaire = getSharedPreferences("Questionnaire", 0);
+		double height = PSettings.getInt("Height",0);
+		double weight = PSettings.getInt("Weight",0);
+		boolean metric = PSettings.getBoolean("Metric", false);
+		
+		double BMI = 0;
 		
 		if(metric == true)
 		{
-		double BMI = weight/((height/100)*(height/100));
+		BMI = weight/((height/100)*(height/100));
 		TextView BMIval = (TextView) findViewById(R.id.BMIval);
 		BMIval.setText(String.valueOf(BMI));
 		}
 		else
 		{
-		double BMI = (weight/(height*height))*703;
+		BMI = (weight/(height*height))*703;
 		TextView BMIval = (TextView) findViewById(R.id.BMIval);
 		BMIval.setText(String.valueOf(BMI));
 		}
 		
+		editor.putFloat("BMI", (float) BMI);
+		
+		String Q1Result = questionnaire.getString("Q1Result", "You haven't completed this Questionnaire yet");
+		String Q2Result = questionnaire.getString("Q2Result", "You haven't completed this Questionnaire yet");
+		String Q3Result = questionnaire.getString("Q3Result", "You haven't completed this Questionnaire yet");
+		String Q4Result = questionnaire.getString("Q4Result", "You haven't completed this Questionnaire yet");
+		
+		TextView Q1ResultT = (TextView) findViewById(R.id.Q1Result);
+		TextView Q2ResultT = (TextView) findViewById(R.id.Q2Result);
+		TextView Q3ResultT = (TextView) findViewById(R.id.Q3Result);
+		TextView Q4ResultT = (TextView) findViewById(R.id.Q4Result);
+		
+		Q1ResultT.setText(Q1Result);
+		Q2ResultT.setText(Q2Result);
+		Q3ResultT.setText(Q3Result);
+		Q4ResultT.setText(Q4Result);
 
+	}
 
-}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		SharedPreferences questionnaire = getSharedPreferences("Questionnaire", 0);
+
+		String Q1Result = questionnaire.getString("Q1Result", "You haven't completed this Questionnaire yet");
+		String Q2Result = questionnaire.getString("Q2Result", "You haven't completed this Questionnaire yet");
+		String Q3Result = questionnaire.getString("Q3Result", "You haven't completed this Questionnaire yet");
+		String Q4Result = questionnaire.getString("Q4Result", "You haven't completed this Questionnaire yet");
+		
+		TextView Q1ResultT = (TextView) findViewById(R.id.Q1Result);
+		TextView Q2ResultT = (TextView) findViewById(R.id.Q2Result);
+		TextView Q3ResultT = (TextView) findViewById(R.id.Q3Result);
+		TextView Q4ResultT = (TextView) findViewById(R.id.Q4Result);
+		
+		Q1ResultT.setText(Q1Result);
+		Q2ResultT.setText(Q2Result);
+		Q3ResultT.setText(Q3Result);
+		Q4ResultT.setText(Q4Result);
+		
+	}
+	
+	
+	
 }

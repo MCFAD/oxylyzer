@@ -29,7 +29,12 @@ public class QuestionnaireForm1 extends QuestionnaireForm {
 			editor.putInt(question.pref, buttonScore);
 			score += buttonScore;
 		}
-
+			
+		if(score>2)
+			editor.putString("Q1Result", "You have a high risk of OSA");
+		else
+			editor.putString("Q1Result", "You have a low risk of OSA");
+		
 		editor.putInt("Q1Score",score);
 		System.out.println("score: "+score);
 		editor.putBoolean("Answers1Saved", true);
