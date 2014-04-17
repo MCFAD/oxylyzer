@@ -19,12 +19,6 @@
             android:text="Take Questionnaire 1 - STOP-BANG" />
 
         <TextView
-            android:id="@+id/Score1DisplayText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your score is: " />
-
-        <TextView
             android:id="@+id/Score1Display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -35,11 +29,6 @@
             android:layout_height="wrap_content"
             android:text="Take Questionnaire 2 - Epworth Sleepiness Scale" />
 
-        <TextView
-            android:id="@+id/Score2DisplayText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your score is: " />
 
         <TextView
             android:id="@+id/Score2Display"
@@ -53,12 +42,6 @@
             android:text="Take Questionnaire 3 - Berlin Questionnaire" />
 
         <TextView
-            android:id="@+id/Score3DisplayText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your score is: " />
-
-        <TextView
             android:id="@+id/Score3Display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -69,11 +52,6 @@
             android:layout_height="wrap_content"
             android:text="Take Questionnaire 4 - Snore Score" />
 
-        <TextView
-            android:id="@+id/Score4DisplayText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Your score is: " />
 
         <TextView
             android:id="@+id/Score4Display"

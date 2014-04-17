@@ -61,26 +61,51 @@ public class QuestionnaireForm4 extends QuestionnaireForm {
 				}
 			}
 		}
-
-		if(personalLife == true && score < 10 ) {
-			editor.putString("Q4Result","Snoring almost certainly interferes with your personal life.");
-		}
-		else if(haveApnea == true && score < 10 ) {
-			editor.putString("Q4Result","There is a moderate chance you experience apnea during sleep. You should consult with your physician");
-		}
-		else if(backSleeper == true && score < 10 ) {
-			editor.putString("Q4Result"," It is likely that your snoring is probably due to the effect of gravity on the tissues of your upper airway rather than to any basic anatomical obstruction. You are what is called a \"positional snorer.\" Remedies that encourage you to sleep on your side or stomach may be sufficient");
-		}
-		else if(physObstruct == true && score < 10 ) {
-			editor.putString("Q4Result","Your snoring is most likely the result of a physical obstruction");
-		}
-		else if(score== 10) {
-			editor.putString("Q4Result", "It is very likely you have sleep apnea, you should consult and have a sleep study performed to evaluate your sleep and snoring.");
-		}
-		else {
-			editor.putString("Q4Result", "You appear to be a healthy sleeper, please do another questionairre to be further assessed");
-		}
 		
+		String Q4Result = "";
+		boolean putSpace = false;
+		if(personalLife == true && score < 10 ) {
+			Q4Result += "Snoring almost certainly interferes with your personal life.";
+			putSpace = true;
+		}
+		else
+			putSpace = false;
+		
+		if(haveApnea == true && score < 10 ) {
+			if(putSpace)
+				Q4Result+="\n\n";
+			Q4Result += "There is a moderate chance you experience apnea during sleep. You should consult with your physician.";
+			putSpace = true;
+		}
+		else
+			putSpace = false;
+		
+		if(backSleeper == true && score < 10 ) {
+			Q4Result += "\n\nIt is likely that your snoring is probably due to the effect of gravity on the tissues of your upper airway rather than to any basic anatomical obstruction. You are what is called a \"positional snorer.\" Remedies that encourage you to sleep on your side or stomach may be sufficient.";
+			putSpace = true;
+		}
+		else
+			putSpace = false;
+		if(physObstruct == true && score < 10 ) {
+			Q4Result += "\n\nYour snoring is most likely the result of a physical obstruction.";
+			putSpace = true;
+		}
+		else
+			putSpace = false;
+		if(score== 10) {
+			Q4Result += "\n\nIt is very likely you have sleep apnea, you should consult and have a sleep study performed to evaluate your sleep and snoring.";
+			putSpace = true;
+		}
+		else
+			putSpace = false;
+		if(!physObstruct && !backSleeper && haveApnea && score<10) {
+			Q4Result = "You appear to be a healthy sleeper, please do another questionairre to be further assessed.";
+			putSpace = true;
+		}
+		else
+			putSpace = false;
+		
+		editor.putString("Q4Result", Q4Result);
 		
 		editor.putBoolean("Answers4Saved", true);
 		editor.commit();

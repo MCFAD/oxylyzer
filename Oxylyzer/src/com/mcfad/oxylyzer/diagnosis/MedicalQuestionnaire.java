@@ -1,5 +1,7 @@
 package com.mcfad.oxylyzer.diagnosis;
 
+import com.mcfad.oxylyzer.HistoryFragment;
+import com.mcfad.oxylyzer.MainActivity;
 import com.mcfad.oxylyzer.R;
 import com.mcfad.oxylyzer.R.id;
 import com.mcfad.oxylyzer.R.layout;
@@ -21,6 +23,35 @@ public class MedicalQuestionnaire extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_medical_questionnaire);
 
+		TextView score1 = (TextView) findViewById(R.id.Score1Display);
+		TextView score2 = (TextView) findViewById(R.id.Score2Display);
+		TextView score3 = (TextView) findViewById(R.id.Score3Display);
+		TextView score4 = (TextView) findViewById(R.id.Score4Display);
+		
+
+		final SharedPreferences questionnaire = getSharedPreferences("Questionnaire", 0);		
+		String Q1Result= questionnaire.getString("Q1Result", "Questionaire hasn't been taken");
+		String Q2Result= questionnaire.getString("Q2Result", "Questionaire hasn't been taken");
+		String Q3Result = questionnaire.getString("Q3Result", "Questionaire hasn't been taken");
+		String Q4Result = questionnaire.getString("Q4Result", "Questionaire hasn't been taken");
+		
+		if(!Q1Result.equals("Questionaire hasn't been taken"))
+			Q1Result = "This Questionaire has been taken";
+		
+		if(!Q2Result.equals("Questionaire hasn't been taken"))
+			Q2Result = "This Questionaire has been taken";
+		
+		if(!Q3Result.equals("Questionaire hasn't been taken"))
+			Q3Result = "This Questionaire has been taken";
+		
+		if(!Q4Result.equals("Questionaire hasn't been taken"))
+			Q4Result = "This Questionaire has been taken";
+		
+		score1.setText(String.valueOf(Q1Result));
+		score2.setText(String.valueOf(Q2Result));
+		score3.setText(String.valueOf(Q3Result));
+		score4.setText(String.valueOf(Q4Result));
+		
 		
 		Button questionnaire1Button = (Button) findViewById(R.id.button_questionnaire1);
 		questionnaire1Button.setOnClickListener(new View.OnClickListener() {
@@ -58,14 +89,26 @@ public class MedicalQuestionnaire extends Activity {
 		
 
 		final SharedPreferences questionnaire = getSharedPreferences("Questionnaire", 0);		
-		int Q1Score = questionnaire.getInt("Q1Score", 0);
-		int Q2score = questionnaire.getInt("Q2Score", 0);
-		int Q3score = questionnaire.getInt("Q3Score", 0);
-		String Q4Result = questionnaire.getString("Q4Result", "Questionaire hasn't been taken");
+		String Q1Result= questionnaire.getString("Q1Result", "This questionaire hasn't been taken");
+		String Q2Result= questionnaire.getString("Q2Result", "This questionaire hasn't been taken");
+		String Q3Result = questionnaire.getString("Q3Result", "This questionaire hasn't been taken");
+		String Q4Result = questionnaire.getString("Q4Result", "This questionaire hasn't been taken");
 		
-		score1.setText(String.valueOf(Q1Score));
-		score2.setText(String.valueOf(Q2score));
-		score3.setText(String.valueOf(Q3score));
+		if(!Q1Result.equals("This questionaire hasn't been taken"))
+			Q1Result = "This Questionaire has been taken";
+		
+		if(!Q2Result.equals("This questionaire hasn't been taken"))
+			Q2Result = "This Questionaire has been taken";
+		
+		if(!Q3Result.equals("This questionaire hasn't been taken"))
+			Q3Result = "This Questionaire has been taken";
+		
+		if(!Q4Result.equals("This questionaire hasn't been taken"))
+			Q4Result = "This Questionaire has been taken";
+		
+		score1.setText(String.valueOf(Q1Result));
+		score2.setText(String.valueOf(Q2Result));
+		score3.setText(String.valueOf(Q3Result));
 		score4.setText(String.valueOf(Q4Result));
 	}
 	
@@ -114,4 +157,13 @@ public class MedicalQuestionnaire extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		updateScoreText();
 	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		
+		Intent intent = new Intent(MedicalQuestionnaire.this, MainActivity.class);
+		startActivityForResult(intent, 0);
+	}
+	
 }

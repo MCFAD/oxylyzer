@@ -1,16 +1,18 @@
 package com.mcfad.oxylyzer.diagnosis;
 
+import com.mcfad.oxylyzer.HistoryFragment;
 import com.mcfad.oxylyzer.R;
 import com.mcfad.oxylyzer.R.id;
 import com.mcfad.oxylyzer.R.layout;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
 
-public class Report extends Activity {
+public class Report extends Activity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,6 @@ public class Report extends Activity {
 		
 	}
 	
-	
+
 	
 }
