@@ -1,5 +1,6 @@
 package com.mcfad.oxylyzer.diagnosis;
 
+import com.mcfad.oxylyzer.HistoryFragment;
 import com.mcfad.oxylyzer.R;
 import com.mcfad.oxylyzer.R.id;
 import com.mcfad.oxylyzer.R.layout;
@@ -25,7 +26,7 @@ public class Report extends Activity {
 		
 		LinearLayout graphLayout = (LinearLayout) findViewById(R.id.graph1);
 		graph = new ReportOxGraph(this, graphLayout);
-		graph.updateGraph(context, recording)
+		graph.updateGraph(this, HistoryFragment.currentRecording);
 		
 		
 		SharedPreferences PSettings = getSharedPreferences("Profile", 0);
