@@ -68,7 +68,7 @@ public class Prefs extends PreferenceActivity{
 	};
 	File downloadsDir;
 	public void selectFileToImport() {
-		downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+		//downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 		if(downloadsDir==null){
 			downloadsDir = Environment.getExternalStorageDirectory();
 			if(downloadsDir==null){
