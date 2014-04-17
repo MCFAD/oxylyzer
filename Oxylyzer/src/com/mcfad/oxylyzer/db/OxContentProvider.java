@@ -10,12 +10,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
 public class OxContentProvider extends ContentProvider {
-	
+
 	private OxSQLiteHelper database;
 
 	private static final String AUTHORITY = "com.mcfad.oxylyzer.db";
@@ -61,6 +62,26 @@ public class OxContentProvider extends ContentProvider {
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
+	}
+
+	@Override
+	public int bulkInsert(Uri uri, ContentValues[] allValues) {
+		SQLiteDatabase sqlDB = database.getWritableDatabase();
+		int inserted = 0;
+		try {
+			sqlDB.beginTransaction();
+			for(ContentValues values:allValues) {
+				sqlDB.insert(OxSQLiteHelper.TABLE_VALUES, null, values);
+				inserted++;
+			}
+			sqlDB.setTransactionSuccessful();
+		}
+		catch (SQLException e) {}
+		finally	{
+			sqlDB.endTransaction();
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return inserted;
 	}
 
 	@Override
@@ -143,6 +164,11 @@ public class OxContentProvider extends ContentProvider {
 		values.put(OxSQLiteHelper.COLUMN_TIME, time);
 		values.put(OxSQLiteHelper.COLUMN_SPO2, spo2);
 		values.put(OxSQLiteHelper.COLUMN_BPM, bpm);
+
 		return context.getContentResolver().insert(DATA_POINTS_URI, values);
+	}
+	public static int postDatapoints(Context context, Uri recording, ContentValues[] values){
+
+		return context.getContentResolver().bulkInsert(DATA_POINTS_URI,values);
 	}
 } 

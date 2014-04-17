@@ -8,9 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -90,26 +92,29 @@ public class Recording {
 		
 		FileInputStream fis = new FileInputStream(file);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-		Uri recordingUri = null;
-		long time = 0;
+
+		ArrayList<ContentValues> allValues = new ArrayList<ContentValues>();
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] RowData = line.split(",");
-				time = Long.parseLong(RowData[0]);
-				int spO2 = Integer.parseInt(RowData[1]);
-				int bpm = Integer.parseInt(RowData[2]);
-				if(recordingUri==null){
-					recordingUri = OxContentProvider.startNewRecording(context,time);
-				}
-				OxContentProvider.postDatapoint(context, recordingUri, time, spO2, bpm);
+				
+				ContentValues values = new ContentValues();
+				values.put("time", Long.parseLong(RowData[0]));
+				values.put("spO2", Integer.parseInt(RowData[1]));
+				values.put("bpm", Integer.parseInt(RowData[2]));
+				allValues.add(values);
 			}
 		}
 		finally {
 			fis.close();
 		}
-		if(recordingUri!=null&&time!=0){
-			OxContentProvider.endRecording(context, recordingUri,time);
+		if(allValues.size()>0){
+			Uri recordingUri = OxContentProvider.startNewRecording(context,allValues.get(0).getAsLong("time"));
+			ContentValues[] valuesArray = new ContentValues[allValues.size()];
+			allValues.toArray(valuesArray);
+			OxContentProvider.postDatapoints(context, recordingUri, valuesArray);
+			OxContentProvider.endRecording(context, recordingUri,allValues.get(allValues.size()-1).getAsLong("time"));
 			Toast.makeText(context, "Succesfully imported "+file, Toast.LENGTH_LONG).show();
 		}
 	}
