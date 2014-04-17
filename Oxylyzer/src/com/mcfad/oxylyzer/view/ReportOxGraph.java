@@ -63,7 +63,7 @@ public class ReportOxGraph extends OxGraph {
 			spo2.appendData(new GraphViewData(seconds, dataPoint.spo2), false);
 			bpm.appendData(new GraphViewData(seconds, dataPoint.bpm), false);
 
-			if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
+			if((dataPoint.spo2 < previousSPO2 || (!array.isEmpty() && dataPoint.spo2 == previousSPO2)) && baseLine-previousSPO2 >= 3 )
 			{
 				array.add(previousDataPoint);
 			}
