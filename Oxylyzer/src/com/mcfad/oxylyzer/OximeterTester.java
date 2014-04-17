@@ -15,25 +15,47 @@ public class OximeterTester {
 		final Handler handler = new Handler(Looper.getMainLooper());
 		Runnable graphUpdate = new Runnable() {
 			int x = 0;
+			long time = new Date().getTime();
 			@Override
 			public void run() {
-				postData();
-				handler.postDelayed(this, 1000);
+				postData(time);
+				time += 1000;
+				handler.postDelayed(this, 10);
 				x += 1;
 			}
 		};
 		handler.post(graphUpdate);
 	}
-	public void postData(){
-		int spO2 = (int) (80+20*Math.random());
-		int bpm = (int) (80+20*Math.random());
+	double spo2 = 97;
+	double bpm = 68;
+	public void postData(long time){
+		//int spO2 = (int) (80+20*Math.random());
+		//int bpm = (int) (80+20*Math.random());
 		
-		long time = new Date().getTime();
+		
 		Intent intent = new Intent(OximeterService.BROADCAST_DATA);
 	
+		
+		
+
+		double r = Math.random();
+		if(r > 0.66666667 && spo2 < 98 )
+			spo2 = Math.random() + spo2;
+		else if(r < 0.33333333 && spo2 > 70 )
+			spo2 = spo2 - Math.random();
+		
+		double r1 = Math.random();
+		if(r1 > 0.66666667 && bpm < 90)
+			bpm += Math.random();
+		else if(r1 < 0.33333333 && bpm > 60 )
+			bpm -= Math.random();
+			
+		
+		
 		intent.putExtra("time", time);
-		intent.putExtra("spo2", spO2);
-		intent.putExtra("bpm", bpm);
+		intent.putExtra("spo2", (int)Math.round(spo2));
+		intent.putExtra("bpm", (int)Math.round(bpm));
+
 
 		lBroadMan.sendBroadcast(intent);
 	}
