@@ -48,6 +48,8 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 	EditText recordingDescription;
 
 	HistoryOxGraph graph;
+	
+	public static Recording currentRecording;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,17 +61,17 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		recordingsSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				Recording recording = (Recording)recordingsSpinner.getSelectedView().getTag();
+				currentRecording = (Recording)recordingsSpinner.getSelectedView().getTag();
 
-				Cursor dataCursor = recording.queryDatapoints(getActivity());
+				Cursor dataCursor = currentRecording.queryDatapoints(getActivity());
 				Log.d("REC", 
-						"start: "+recording.startTime+" end: "+recording.endTime+", "
-								+ (recording.endTime-recording.startTime)/1000+" seconds, "
-								+ "desc: "+recording.description+", #points: "+dataCursor.getCount());
+						"start: "+currentRecording.startTime+" end: "+currentRecording.endTime+", "
+								+ (currentRecording.endTime-currentRecording.startTime)/1000+" seconds, "
+								+ "desc: "+currentRecording.description+", #points: "+dataCursor.getCount());
 				dataCursor.close();
 
-				recordingDescription.setText(recording.description);
-				graph.updateGraph(getActivity(),recording);
+				recordingDescription.setText(currentRecording.description);
+				graph.updateGraph(getActivity(),currentRecording);
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {		
@@ -174,11 +176,11 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		recordingsAdapter.changeCursor(cursor);
-		//if(cursor.getCount()>0) {
-		noRecordingsLayout.setVisibility(View.GONE);
-		//} else {
-		//	noRecordingsLayout.setVisibility(View.VISIBLE);
-		//}
+		if(cursor.getCount()>0) {
+			noRecordingsLayout.setVisibility(View.GONE);
+		} else {
+			noRecordingsLayout.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override

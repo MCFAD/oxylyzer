@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.jjoe64.graphview.GraphViewSeries;
@@ -37,6 +38,7 @@ public class HistoryOxGraph extends OxGraph {
 		SharedPreferences prefs = context.getSharedPreferences("Profile", 0);
 		return prefs.getInt("baseline", 0);
 	}
+	public static int MAX_POINTS = 1000;
 	public void updateGraph(Context context,Recording recording){
 		// init example series data
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
@@ -44,6 +46,31 @@ public class HistoryOxGraph extends OxGraph {
 		graphView.removeAllSeries();
 		
 		Cursor dataCursor = recording.queryDatapoints(context);
+		
+		int pointInterval = Math.max(dataCursor.getCount()/MAX_POINTS,1);
+		int pointNum = 0;
+		while(dataCursor.moveToPosition(pointNum)){
+			DataPoint dataPoint = new DataPoint(dataCursor);
+			if(secondsOffset==-1)
+				secondsOffset = dataPoint.time/1000;
+
+			double seconds = (double) ((dataPoint.time/1000)-secondsOffset);
+
+			//Log.d("Graph","pn: "+pointNum+" mod "+pointNum%pointInterval+" int "+pointInterval);
+			spo2.appendData(new GraphViewData(seconds, dataPoint.spo2), false);
+			bpm.appendData(new GraphViewData(seconds, dataPoint.bpm), false);
+			pointNum += pointInterval;
+		}
+
+		graphView.addSeries(spo2); // oxygen level
+		spo2.getStyle().color = Color.BLUE;
+		graphView.addSeries(bpm); // beats per minutes
+		bpm.getStyle().color = Color.RED;
+		graphView.setScrollable(true);
+		graphView.setScalable(true);
+		graphView.redrawAll();
+	}
+	public void analyzeData(Cursor dataCursor){
 		int apneaStartTime = Integer.MAX_VALUE;
 
 		int baseLine = getBaseline();//Set this to baseLine If baseline is available
@@ -51,6 +78,7 @@ public class HistoryOxGraph extends OxGraph {
 
 		int previousSPO2 = 0;
 		DataPoint previousDataPoint = null;
+		
 		while(dataCursor.moveToNext()){
 			DataPoint dataPoint = new DataPoint(dataCursor);
 
@@ -59,9 +87,6 @@ public class HistoryOxGraph extends OxGraph {
 				secondsOffset = dataPoint.time/1000;
 
 			double seconds = (double) ((dataPoint.time/1000)-secondsOffset);
-			
-			spo2.appendData(new GraphViewData(seconds, dataPoint.spo2), false);
-			bpm.appendData(new GraphViewData(seconds, dataPoint.bpm), false);
 
 			if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
 			{
@@ -91,13 +116,5 @@ public class HistoryOxGraph extends OxGraph {
 			previousDataPoint = dataPoint;
 			previousSPO2 = dataPoint.spo2;
 		}
-		graphView.addSeries(spo2); // oxygen level
-		spo2.getStyle().color = Color.BLUE;
-		graphView.addSeries(bpm); // beats per minutes
-		bpm.getStyle().color = Color.RED;
-		graphView.setScrollable(true);
-		graphView.setScalable(true);
-		//graphView.setFocusable(true);
-		graphView.redrawAll();
 	}
 }

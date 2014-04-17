@@ -43,7 +43,7 @@ public class OxGraph {
 		}
 	}
 	public static String formatLabelBPM(double value) {
-		int bpm = (int)((value-64.4186)/0.1395348837);
+		int bpm = (int)((value));//-64.4186)/0.1395348837);
 		return " "+bpm+" bpm";
 	}
 }

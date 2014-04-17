@@ -29,7 +29,7 @@ import com.mcfad.oxylyzer.view.NonSwipeableViewPager;
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 	
 	// set this to true to simulate an oximeter being connected
-	public final static boolean OximeterTest = true;
+	public final static boolean OximeterTest = false;
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
