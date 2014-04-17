@@ -5,30 +5,27 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint.Align;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.LinearLayout;
 
 import com.jjoe64.graphview.CustomLabelFormatter;
-import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 
 public class OxGraph {
 
-	protected LineGraphView graphView;
+	protected CustomGraphView graphView;
 	protected GraphViewSeries spo2;
 	protected GraphViewSeries bpm;
 
 	protected long secondsOffset;
 	
+	protected Context context;
+	
 	public OxGraph(Context context,LinearLayout parent){
+		this.context = context;
 		secondsOffset = -1;
 		
-		graphView = new CustomGraphView(context, "");
+		graphView = new CustomGraphView(context, "", this);
 		graphView.setCustomLabelFormatter(new LabelFormatter());
 		parent.addView(graphView);
 	}
@@ -37,12 +34,16 @@ public class OxGraph {
 	public class LabelFormatter implements CustomLabelFormatter 
 	{
 		public String formatLabel(double value, boolean isValueX) {
-			int label = (int)value;
 			if (isValueX) {
 				long time = (secondsOffset+((long)value))*1000;
 				return sdf.format(new Date(time));
 			}
-			return label + "%, " + (int)((value-64.4186)/0.1395348837) + "bpm";
+			int spO2 = (int)value;
+			return spO2+" % ";
 		}
+	}
+	public static String formatLabelBPM(double value) {
+		int bpm = (int)((value-64.4186)/0.1395348837);
+		return " "+bpm+" bpm";
 	}
 }

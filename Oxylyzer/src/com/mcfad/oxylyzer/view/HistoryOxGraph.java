@@ -23,7 +23,7 @@ public class HistoryOxGraph extends OxGraph {
 
 		graphView.setBackgroundColor(Color.LTGRAY);
 		graphView.getGraphViewStyle().setVerticalLabelsAlign(Align.RIGHT);
-		//graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
+		graphView.getGraphViewStyle().setVerticalLabelsColor(Color.BLUE);
 		graphView.getGraphViewStyle().setTextSize(15.5f);
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		//graphView.setShowLegend(true);

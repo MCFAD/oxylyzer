@@ -112,7 +112,6 @@ public class Recording {
 			OxContentProvider.endRecording(context, recordingUri,time);
 			Toast.makeText(context, "Succesfully imported "+file, Toast.LENGTH_LONG).show();
 		}
-		
 	}
 	static SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy h:mm:ss a",Locale.US);
 }
