@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Answer the questions by choosing the number that most appropriately describes your situation\n(1 being never, 5 being always)"
-            android:textStyle="bold" />
+          	 />
 
         <TextView
             android:id="@+id/question4text1"

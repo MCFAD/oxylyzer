@@ -31,9 +31,10 @@ public class QuestionnaireForm1 extends QuestionnaireForm {
 		}
 			
 		if(score>2)
-			editor.putString("Q1Result", "You have a high risk of OSA");
+			editor.putString("Q1Result", "You have a high risk of OSA (Obstructive Sleep Apna). Please consider m" +
+					"edical attention.");
 		else
-			editor.putString("Q1Result", "You have a low risk of OSA");
+			editor.putString("Q1Result", "You have a low risk of OSA (Obstructive Sleep Apna)");
 		
 		editor.putInt("Q1Score",score);
 		System.out.println("score: "+score);
