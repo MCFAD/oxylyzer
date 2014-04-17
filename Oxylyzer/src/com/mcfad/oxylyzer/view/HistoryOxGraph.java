@@ -3,6 +3,7 @@ package com.mcfad.oxylyzer.view;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
@@ -32,6 +33,10 @@ public class HistoryOxGraph extends OxGraph {
 		array = new java.util.ArrayList<DataPoint>();
 	}	
 
+	public int getBaseline(){
+		SharedPreferences prefs = context.getSharedPreferences("Profile", 0);
+		return prefs.getInt("baseline", 0);
+	}
 	public void updateGraph(Context context,Recording recording){
 		// init example series data
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
@@ -40,7 +45,7 @@ public class HistoryOxGraph extends OxGraph {
 		
 		Cursor dataCursor = recording.queryDatapoints(context);
 		int apneaStartTime = Integer.MAX_VALUE;
-		int baseLine = 98;//Set this to baseLine If baseline is available
+		int baseLine = getBaseline();//Set this to baseLine If baseline is available
 		int apneaClassificationTime = 1;  //change this to a lower value if you want to see a premature apnea event
 		int previousSPO2 = 0;
 		DataPoint previousDataPoint = null;
