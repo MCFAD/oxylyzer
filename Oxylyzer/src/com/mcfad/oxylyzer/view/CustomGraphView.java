@@ -1,5 +1,9 @@
 package com.mcfad.oxylyzer.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -15,20 +19,35 @@ public class CustomGraphView extends LineGraphView {
 	static final private class GraphViewConfig {
 		static final float BORDER = 20;
 	}
-	public CustomGraphView(Context context, String title) {
+	OxGraph oxGraph;
+	DualVerLabelsView rightVerLabels;
+	private Integer labelTextHeight;
+	private Integer verLabelTextWidth;
+	private String[] verlabels;
+	
+	public CustomGraphView(Context context, String title, OxGraph oxGraph) {
 		super(context, title);
+		this.oxGraph = oxGraph;
+		rightVerLabels = new DualVerLabelsView(context, this);
+		addView(rightVerLabels);
+	}
+	//
+	int rightLabelsColor = 0xFFFF0000;
+	
+	@Override
+	public void redrawAll() {
+		super.redrawAll();
 
-		//DualVerLabelsView labels = new DualVerLabelsView(context, this);
-		//addView(labels);
+		labelTextHeight = null;
+		verLabelTextWidth = null;
+		verlabels = null;
+		rightVerLabels.invalidate();
 	}
 
 	public class DualVerLabelsView extends View {
 
 		protected final Paint paint;
 		private CustomGraphView graphView;
-		private String[] verlabels;
-		private Integer labelTextHeight;
-		private Integer verLabelTextWidth;
 		private final Rect textBounds = new Rect();
 		/**
 		 * @param context
@@ -36,9 +55,12 @@ public class CustomGraphView extends LineGraphView {
 		public DualVerLabelsView(Context context,CustomGraphView graphView) {
 			super(context);
 			paint = new Paint();
+			paint.setAntiAlias(true);
+			paint.setStrokeWidth(0);
+			
 			this.graphView = graphView;
 			setLayoutParams(new LayoutParams(
-					graphView.getGraphViewStyle().getVerticalLabelsWidth()==0?100:graphView.getGraphViewStyle().getVerticalLabelsWidth()
+					graphView.getGraphViewStyle().getVerticalLabelsWidth()==0?150:graphView.getGraphViewStyle().getVerticalLabelsWidth()
 							, LayoutParams.FILL_PARENT));
 		}
 
@@ -54,7 +76,7 @@ public class CustomGraphView extends LineGraphView {
 			if (labelTextHeight == null || verLabelTextWidth == null) {
 				paint.setTextSize(graphView.getGraphViewStyle().getTextSize());
 				double testY = ((graphView.getMaxY()-graphView.getMinY())*0.783)+graphView.getMinY();
-				String testLabel = graphView.formatLabel(testY, false);
+				String testLabel = OxGraph.formatLabelBPM(testY);
 				paint.getTextBounds(testLabel, 0, testLabel.length(), textBounds);
 				labelTextHeight = (textBounds.height());
 				verLabelTextWidth = (textBounds.width());
@@ -76,21 +98,22 @@ public class CustomGraphView extends LineGraphView {
 				verlabels = generateVerlabels(graphheight);
 			}
 
+			Align align = Align.LEFT;
+			//Align align = graphView.getGraphViewStyle().getVerticalLabelsAlign();
 			// vertical labels
-			paint.setTextAlign(graphView.getGraphViewStyle().getVerticalLabelsAlign());
+			paint.setTextAlign(align);
 			int labelsWidth = getWidth();
 			int labelsOffset = 0;
-			if (graphView.getGraphViewStyle().getVerticalLabelsAlign() == Align.RIGHT) {
+			if (align == Align.RIGHT) {
 				labelsOffset = labelsWidth;
-			} else if (graphView.getGraphViewStyle().getVerticalLabelsAlign() == Align.CENTER) {
+			} else if (align == Align.CENTER) {
 				labelsOffset = labelsWidth / 2;
 			}
 			int vers = verlabels.length - 1;
 			for (int i = 0; i < verlabels.length; i++) {
 				float y = ((graphheight / vers) * i) + border;
-				paint.setColor(graphView.graphViewStyle.getVerticalLabelsColor());
-				//canvas.drawText(verlabels[i], labelsOffset, y, paint);
-				canvas.drawText("test", labelsOffset, y, paint);
+				paint.setColor(rightLabelsColor);
+				canvas.drawText(verlabels[i], labelsOffset, y, paint);
 			}
 
 			// reset
@@ -121,9 +144,10 @@ public class CustomGraphView extends LineGraphView {
 			}
 
 			for (int i=0; i<=numLabels; i++) {
-				labels[numLabels-i] = formatLabel(min + ((max-min)*i/numLabels), false);
+				labels[numLabels-i] = OxGraph.formatLabelBPM(min + ((max-min)*i/numLabels));
 			}
 			return labels;
 		}
 	}
+
 }
