@@ -45,8 +45,10 @@ public class HistoryOxGraph extends OxGraph {
 		
 		Cursor dataCursor = recording.queryDatapoints(context);
 		int apneaStartTime = Integer.MAX_VALUE;
+
 		int baseLine = getBaseline();//Set this to baseLine If baseline is available
-		int apneaClassificationTime = 1;  //change this to a lower value if you want to see a premature apnea event
+		int apneaClassificationTime = 5;  //change this to a lower value if you want to see a premature apnea event
+
 		int previousSPO2 = 0;
 		DataPoint previousDataPoint = null;
 		while(dataCursor.moveToNext()){

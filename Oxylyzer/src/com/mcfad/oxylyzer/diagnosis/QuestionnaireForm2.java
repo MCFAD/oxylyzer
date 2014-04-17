@@ -33,7 +33,18 @@ public class QuestionnaireForm2 extends QuestionnaireForm {
 			editor.putInt(question.pref, buttonScore);
 			score += buttonScore;
 		}
-
+		
+		if(score<6){
+			editor.putString("Q2Result", "Congratulations, you are getting enough sleep!");
+		}
+		
+		else if(score == 7 || score == 8){
+			editor.putString("Q2Result", "Your score is average");
+		}
+		else if(score>=9){
+			editor.putString("Q2Result", "Very sleepy and should seek medical advice");
+		}
+		
 		editor.putInt("Q2Score",score);
 		System.out.println("score: "+score);
 		editor.putBoolean("Answers2Saved", true);

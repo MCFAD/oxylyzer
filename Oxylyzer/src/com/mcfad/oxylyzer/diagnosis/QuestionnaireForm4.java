@@ -80,6 +80,8 @@ public class QuestionnaireForm4 extends QuestionnaireForm {
 		else {
 			editor.putString("Q4Result", "You appear to be a healthy sleeper, please do another questionairre to be further assessed");
 		}
+		
+		
 		editor.putBoolean("Answers4Saved", true);
 		editor.commit();
 

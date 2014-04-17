@@ -21,6 +21,7 @@ public class MedicalQuestionnaire extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_medical_questionnaire);
 
+		
 		Button questionnaire1Button = (Button) findViewById(R.id.button_questionnaire1);
 		questionnaire1Button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v4) {

@@ -44,7 +44,7 @@
     <string name="button_stop">Stop\nRecording</string>
     <string name="view_report">View Report</string>
     <string name="records_title">Previous Recordings</string>
-    <string name="BMI_title">BMI</string>
+    <string name="BMI_title">Your BMI:</string>
     <string name="title_activity_new_profile">Create Profile</string>
     <string name="enter_name">Name</string>
     <string name="enter_age">Age</string>

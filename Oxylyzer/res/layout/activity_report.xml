@@ -8,17 +8,104 @@
     tools:ignore="MergeRootFrame" >
 
     <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Your Medical Report"
+    android:textSize="24dp"
+    android:textStyle="bold" />
+    
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/BMI_title"
-        android:textSize="16dp"
-        android:textStyle="bold" />
-
+        android:textSize="20dp"
+        android:textStyle="bold"
+	/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/BMIval"
         android:textSize="16dp"
-        android:textStyle="bold" />
-
+        android:textStyle="normal"
+	/>
+        
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/QTitle"
+        android:text="Questionnaire Results:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+    />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/QTitle"
+        android:text="Questionnaire 1"
+        android:textSize="18dp"
+        android:textStyle="bold|italic"
+    />
+    
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Q1Result"
+        android:textSize="16dp"
+        android:textStyle="normal"
+    />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/QTitle"
+        android:text="Questionnaire 2"
+		android:textSize="18dp"
+        android:textStyle="bold|italic"
+    />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Q2Result"
+        android:textSize="16dp"
+        android:textStyle="normal"
+    />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/QTitle"
+        android:text="Questionnaire 3"
+        android:textSize="18dp"
+        android:textStyle="bold|italic"
+    />
+   
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Q3Result"
+        android:textSize="16dp"
+        android:textStyle="normal"
+    />
+    
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/QTitle"
+        android:text="Questionnaire 4"
+        android:textSize="18dp"
+        android:textStyle="bold|italic"
+    />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Q4Result"
+        android:textSize="16dp"
+        android:textStyle="normal"
+    />
+ 	
+    
+	
 </LinearLayout>
