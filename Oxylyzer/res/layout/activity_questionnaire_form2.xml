@@ -6,15 +6,29 @@
     tools:context="com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire"
     tools:ignore="MergeRootFrame" >
 
+    
+
+    
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical" >
-
+        
+	   <TextView
+	   android:id="@+id/questionnaire2TitleT"
+	   android:layout_width="wrap_content"
+	   android:layout_height="wrap_content"
+	   android:text="Epworth Sleepiness Scale"
+	   android:gravity="center"            
+	android:layout_marginTop="10dp"
+	   android:textSize="17sp"
+	/>
         <TextView
             android:id="@+id/questionnaire2Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:text="How likely are you to doze off or fall asleep in the following situations, in contrast to feeling just tired? This refers to your usual 
 way of life in recent times. Even if you have not done some of these things recently try to work out how they would have affected 
 you. Use the following scale to choose the most appropriate number for each situation:" />
@@ -23,12 +37,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Sitting and reading" />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Sitting and reading?" />
 
         <RadioGroup
             android:id="@+id/question2_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -55,13 +73,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Watching television
-         " />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text=" Watching television?" />
 
         <RadioGroup
             android:id="@+id/question2_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -94,13 +115,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Sitting inactive in a public place (e.g. a theater or meeting)
-" />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Sitting inactive in a public place (e.g. a theater or meeting)?" />
 
         <RadioGroup
             android:id="@+id/question2_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -133,13 +157,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  As a passenger in a car for an hour without a break
-" />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="As a passenger in a car for an hour without a break?" />
 
         <RadioGroup
             android:id="@+id/question2_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -172,6 +199,8 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:text=" Lying down to rest in the afternoon when circumstances permit
 " />
 
@@ -179,6 +208,8 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -211,12 +242,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sitting and talking to someone" />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Sitting and talking to someone?" />
 
         <RadioGroup
             android:id="@+id/question2_6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -249,13 +284,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sitting quietly after a lunch without alcohol
-" />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Sitting quietly after a lunch without alcohol?" />
 
         <RadioGroup
             android:id="@+id/question2_7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -288,13 +326,16 @@ you. Use the following scale to choose the most appropriate number for each situ
             android:id="@+id/question2text8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  In a car, while stopped for a few minutes in the traffic
-" />
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="In a car, while stopped for a few minutes in the traffic?" />
 
         <RadioGroup
             android:id="@+id/question2_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal" >
 
             <RadioButton
