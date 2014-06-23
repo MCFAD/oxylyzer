@@ -14,15 +14,15 @@
             android:id="@+id/questionnaire4Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="What&apos;s Your Snore Score?"
-            android:textStyle="bold" />
+            android:textSize="15sp"
+            android:textStyle="bold"  />
 
         <TextView
             android:id="@+id/questionnaire4Desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginTop="10dp"
             android:text="Answer the questions by choosing the number that most appropriately describes your situation\n(1 being never, 5 being always)"
           	 />
 
@@ -31,8 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="How often have you been told you snore?" />
 
         <RadioGroup
@@ -80,8 +78,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Does your snoring disturb your bed partner?" />
 
         <RadioGroup
@@ -129,8 +125,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Does your snoring disturb others in the next room?" />
 
         <RadioGroup
@@ -178,8 +172,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Has your snoring progressively worsened?" />
 
         <RadioGroup
@@ -227,8 +219,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text=" Do you snore when you sleep on your back?" />
 
         <RadioGroup
@@ -276,8 +266,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Do you snore when you sleep in all positions?" />
 
         <RadioGroup
@@ -325,8 +313,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Have you been told that you stop breathing for long periods between snores?" />
 
         <RadioGroup
@@ -374,8 +360,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Has your snoring ever caused you to wake up suddenly?" />
 
         <RadioGroup
@@ -423,8 +407,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Does your bedroom partner leave the room to sleep elsewhere because of your snoring?" />
 
         <RadioGroup
@@ -472,8 +454,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_gravity="center"
             android:text="Has your snoring caused you social embarrassment on vacations, at conferences or while staying in hotels?" />
 
         <RadioGroup
@@ -518,11 +498,10 @@
 
         <Button
             android:id="@+id/saveQuestionnaire"
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="onButtonClicked"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:text="Save" />
     </LinearLayout>
 

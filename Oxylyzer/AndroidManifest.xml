@@ -21,61 +21,44 @@
             android:label="Oxylyzer" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.ConnectFragment"
-            android:label="@string/title_activity_connect" >
-        </activity>
-
-        <service
-            android:name="com.mcfad.oxylyzer.OximeterService"
-            android:enabled="true" >
-        </service>
-
-        <activity
-            android:name="com.mcfad.oxylyzer.Calendar"
-            android:label="@string/title_activity_calendar" >
-        </activity>
-        <activity
             android:name="com.mcfad.oxylyzer.diagnosis.ProfileActivity"
-            android:label="@string/title_activity_new_profile" >
+            android:label="Profile" >
         </activity>
         <activity
             android:name="com.mcfad.oxylyzer.diagnosis.Report"
-            android:label="@string/title_activity_report" >
+            android:label="Report" >
         </activity>
         <activity
             android:name="com.mcfad.oxylyzer.PreferencesActivity"
             android:label="Preferences" >
         </activity>
-
+        <activity
+            android:name="com.mcfad.oxylyzer.diagnosis.Questionnaire1STOPBANG"
+            android:label="STOP-BANG Questionnaire" >
+        </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.diagnosis.Questionnaire2Epworth"
+            android:label="Epworth Sleepiness Scale" >
+        </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.diagnosis.Questionnaire4SnoreScore"
+            android:label="Snore Score" >
+        </activity>
+        <activity
+            android:name="com.mcfad.oxylyzer.diagnosis.Questionnaire3Berlin"
+            android:label="Berlin Questionnaire" >
+        </activity>
+        <service
+            android:name="com.mcfad.oxylyzer.OximeterService"
+            android:enabled="true" >
+        </service>
         <provider
             android:name="com.mcfad.oxylyzer.db.OxContentProvider"
             android:authorities="com.mcfad.oxylyzer.db" >
         </provider>
-
-        <activity
-            android:name="com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire"
-            android:label="@string/title_activity_medical_questionnaire" >
-        </activity>
-        <activity
-            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm1"
-            android:label="@string/title_activity_questionnaire_form1" >
-        </activity>
-        <activity
-            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm2"
-            android:label="@string/title_activity_questionnaire_form2" >
-        </activity>
-        <activity
-            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm4"
-            android:label="@string/title_activity_questionnaire_form4" >
-        </activity>
-        <activity
-            android:name="com.mcfad.oxylyzer.diagnosis.QuestionnaireForm3"
-            android:label="@string/title_activity_questionnaire_form3" >
-        </activity>
     </application>
 </manifest>

@@ -13,14 +13,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Todo:" />
+            android:text="Todo List"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="To get as accurate a diagnosis as possible for sleep apnea, complete the following tasks" />
 
         <LinearLayout
             android:id="@+id/todo_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp" >
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,13 +37,19 @@
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:text="Complete Profile" />
-                <CheckBox
+
+                <CheckBox
                     android:id="@+id/todo_profile"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
-            
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Complete Questionnaires" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -48,15 +59,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Complete STOP-BANG Questionnaire" />
+                    android:text="\tSTOP-BANG" />
 
                 <CheckBox
                     android:id="@+id/todo_questionnaire_1"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -66,14 +77,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Complete Epworth Sleepiness Scale Questionnaire" />
+                    android:text="\tEpworth Sleepiness Scale" />
 
                 <CheckBox
                     android:id="@+id/todo_questionnaire_2"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -83,14 +95,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Complete Berlin Questionnaire" />
+                    android:text="\tBerlin Questionnaire" />
 
                 <CheckBox
                     android:id="@+id/todo_questionnaire_3"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -100,14 +113,15 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:text="Complete Snore Score Questionnaire" />
+                    android:text="\tSnore Score" />
 
                 <CheckBox
                     android:id="@+id/todo_questionnaire_4"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -121,10 +135,11 @@
 
                 <CheckBox
                     android:id="@+id/todo_baseline"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
@@ -138,15 +153,17 @@
 
                 <CheckBox
                     android:id="@+id/todo_recording"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:enabled="false" />
             </LinearLayout>
         </LinearLayout>
+
         <Button
             android:id="@+id/button_profile"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Complete Profile" />
 
         <TextView
@@ -167,7 +184,6 @@
             android:layout_height="wrap_content"
             android:text="Epworth Sleepiness Scale" />
 
-
         <Button
             android:id="@+id/button_questionnaire3"
             android:layout_width="fill_parent"
@@ -184,9 +200,9 @@
             android:id="@+id/button_view_report"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:enabled="false"
-            android:onClick="showReport"
-            android:text="@string/view_report" />
+            android:text="View Sleep Apnea Report" />
     </LinearLayout>
 
 </ScrollView>

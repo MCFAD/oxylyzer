@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import com.mcfad.oxylyzer.R;
 
-public class QuestionnaireForm3 extends QuestionnaireForm {
+public class Questionnaire3Berlin extends QuestionnaireForm {
 
 	Question[] questions = new Question[]{
 			new Question("Q3Q1",R.id.question3_1),
@@ -19,7 +19,7 @@ public class QuestionnaireForm3 extends QuestionnaireForm {
 
 	@Override
 	public int getLayoutId(){
-		return R.layout.activity_questionnaire_form3;
+		return R.layout.activity_questionnaire_3_berlin;
 	}
 	
 	@Override
@@ -33,19 +33,16 @@ public class QuestionnaireForm3 extends QuestionnaireForm {
 		
 		for(Question question:questions){
 			int buttonScore = getRadioButtonTrueFalse(question.radioGroup)?question.scoreMultiplier:0;
-			if(question.radioGroup==R.id.question4_1 
-					|| question.radioGroup==R.id.question4_2
-					|| question.radioGroup==R.id.question4_3
-					|| question.radioGroup==R.id.question4_4
-					|| question.radioGroup==R.id.question4_5){
+			switch(getRadioGroupCategory(question.radioGroup)){
+			case 1:
 				cat1Score+=buttonScore;
-			}
-			else if(question.radioGroup==R.id.question4_6 
-					|| question.radioGroup==R.id.question4_7
-					|| question.radioGroup==R.id.question4_8)
+				break;
+			case 2:
 				cat2Score+=buttonScore;
-			if(question.radioGroup==R.id.question3_10){
+				break;
+			case 3:
 				cat3Score+=buttonScore;
+				break;
 			}
 			editor.putInt(question.pref, buttonScore);
 			score += buttonScore;
@@ -63,12 +60,8 @@ public class QuestionnaireForm3 extends QuestionnaireForm {
 		if(cat3Score>0)
 			risk++;
 		
-		if(risk>=2){
-			editor.putString("Q3Result", "You have a High Risk of OSA. Please consider seeking medical attention.");
-		}
 		
-		else 
-			editor.putString("Q3Result", "You have a low risk of OSA. Please consider filling in the other questionnaires to be sure");
+		editor.putString("Q3Result", getResult(risk));
 		
 		editor.putInt("Q3Score",score);
 		System.out.println("score: "+score);
@@ -76,6 +69,13 @@ public class QuestionnaireForm3 extends QuestionnaireForm {
 		editor.commit();
 
 		finish();
+	}
+
+	public static String getResult(int risk) {	
+		if(risk>=2)
+			return "You have a High Risk of OSA. Please consider seeking medical attention.";
+		else 
+			return "You have a low risk of OSA. Please consider filling in the other questionnaires to be sure";
 	}
 }
 

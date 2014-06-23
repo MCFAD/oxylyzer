@@ -69,4 +69,9 @@ public abstract class QuestionnaireForm extends Activity {
 		String text = getRadioButtonText(radioGroupId);
 		return Integer.valueOf(text);
 	}
+
+	public int getRadioGroupCategory(int radioGroupId) {
+		RadioGroup radioGroup = (RadioGroup) findViewById(radioGroupId);
+		return Integer.valueOf((String) radioGroup.getTag());
+	}
 }

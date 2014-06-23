@@ -19,10 +19,10 @@ import android.widget.TextView;
 import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.Recording;
 import com.mcfad.oxylyzer.diagnosis.ProfileActivity;
-import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm1;
-import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm2;
-import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm3;
-import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm4;
+import com.mcfad.oxylyzer.diagnosis.Questionnaire1STOPBANG;
+import com.mcfad.oxylyzer.diagnosis.Questionnaire2Epworth;
+import com.mcfad.oxylyzer.diagnosis.Questionnaire3Berlin;
+import com.mcfad.oxylyzer.diagnosis.Questionnaire4SnoreScore;
 import com.mcfad.oxylyzer.diagnosis.Report;
 
 public class DiagnosisFragment extends Fragment {
@@ -30,7 +30,6 @@ public class DiagnosisFragment extends Fragment {
 	View rootView;
 
 	SharedPreferences profilePrefs;
-	SharedPreferences answersPrefs;
 	SharedPreferences questionnairePrefs;
 
 	Button profileButton;
@@ -50,15 +49,14 @@ public class DiagnosisFragment extends Fragment {
 			R.id.button_questionnaire3,R.id.button_questionnaire4};
 	
 	static final Class[] questionnaireActivities = {
-			QuestionnaireForm1.class,QuestionnaireForm2.class,
-			QuestionnaireForm3.class,QuestionnaireForm4.class};
+			Questionnaire1STOPBANG.class,Questionnaire2Epworth.class,
+			Questionnaire3Berlin.class,Questionnaire4SnoreScore.class};
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_diagnosis, container, false);
 
 		profilePrefs = getActivity().getSharedPreferences("Profile", 0);
-		answersPrefs = getActivity().getSharedPreferences("Answers", 0);
 		questionnairePrefs = getActivity().getSharedPreferences("Questionnaire", 0);
 
 		todoProfile = (CheckBox) rootView.findViewById(R.id.todo_profile);
@@ -120,10 +118,10 @@ public class DiagnosisFragment extends Fragment {
 	public boolean profileSaved() { return profilePrefs.getBoolean("ProfileSaved", false);}
 	private void updateTodoList() {
 		todoProfile.setChecked(profileSaved());
-		todoQuestionnaire1.setChecked(answersPrefs.getBoolean("Answers1Saved", false));
-		todoQuestionnaire2.setChecked(answersPrefs.getBoolean("Answers2Saved", false));
-		todoQuestionnaire3.setChecked(answersPrefs.getBoolean("Answers3Saved", false));
-		todoQuestionnaire4.setChecked(answersPrefs.getBoolean("Answers4Saved", false));
+		todoQuestionnaire1.setChecked(questionnairePrefs.getBoolean("Answers1Saved", false));
+		todoQuestionnaire2.setChecked(questionnairePrefs.getBoolean("Answers2Saved", false));
+		todoQuestionnaire3.setChecked(questionnairePrefs.getBoolean("Answers3Saved", false));
+		todoQuestionnaire4.setChecked(questionnairePrefs.getBoolean("Answers4Saved", false));
 		todoBaseline.setChecked(profilePrefs.getInt("baseline", 0)!=0);
 		
 		Cursor recordingsCursor = getActivity().getContentResolver().query(OxContentProvider.RECORDINGS_URI, Recording.projection, HistoryFragment.finishedRecordings, null, null);

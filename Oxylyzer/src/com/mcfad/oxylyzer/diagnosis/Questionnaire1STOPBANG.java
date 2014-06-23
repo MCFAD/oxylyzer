@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import com.mcfad.oxylyzer.R;
 
-public class QuestionnaireForm1 extends QuestionnaireForm {
+public class Questionnaire1STOPBANG extends QuestionnaireForm {
 
 	Question[] questions = new Question[]{
 			new Question("Q3Q1",R.id.question1),
@@ -15,7 +15,7 @@ public class QuestionnaireForm1 extends QuestionnaireForm {
 
 	@Override
 	public int getLayoutId() {
-		return R.layout.activity_questionnaire_form1;
+		return R.layout.activity_questionnaire_1_stopbang;
 	}
 	
 	@Override
@@ -30,12 +30,7 @@ public class QuestionnaireForm1 extends QuestionnaireForm {
 			score += buttonScore;
 		}
 			
-		if(score>2)
-			editor.putString("Q1Result", "You have a high risk of OSA (Obstructive Sleep Apna). Please consider m" +
-					"edical attention.");
-		else
-			editor.putString("Q1Result", "You have a low risk of OSA (Obstructive Sleep Apna)");
-		
+		editor.putString("Q1Result", getResult(score));
 		editor.putInt("Q1Score",score);
 		System.out.println("score: "+score);
 		editor.putBoolean("Answers1Saved", true);
@@ -44,6 +39,12 @@ public class QuestionnaireForm1 extends QuestionnaireForm {
 		finish();
 	}
 
+	public static String getResult(int score) {		
+		if(score>2)
+			return "You have a high risk of OSA (Obstructive Sleep Apna). Please consider medical attention.";
+		else
+			return "You have a low risk of OSA (Obstructive Sleep Apna)";
+	}
 }
 
 

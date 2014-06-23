@@ -72,7 +72,7 @@ public class ProfileActivity extends Activity {
 		unitsSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				updateUnits();
+				updateUnits(position==0);
 			}
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {}
@@ -85,58 +85,35 @@ public class ProfileActivity extends Activity {
 			}
 		});
 
-		updateUnits();
+		if(settings.getBoolean("ProfileSaved",false)) {
+			nameText.setText(settings.getString("FirstName", null));
+			ageText.setText(""+settings.getInt("Age", 0));
+			genderSpinner.setSelection(settings.getInt("spinnerGenderIndex",0));
+			unitsSpinner.setSelection(settings.getBoolean("isMetric",true)?0:1);
 
-		nameText.setText(settings.getString("FirstName", null));
-		ageText.setText(""+settings.getInt("Age", 0));
-		genderSpinner.setSelection(settings.getInt("spinnerGenderIndex",0));
-		unitsSpinner.setSelection(settings.getBoolean("isMetric",true)?0:1);
+			heightText.setText(""+settings.getInt("Height",0));
+			weightText.setText(""+settings.getFloat("Weight",0));
+			neckText.setText(""+settings.getInt("Neck",0));
+		}
 
-		heightText.setText(""+settings.getInt("Height",0));
-		weightText.setText(""+settings.getInt("Weight",0));
-		neckText.setText(""+settings.getInt("Neck",0));
+		updateUnits(unitsSpinner.getSelectedItemPosition()==0);
 	}
 	public void save() {
 
-		if(nameText.getText().length()==0 || ageText.getText().length()==0 ||
-				heightText.getText().length()==0|| weightText.getText().length()==0 || 
-				neckText.getText().length()==0 )
-		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this); //Read Update
-
-			builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					// User clicked OK button
-				}
-			});
-			builder.setMessage("Please fill out all the fields");
-			builder.show();
-			return;
-		}//Want to have a reminder come on the screen if no input to fields
-		if( Integer.parseInt(ageText.getText().toString())  > 150 )
-		{
-			ageText.setError( "Please enter a realistic age" );
-			return;
+		EditText[] reqFields = {nameText,ageText,heightText,weightText,neckText};
+		boolean fieldsMissing = false;
+		for(EditText reqField:reqFields){
+			if(reqField.getText().length()==0) {
+				reqField.setError( "Please fill in all fields" );
+				fieldsMissing = true;
+			}
 		}
-		if( Integer.parseInt(heightText.getText().toString())  > 1000 )
-		{
-			heightText.setError( "Please enter a realistic height" );
+		if(fieldsMissing)
 			return;
-		}
-		if( Integer.parseInt(weightText.getText().toString())  > 1000 )
-		{
-			weightText.setError( "Please enter a realistic weight" );
-			return;
-		}
-		if( Integer.parseInt(neckText.getText().toString())  > 1000 )
-		{
-			neckText.setError( "Please enter a realistic neck circumference" );
-			return;
-		}
 
 		boolean metric = unitsSpinner.getSelectedItemPosition()==0;
 		int height = Integer.parseInt(heightText.getText().toString());
-		float weight = Integer.parseInt(weightText.getText().toString());
+		float weight = Float.parseFloat(weightText.getText().toString());
 		int neck = Integer.parseInt(neckText.getText().toString());
 
 		editor.putString("FirstName", nameText.getText().toString());
@@ -164,16 +141,15 @@ public class ProfileActivity extends Activity {
 		finish();
 	}
 
-	public void updateUnits() {
-		boolean metric = settings.getBoolean("Metric", true);
+	public void updateUnits(boolean metric) {
 		if(metric) {
-			heightTitle.setText("Height (cm)");
-			weightTitle.setText("Weight (kg)");
-			neckTitle.setText("Neck Circumference (cm)");
+			heightTitle.setText("Height (cm):");
+			weightTitle.setText("Weight (kg):");
+			neckTitle.setText("Neck Circumference (cm):");
 		} else {
-			heightTitle.setText("Height (inches)");
-			weightTitle.setText("Weight (lbs)");
-			neckTitle.setText("Neck Circumference (inches)");
+			heightTitle.setText("Height (inches):");
+			weightTitle.setText("Weight (lbs):");
+			neckTitle.setText("Neck Circumference (inches):");
 		}
 	}
 }

@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import com.mcfad.oxylyzer.R;
 
-public class QuestionnaireForm4 extends QuestionnaireForm {
+public class Questionnaire4SnoreScore extends QuestionnaireForm {
 
 	Question[] questions = new Question[]{
 			new Question("Q4Q1",R.id.question4_1),
@@ -21,7 +21,7 @@ public class QuestionnaireForm4 extends QuestionnaireForm {
 
 	@Override
 	public int getLayoutId() {
-		return R.layout.activity_questionnaire_form4;
+		return R.layout.activity_questionnaire_4_snore_score;
 	}
 
 	@Override
@@ -62,55 +62,41 @@ public class QuestionnaireForm4 extends QuestionnaireForm {
 			}
 		}
 		
-		String Q4Result = "";
-		boolean putSpace = false;
-		if(personalLife == true && score < 10 ) {
-			Q4Result += "Snoring almost certainly interferes with your personal life.";
-			putSpace = true;
-		}
-		else
-			putSpace = false;
-		
-		if(haveApnea == true && score < 10 ) {
-			if(putSpace)
-				Q4Result+="\n\n";
-			Q4Result += "There is a moderate chance you experience apnea during sleep. You should consult with your physician.";
-			putSpace = true;
-		}
-		else
-			putSpace = false;
-		
-		if(backSleeper == true && score < 10 ) {
-			Q4Result += "\n\nIt is likely that your snoring is probably due to the effect of gravity on the tissues of your upper airway rather than to any basic anatomical obstruction. You are what is called a \"positional snorer.\" Remedies that encourage you to sleep on your side or stomach may be sufficient.";
-			putSpace = true;
-		}
-		else
-			putSpace = false;
-		if(physObstruct == true && score < 10 ) {
-			Q4Result += "\n\nYour snoring is most likely the result of a physical obstruction.";
-			putSpace = true;
-		}
-		else
-			putSpace = false;
-		if(score== 10) {
-			Q4Result += "\n\nIt is very likely you have sleep apnea, you should consult and have a sleep study performed to evaluate your sleep and snoring.";
-			putSpace = true;
-		}
-		else
-			putSpace = false;
-		if(!physObstruct && !backSleeper && haveApnea && score<10) {
-			Q4Result = "You appear to be a healthy sleeper, please do another questionairre to be further assessed.";
-			putSpace = true;
-		}
-		else
-			putSpace = false;
-		
-		editor.putString("Q4Result", Q4Result);
-		
+		editor.putString("Q4Result", getResult(score,personalLife,haveApnea,backSleeper,physObstruct));
 		editor.putBoolean("Answers4Saved", true);
 		editor.commit();
 
 		finish();
+	}
+	
+	public String getResult(int score,boolean personalLife,boolean haveApnea,boolean backSleeper,boolean physObstruct) {
+		String result = "";
+		if(personalLife == true && score < 10 ) {
+			result = "Snoring almost certainly interferes with your personal life.";
+		}
+		
+		if(haveApnea == true && score < 10 ) {
+			if(result.length()>0) result += "\n\n";
+			result += "There is a moderate chance you experience apnea during sleep. You should consult with your physician.";
+		}
+		if(backSleeper == true && score < 10 ) {
+			if(result.length()>0) result += "\n\n";
+			result += "It is likely that your snoring is probably due to the effect of gravity on the tissues of your upper airway rather than to any basic anatomical obstruction. You are what is called a \"positional snorer.\" Remedies that encourage you to sleep on your side or stomach may be sufficient.";
+		}
+		if(physObstruct == true && score < 10 ) {
+			if(result.length()>0) result += "\n\n";
+			result += "Your snoring is most likely the result of a physical obstruction.";
+		}
+		if(score== 10) {
+			if(result.length()>0) result += "\n\n";
+			result += "It is very likely you have sleep apnea, you should consult and have a sleep study performed to evaluate your sleep and snoring.";
+		}
+		if(!physObstruct && !backSleeper && haveApnea && score<10) {
+			if(result.length()>0) result += "\n\n";
+			result = "You appear to be a healthy sleeper, please do another questionairre to be further assessed.";
+		}
+		
+		return result;
 	}
 }
 

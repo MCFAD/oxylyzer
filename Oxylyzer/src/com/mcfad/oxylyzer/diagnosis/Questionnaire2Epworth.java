@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import com.mcfad.oxylyzer.R;
 
-public class QuestionnaireForm2 extends QuestionnaireForm {
+public class Questionnaire2Epworth extends QuestionnaireForm {
 
 	Question[] questions = new Question[]{
 			new Question("Q3Q1",R.id.question2_1),
@@ -19,7 +19,7 @@ public class QuestionnaireForm2 extends QuestionnaireForm {
 	
 	@Override
 	public int getLayoutId(){
-		return R.layout.activity_questionnaire_form2;
+		return R.layout.activity_questionnaire_2_epworth;
 	}
 	
 	@Override
@@ -34,16 +34,7 @@ public class QuestionnaireForm2 extends QuestionnaireForm {
 			score += buttonScore;
 		}
 		
-		if(score<6){
-			editor.putString("Q2Result", "Congratulations, you are getting enough sleep!");
-		}
-		
-		else if(score == 7 || score == 8){
-			editor.putString("Q2Result", "Your score is average");
-		}
-		else if(score>=9){
-			editor.putString("Q2Result", "Very sleepy and should seek medical advice");
-		}
+		editor.putString("Q2Result", getResult(score));
 		
 		editor.putInt("Q2Score",score);
 		System.out.println("score: "+score);
@@ -51,6 +42,19 @@ public class QuestionnaireForm2 extends QuestionnaireForm {
 		editor.commit();
 
 		finish();
+	}
+
+	public static String getResult(int score) {	
+		if(score<6){
+			return "Congratulations, you are getting enough sleep!";
+		}
+		else if(score == 7 || score == 8){
+			return "Your score is average";
+		}
+		else if(score>=9){
+			return "Very sleepy and should seek medical advice";
+		}
+		return null;
 	}
 }
 
