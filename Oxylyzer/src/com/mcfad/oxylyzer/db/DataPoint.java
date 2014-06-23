@@ -12,4 +12,9 @@ public class DataPoint {
 		bpm = cursor.getInt(1);
 		spo2 = cursor.getInt(2);
 	}
+	public DataPoint(long time,int bpm,int spo2){
+		this.time = time;
+		this.bpm = bpm;
+		this.spo2 = spo2;
+	}
 }

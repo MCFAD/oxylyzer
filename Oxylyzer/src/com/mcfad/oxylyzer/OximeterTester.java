@@ -2,14 +2,17 @@ package com.mcfad.oxylyzer;
 
 import java.util.Date;
 
+import com.mcfad.oxylyzer.db.DataPoint;
 import com.mcfad.oxylyzer.db.OxContentProvider;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 public class OximeterTester {
 
@@ -20,63 +23,71 @@ public class OximeterTester {
 		lBroadMan = LocalBroadcastManager.getInstance(activity);
 		final Handler handler = new Handler(Looper.getMainLooper());
 		Runnable graphUpdate = new Runnable() {
-			int x = 0;
-			long time = new Date().getTime();
-			
 			@Override
 			public void run() {
-				if(recordingUri==null){
-					recordingUri = OxContentProvider.startNewRecording(context,time);
-				}
-				postData(time);
-				time += 1000;
+				DataPoint data = generateData(new Date().getTime());
+				Intent intent = new Intent(OximeterService.BROADCAST_DATA);
+						
+				intent.putExtra("time", data.time);
+				intent.putExtra("spo2", data.spo2);
+				intent.putExtra("bpm", data.bpm);
+				lBroadMan.sendBroadcast(intent);
 				
-				x += 1;
+				//OxContentProvider.postDatapoint(context, recordingUri, data.time, data.spo2, data.bpm);
 				
-				if(x > 1000 && recordingUri!=null){
-					OxContentProvider.endRecording(context, recordingUri,time);
-				}
-				else
-					handler.postDelayed(this, 10);
+				handler.postDelayed(this, 1000);
 			}
 		};
 		handler.post(graphUpdate);
 	}
-	double spo2 = 97;
-	double bpm = 68;
-	Uri recordingUri = null;
 
-	public void postData(long time){
-		//int spO2 = (int) (80+20*Math.random());
-		//int bpm = (int) (80+20*Math.random());
-		
-		
-		Intent intent = new Intent(OximeterService.BROADCAST_DATA);
+	int baseSpo2 = 97;
+	int baseBpm = 68;
 	
-		
-		
+	float spo2 = baseSpo2;
+	float bpm = baseBpm;
+	
+	boolean inEvent = false;
 
-		double r = Math.random();
-		if(r > 0.66666667 && spo2 < 98 )
-			spo2 = Math.random() + spo2;
-		else if(r < 0.33333333 && spo2 > 70 )
-			spo2 = spo2 - Math.random();
-		
-		double r1 = Math.random();
-		if(r1 > 0.66666667 && bpm < 90)
-			bpm += Math.random();
-		else if(r1 < 0.33333333 && bpm > 60 )
-			bpm -= Math.random();
-			
-		
-		
-		intent.putExtra("time", time);
-		intent.putExtra("spo2", (int)Math.round(spo2));
-		intent.putExtra("bpm", (int)Math.round(bpm));
+	public DataPoint generateData(long time){
 
+		if(inEvent){
+			boolean endEvent = Math.random()<0.1;
+			if(endEvent){
+				inEvent = false;
+			}
+		} else {
+			inEvent = Math.random()<0.001;
+		}
 		
-		OxContentProvider.postDatapoint(context, recordingUri, time, (int)Math.round(spo2), (int)Math.round(bpm));
+		if(!inEvent) {
+			spo2 = (float) ((baseSpo2 + spo2+5*Math.random())/2);
+		} else {
+			spo2 = (float) (spo2 - 0.5*Math.random());
+		}
+		bpm = (float) ((baseBpm + bpm+5*Math.random())/2);
 		
-		lBroadMan.sendBroadcast(intent);
+		return new DataPoint(time,(int)bpm,(int)spo2);
+	}
+	
+	public void generateRecording(int numHours) {
+		long startTime = new Date().getTime();
+		int numSamples = 3600*numHours; // 6 hours
+		
+		ContentValues[] values = new ContentValues[numSamples];
+		for(int i=0;i<numSamples;i++){
+			DataPoint data = generateData(startTime+i*1000);
+			ContentValues value = new ContentValues();
+			value.put("time", data.time);
+			value.put("bpm", data.bpm);
+			value.put("spo2", data.spo2);
+			values[i] = value;
+		}
+
+		Uri recordingUri = OxContentProvider.startNewRecording(context,startTime);
+		OxContentProvider.postDatapoints(context, recordingUri, values);
+		OxContentProvider.endRecording(context, recordingUri,startTime+numSamples*1000);
+		
+		Log.d("OximeterTester","Finished generating recording");
 	}
 }

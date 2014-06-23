@@ -1,5 +1,6 @@
 package com.mcfad.oxylyzer.view;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.Context;
@@ -18,7 +19,6 @@ import com.mcfad.oxylyzer.db.Recording;
 public class HistoryOxGraph extends OxGraph {
 
 	private GraphViewSeries apnea;
-	private java.util.ArrayList<DataPoint> array;
 	
 	public HistoryOxGraph(Context context, LinearLayout parent) {
 		super(context,parent);
@@ -29,9 +29,6 @@ public class HistoryOxGraph extends OxGraph {
 		graphView.getGraphViewStyle().setTextSize(15.5f);
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		//graphView.setShowLegend(true);
-
-		//This array stores only one event of apnea, it the array is cleared out one user go back to normal state
-		array = new java.util.ArrayList<DataPoint>();
 	}	
 
 	public int getBaseline(){
@@ -71,6 +68,7 @@ public class HistoryOxGraph extends OxGraph {
 		graphView.redrawAll();
 	}
 	public void analyzeData(Cursor dataCursor){
+		ArrayList<DataPoint> currentApneaEvent = new ArrayList<DataPoint>();
 		int apneaStartTime = Integer.MAX_VALUE;
 
 		int baseLine = getBaseline();//Set this to baseLine If baseline is available
@@ -78,6 +76,8 @@ public class HistoryOxGraph extends OxGraph {
 
 		int previousSPO2 = 0;
 		DataPoint previousDataPoint = null;
+		
+		ArrayList<Long> apneaEvents = new ArrayList<Long>();
 		
 		while(dataCursor.moveToNext()){
 			DataPoint dataPoint = new DataPoint(dataCursor);
@@ -88,33 +88,44 @@ public class HistoryOxGraph extends OxGraph {
 
 			double seconds = (double) ((dataPoint.time/1000)-secondsOffset);
 
+			// if spo2 is decreasing and is 3 or more below the baseline
 			if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
 			{
-				array.add(previousDataPoint);
+				currentApneaEvent.add(previousDataPoint);
 			}
 			else
 			{
-				if(seconds - apneaStartTime > apneaClassificationTime && !array.isEmpty())
+				// if its been x seconds since the event started
+				if(seconds - apneaStartTime > apneaClassificationTime && !currentApneaEvent.isEmpty())
 				{
-					array.add(previousDataPoint); //the last datapoint of an apnea event
+					currentApneaEvent.add(previousDataPoint); //the last datapoint of an apnea event
 					apnea = new GraphViewSeries(new GraphViewData[] {});
 					apnea.getStyle().color = Color.MAGENTA;
 					apnea.getStyle().thickness = 10;
 					graphView.addSeries(apnea); //indicates where the apnea period.
-					for(int i = 0; i < array.size(); i++)
+					for(int i = 0; i < currentApneaEvent.size(); i++)
 					{
-						double apSeconds = (double) ((array.get(i).time/1000)-secondsOffset);
-						int apSpO2 = array.get(i).spo2;
+						double apSeconds = (double) ((currentApneaEvent.get(i).time/1000)-secondsOffset);
+						int apSpO2 = currentApneaEvent.get(i).spo2;
 						apnea.appendData(new GraphViewData(apSeconds, apSpO2), false);
 					}
+					apneaEvents.add(currentApneaEvent.get(0).time);
 				}
 
 				//reset the apnea data point and time after highlighting the apnea event
-				array.clear();
+				currentApneaEvent.clear();
 				apneaStartTime = (int) seconds; 
 			}
 			previousDataPoint = dataPoint;
 			previousSPO2 = dataPoint.spo2;
 		}
+		
+		/*int numApneaEvents = 0;
+		int apneaEventsPerHour = 0;
+		int time = apneaEvents.get(0) - apneaEvents.get(apneaEvents.size()-1);
+		for(Long apneaTime:apneaEvents){
+			
+			
+		}*/
 	}
 }
