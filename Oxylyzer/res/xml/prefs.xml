@@ -4,8 +4,5 @@
         android:title="Import Data"
         android:summary="Import oximeter recordings (.csv) from your 'Downloads' folder"
         android:key="import" />
-    <Preference
-        android:title="Edit Profile"
-        android:summary="Use this to edit your previously created profile"
-        android:key="editProfile" />
+
 </PreferenceScreen>

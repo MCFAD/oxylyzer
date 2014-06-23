@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-	android:padding="15dp" >
+    android:padding="15dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -13,8 +13,136 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="To perform a diagnosis of sleep apnea, please complete the following steps" />
+            android:text="Todo:" />
 
+        <LinearLayout
+            android:id="@+id/todo_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Complete Profile" />
+                <CheckBox
+                    android:id="@+id/todo_profile"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Complete STOP-BANG Questionnaire" />
+
+                <CheckBox
+                    android:id="@+id/todo_questionnaire_1"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Complete Epworth Sleepiness Scale Questionnaire" />
+
+                <CheckBox
+                    android:id="@+id/todo_questionnaire_2"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Complete Berlin Questionnaire" />
+
+                <CheckBox
+                    android:id="@+id/todo_questionnaire_3"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Complete Snore Score Questionnaire" />
+
+                <CheckBox
+                    android:id="@+id/todo_questionnaire_4"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Record Baseline SpO2" />
+
+                <CheckBox
+                    android:id="@+id/todo_baseline"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:text="Complete Overnight recording" />
+
+                <CheckBox
+                    android:id="@+id/todo_recording"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" />
+            </LinearLayout>
+        </LinearLayout>
         <Button
             android:id="@+id/button_profile"
             android:layout_width="fill_parent"
@@ -26,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Medical Questionnaires:" />
-        
+
         <Button
             android:id="@+id/button_questionnaire1"
             android:layout_width="fill_parent"

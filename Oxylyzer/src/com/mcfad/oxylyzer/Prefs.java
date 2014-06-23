@@ -5,30 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import com.mcfad.oxylyzer.db.Recording;
-import com.mcfad.oxylyzer.diagnosis.NewProfileActivity;
-
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.ListPopupWindow;
-import android.widget.PopupWindow;
 import android.widget.Toast;
+
+import com.mcfad.oxylyzer.db.Recording;
 
 public class Prefs extends PreferenceActivity{
 
@@ -39,23 +26,11 @@ public class Prefs extends PreferenceActivity{
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.prefs);
 
-
 		importPreference = (Preference) findPreference("import");
 		importPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				selectFileToImport();
-				return false;
-			}
-		});
-
-		Preference editActivityPreference = (Preference) findPreference("editProfile");
-		editActivityPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Intent intent = new Intent(Prefs.this, NewProfileActivity.class);
-				startActivityForResult(intent, 0);
 				return false;
 			}
 		});

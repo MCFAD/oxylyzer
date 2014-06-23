@@ -125,7 +125,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		Log.d("OximeterRecording", "deleted?"+deleted);
 	}
 	
-	String finishedRecordings = OxSQLiteHelper.COLUMN_END+">0";
+	public static final String finishedRecordings = OxSQLiteHelper.COLUMN_END+">0";
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		return new CursorLoader(getActivity(),OxContentProvider.RECORDINGS_URI, Recording.projection, finishedRecordings, null, null);
@@ -156,9 +156,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		public void bindView(View view, Context context, Cursor cursor) {
 			Recording recording = new Recording(cursor);
 			view.setTag(recording);
-
 			TextView text = (TextView) view.findViewById(R.id.text1);
-
 			text.setText(recording.getListTitle());
 		}
 
