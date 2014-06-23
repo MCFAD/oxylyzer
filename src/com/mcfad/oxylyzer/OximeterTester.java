@@ -51,6 +51,9 @@ public class OximeterTester {
 	float spo2Offset = 0;
 	float bpmOffset = 0;
 	
+	int spo2Range = 6;
+	int bpmRange = 20;
+	
 	boolean inEvent = false;
 
 	public DataPoint generateData(long time){
@@ -65,13 +68,13 @@ public class OximeterTester {
 		}
 		
 		if(!inEvent) {		
-			spo2Offset = (float) (spo2Offset+0.5*(Math.random()-0.5));
-			spo2Offset = (float) Math.min(3,Math.max(spo2Offset,-3));
+			spo2Offset = (float) (spo2Offset+0.7*(Math.random()-0.5));
+			spo2Offset = (float) Math.min(spo2Range/2,Math.max(spo2Offset,-spo2Range/2)); //clamp to (-range/2,+range/2)
 		} else {
 			spo2Offset = (float) (spo2Offset-Math.random());
 		}
-		bpmOffset = (float) (bpmOffset+2*(Math.random()-0.5));
-		bpmOffset = (float) Math.max(bpmOffset,10);
+		bpmOffset = (float) (bpmOffset+32*(Math.random()-0.5));
+		bpmOffset = (float) Math.min(bpmRange/2,Math.max(bpmOffset,-bpmRange/2)); //clamp to (-range/2,+range/2)
 		
 		return new DataPoint(time,(int)(baseBpm+bpmOffset),(int)(baseSpo2+spo2Offset));
 	}

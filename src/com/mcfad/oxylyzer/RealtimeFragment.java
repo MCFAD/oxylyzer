@@ -21,24 +21,34 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.mcfad.oxylyzer.view.RealtimeOxGraph;
 import com.mcfad.oxylyzer.view.VerticalBar;
 
 public class RealtimeFragment extends Fragment {
 
-	public RealtimeFragment(){
-	}
 	View rootView;
 	private TextView spo2Text;
 	private TextView bpmText;
 	private VerticalBar levelBar;
 	RealtimeOxGraph graph;
-	
+
 	Button baselineButton;
 
 	Handler baselineTimerHandler;	
 	ArrayList<Integer> spO2Values;
 
+	// data to be displayed in the realtime graph, stored independently of any views so the view can be recreated
+	protected GraphViewSeries spo2;
+	protected GraphViewSeries bpm;
+
+	LocalBroadcastManager bman;
+
+	public RealtimeFragment(){
+		spo2 = new GraphViewSeries(new GraphViewData[] {});
+		bpm = new GraphViewSeries(new GraphViewData[] {});
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_realtime, container, false);
@@ -47,7 +57,8 @@ public class RealtimeFragment extends Fragment {
 		levelBar = (VerticalBar)rootView.findViewById(R.id.level);
 		levelBar.setMaxVal(100); // max value for pleth is 100
 		LinearLayout graphLayout = (LinearLayout) rootView.findViewById(R.id.graph1);
-		graph = new RealtimeOxGraph(getActivity(),graphLayout);
+
+		graph = new RealtimeOxGraph(getActivity(),graphLayout,spo2,bpm);
 		checkBaseline();
 
 		baselineButton = (Button) rootView.findViewById(R.id.baseline_button);
@@ -58,19 +69,15 @@ public class RealtimeFragment extends Fragment {
 			}
 		});
 
+		bman = LocalBroadcastManager.getInstance(getActivity());
+		bman.registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_DATA));
 		return rootView;
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_DATA));
-
-	}
-	@Override
-	public void onPause() {
-		super.onPause();
-		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(oxReceiver);
+	public void onDestroy() {
+		super.onDestroy();
+		bman.unregisterReceiver(oxReceiver);
 	}
 
 	public void checkBaseline(){
@@ -86,7 +93,7 @@ public class RealtimeFragment extends Fragment {
 		}
 		graph.updateBaseline(baseline);
 	}
-	
+
 	public void recordBaseline(){
 
 		if(baselineTimerHandler==null){
@@ -102,7 +109,7 @@ public class RealtimeFragment extends Fragment {
 						for(Integer spO2:spO2Values)
 							avgSpO2 += spO2;
 						avgSpO2 /= spO2Values.size();
-						
+
 						Editor editor = getActivity().getSharedPreferences("Profile", 0).edit();
 						editor.putInt("baseline", avgSpO2);
 						editor.commit();
@@ -123,25 +130,30 @@ public class RealtimeFragment extends Fragment {
 	BroadcastReceiver oxReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(intent.hasExtra("level"))
-			{
-				int level = intent.getExtras().getInt("level");
-				levelBar.setCurrentVal(level);
-				levelBar.invalidate();
-			}
 
 			if(intent.hasExtra("spo2")){
 				long time = intent.getExtras().getLong("time");
 				int spo2 = intent.getExtras().getInt("spo2");
 				int bpm = intent.getExtras().getInt("bpm");
+				graph.addToGraph(time,spo2,bpm);
 
-				graph.updateGraph(time,spo2,bpm);
-				spo2Text.setText("" + spo2); 
-				bpmText.setText("" + bpm);
-				
-				if(spO2Values!=null){
-					spO2Values.add(spo2);
+				if(RealtimeFragment.this.isVisible()) {
+
+					spo2Text.setText("" + spo2); 
+					bpmText.setText("" + bpm);
+
+					if(spO2Values!=null){
+						spO2Values.add(spo2);
+					}
+
+					graph.updateGraph(time,spo2,bpm);
 				}
+			}
+			if(intent.hasExtra("level")&&RealtimeFragment.this.isVisible())
+			{
+				int level = intent.getExtras().getInt("level");
+				levelBar.setCurrentVal(level);
+				levelBar.invalidate();
 			}
 		}
 	};

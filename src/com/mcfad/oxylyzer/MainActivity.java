@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +33,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public final static boolean OximeterTest = true;
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
-	ViewPager mViewPager;
+	ViewPager mViewPager;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +62,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 			OximeterTester tester = new OximeterTester(this);
 			tester.generateRecording(6);
 		}
-		
+
+	    registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_CONNECTION_STATE));
 	}
 
 	@Override
 	public void onResume(){
 		super.onResume();
-	    registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_CONNECTION_STATE));
 	}
 	@Override
 	protected void onDestroy() {
@@ -183,13 +184,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	private final BroadcastReceiver oxReceiver = new BroadcastReceiver() {
 	    @Override
 	    public void onReceive(Context context, Intent intent) {
-	    	boolean connected = intent.getBooleanExtra("state", false);
-	    	if(connected) {
-	    		mSectionsPagerAdapter.onConnect();
-	    	} else {
-	    		String message = intent.getStringExtra("message");
-				Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-				mSectionsPagerAdapter.onDisconnect();
+	    	
+	    	if(intent.getAction().equals(OximeterService.BROADCAST_CONNECTION_STATE)) {
+	    	
+		    	boolean connected = intent.getBooleanExtra("state", false);
+		    	if(connected) {
+		    		mSectionsPagerAdapter.onConnect();
+		    	} else {
+		    		String message = intent.getStringExtra("message");
+					Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+					mSectionsPagerAdapter.onDisconnect();
+		    	}
 	    	}
 	    }
 	};
