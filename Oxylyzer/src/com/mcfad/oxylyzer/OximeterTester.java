@@ -18,6 +18,8 @@ public class OximeterTester {
 
 	LocalBroadcastManager lBroadMan;
 	Context context = null;
+	long startTime = new Date().getTime();
+	int interval = 100;
 	public OximeterTester(final MainActivity activity){
 		context = activity;
 		lBroadMan = LocalBroadcastManager.getInstance(activity);
@@ -25,9 +27,11 @@ public class OximeterTester {
 		Runnable graphUpdate = new Runnable() {
 			@Override
 			public void run() {
-				DataPoint data = generateData(new Date().getTime());
+				long timeOffset = (int) ((new Date().getTime()-startTime)/interval*1000);
+				DataPoint data = generateData(startTime+timeOffset);
 				Intent intent = new Intent(OximeterService.BROADCAST_DATA);
 						
+				
 				intent.putExtra("time", data.time);
 				intent.putExtra("spo2", data.spo2);
 				intent.putExtra("bpm", data.bpm);
@@ -35,7 +39,7 @@ public class OximeterTester {
 				
 				//OxContentProvider.postDatapoint(context, recordingUri, data.time, data.spo2, data.bpm);
 				
-				handler.postDelayed(this, 1000);
+				handler.postDelayed(this, interval);
 			}
 		};
 		handler.post(graphUpdate);
@@ -44,8 +48,8 @@ public class OximeterTester {
 	int baseSpo2 = 97;
 	int baseBpm = 68;
 	
-	float spo2 = baseSpo2;
-	float bpm = baseBpm;
+	float spo2Offset = 0;
+	float bpmOffset = 0;
 	
 	boolean inEvent = false;
 
@@ -57,17 +61,19 @@ public class OximeterTester {
 				inEvent = false;
 			}
 		} else {
-			inEvent = Math.random()<0.001;
+			inEvent = Math.random()<0.01;
 		}
 		
-		if(!inEvent) {
-			spo2 = (float) ((baseSpo2 + spo2+5*Math.random())/2);
+		if(!inEvent) {		
+			spo2Offset = (float) (spo2Offset+0.5*(Math.random()-0.5));
+			spo2Offset = (float) Math.min(3,Math.max(spo2Offset,-3));
 		} else {
-			spo2 = (float) (spo2 - 0.5*Math.random());
+			spo2Offset = (float) (spo2Offset-Math.random());
 		}
-		bpm = (float) ((baseBpm + bpm+5*Math.random())/2);
+		bpmOffset = (float) (bpmOffset+2*(Math.random()-0.5));
+		bpmOffset = (float) Math.max(bpmOffset,10);
 		
-		return new DataPoint(time,(int)bpm,(int)spo2);
+		return new DataPoint(time,(int)(baseBpm+bpmOffset),(int)(baseSpo2+spo2Offset));
 	}
 	
 	public void generateRecording(int numHours) {

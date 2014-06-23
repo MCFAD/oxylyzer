@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.UUID;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -22,6 +24,7 @@ public class OximeterService extends Service {
 	static final UUID SSP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	public static final String BROADCAST_DATA = "com.mcfad.oxylyzer.oxdata";
 	public static final String BROADCAST_CONNECTION_STATE = "com.mcfad.oxylyzer.oxconn";
+	private static final int CONNECTED_NOTIFICATION_ID = 100;
 
 	LocalBroadcastManager lBroadMan;
 	@Override
@@ -54,12 +57,11 @@ public class OximeterService extends Service {
 				socket = currentDevice.createRfcommSocketToServiceRecord(SSP_UUID);
 				socket.connect();
 				input = socket.getInputStream();
-				Log.d("PO", "Bluetooth oximeter connected");
 			} catch (IOException e) {
-				e.printStackTrace();
-				broadcastConnectionState(false,e.getMessage());
+				connectionError(e);
 				return;
 			}
+			Log.d("OximeterService", "Bluetooth oximeter connected");
 			onConnect();
 
 			byte[] data = new byte[5];
@@ -90,6 +92,11 @@ public class OximeterService extends Service {
 		connectThread.start();
 	}
 
+	public void connectionError(IOException e) {
+		e.printStackTrace();
+		broadcastConnectionState(false,"Couldn't connect to Oximeter");
+	}
+
 	public void disconnect() {
 		connected = false;
 	}
@@ -98,6 +105,16 @@ public class OximeterService extends Service {
 		connected = true;
 		currentRecording = OxContentProvider.startNewRecording(OximeterService.this,new Date().getTime());
 		broadcastConnectionState(true,null);
+
+		Intent notificationIntent = new Intent(this, MainActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		Notification notification = new Notification.Builder(this)
+			.setContentTitle("Connected to Pulse Oximeter")
+			.setSmallIcon(R.drawable.ic_notify_ox_connected)
+			.setContentIntent(pendingIntent)
+			.build();
+		
+		startForeground(CONNECTED_NOTIFICATION_ID, notification);
 	}
 	public void onDisconnect() {
 		connected = false;

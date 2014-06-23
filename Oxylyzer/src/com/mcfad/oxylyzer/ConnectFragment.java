@@ -88,8 +88,8 @@ public class ConnectFragment extends Fragment {
 			if(!mBtAdapter.isEnabled()){ 
 				mBtAdapter.enable();
 			} 
-			updateBluetoothState();
 		}
+		updateBluetoothState();
 	}
 	@Override
 	public void onDestroy(){
@@ -151,7 +151,11 @@ public class ConnectFragment extends Fragment {
 
 	public void updateBluetoothState()
 	{	
-		if(mBtAdapter.getState()!=BluetoothAdapter.STATE_ON){
+		if(mBtAdapter==null){
+			btUnavailable.setVisibility(View.VISIBLE);
+			btAvailable.setVisibility(View.GONE);
+			statusText.setText("Bluetooth not available\nCan't connect Oximeter");
+		} else if(mBtAdapter.getState()!=BluetoothAdapter.STATE_ON){
 			btUnavailable.setVisibility(View.VISIBLE);
 			btAvailable.setVisibility(View.GONE);
 			switch(BluetoothAdapter.getDefaultAdapter().getState()){

@@ -21,13 +21,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SPO2(%)" />
+                android:text="SpO2(%)" />
 
             <TextView
                 android:id="@+id/spo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
+                android:text="--"
                 android:textColor="#00F"
                 android:textSize="70dp" />
         </LinearLayout>
@@ -48,7 +48,7 @@
                 android:id="@+id/bpm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
+                android:text="--"
                 android:textColor="#F00"
                 android:textSize="70dp" />
         </LinearLayout>
@@ -95,7 +95,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="SPO2 Baseline:" />
+                android:text="SpO2 Baseline:" />
 
             <TextView
                 android:id="@+id/baseline_value"

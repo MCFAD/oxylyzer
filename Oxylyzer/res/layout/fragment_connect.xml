@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Bluetooth not available\nCan&apos;t connect Oximeter" />
+            android:text="Bluetooth not available\nCan&apos;t connect Oximeter"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
