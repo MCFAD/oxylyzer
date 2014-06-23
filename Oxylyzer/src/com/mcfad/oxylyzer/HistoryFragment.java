@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,13 +26,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jjoe64.graphview.GraphView;
 import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.OxSQLiteHelper;
 import com.mcfad.oxylyzer.db.Recording;
-import com.mcfad.oxylyzer.diagnosis.MedicalQuestionnaire;
-import com.mcfad.oxylyzer.diagnosis.NewProfileActivity;
-import com.mcfad.oxylyzer.diagnosis.Report;
 import com.mcfad.oxylyzer.view.HistoryOxGraph;
 
 public class HistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -87,12 +81,6 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 			}
 		});
 
-		Button reportButton = (Button) rootView.findViewById(R.id.button_view_report);
-		reportButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v4) {
-				viewReport();
-			}
-		});
 		Button exportButton = (Button) rootView.findViewById(R.id.button_export);
 		exportButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v4) {
@@ -104,13 +92,6 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		deleteButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v4) {
 				delete();
-			}
-		});
-		Button questionnaireButton = (Button) rootView.findViewById(R.id.button_questionnaire);
-		questionnaireButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v4) {
-				Intent intent = new Intent(getActivity(), MedicalQuestionnaire.class);
-				startActivityForResult(intent, 0);
 			}
 		});
 		recordingDescription = (EditText) rootView.findViewById(R.id.description);
@@ -143,29 +124,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		int deleted = OxContentProvider.deleteRecording(getActivity(), recording.getUri());
 		Log.d("OximeterRecording", "deleted?"+deleted);
 	}
-	public void viewReport(){
-		SharedPreferences settings = getActivity().getSharedPreferences("Profile", 0);
-
-		boolean profile = settings.getBoolean("ProfileSaved", false);
-		//boolean profile = false;
-		if(!profile)
-		{
-			Intent intent = new Intent(getActivity(), NewProfileActivity.class);
-			startActivityForResult(intent, 0);
-		}
-		else
-		{
-			Intent intent2 = new Intent(getActivity(), Report.class);
-			HistoryFragment.this.startActivity(intent2);
-		}
-	}
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-		Intent intent2 = new Intent(getActivity(), Report.class);
-		HistoryFragment.this.startActivity(intent2);
-	}
-
+	
 	String finishedRecordings = OxSQLiteHelper.COLUMN_END+">0";
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {

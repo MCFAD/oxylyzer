@@ -29,7 +29,7 @@ import com.mcfad.oxylyzer.view.NonSwipeableViewPager;
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 	
 	// set this to true to simulate an oximeter being connected
-	public final static boolean OximeterTest = true;
+	public final static boolean OximeterTest = false;
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		
 		if(OximeterTest){
 			OximeterTester tester = new OximeterTester(this);
-			tester.generateRecording(6);
+			//tester.generateRecording(6);
 		}
 		
 	}
@@ -119,14 +119,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 		public Fragment connectView;
 		public Fragment realtimeView;
-		public Fragment historyView;
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
 		@Override
 		public Fragment getItem(int position) {
-			if(position==0) {
+			switch(position){
+			case 0:
 				if(oxSrvc.isConnected()){
 					if(realtimeView==null)
 						realtimeView = new RealtimeFragment();
@@ -136,12 +136,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 						connectView = new ConnectFragment();
 					return connectView;
 				}
+			case 1:
+				return new HistoryFragment();
+			case 2:
+				return new DiagnosisFragment();
 			}
-			return historyView = new HistoryFragment();
+			return null;
 		}
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -151,12 +155,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				return "Realtime";
 			case 1:
 				return "History";
+			case 2:
+				return "Diagnosis";
 			}
 			return null;
 		}
 	    @Override
-	    public int getItemPosition(Object object)
-	    {
+	    public int getItemPosition(Object object) {
 	        return POSITION_NONE;
 	    }
 		public void onConnect() {

@@ -1,0 +1,83 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+	android:padding="15dp" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="To perform a diagnosis of sleep apnea, please complete the following steps" />
+
+        <Button
+            android:id="@+id/button_profile"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Complete Profile" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Medical Questionnaires:" />
+        
+        <Button
+            android:id="@+id/button_questionnaire1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="STOP-BANG" />
+
+        <TextView
+            android:id="@+id/Score1Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_questionnaire2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Epworth Sleepiness Scale" />
+
+        <TextView
+            android:id="@+id/Score2Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_questionnaire3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Berlin Questionnaire" />
+
+        <TextView
+            android:id="@+id/Score3Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_questionnaire4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Snore Score" />
+
+        <TextView
+            android:id="@+id/Score4Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/button_view_report"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:onClick="showReport"
+            android:text="@string/view_report" />
+    </LinearLayout>
+
+</ScrollView>

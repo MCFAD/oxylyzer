@@ -36,8 +36,8 @@
         <item>Born Other</item>
     </string-array>
     <string-array name="measure_array">
-        <item>Metric (cm, kg)</item>
-        <item>Imperial (in, lb)</item>
+        <item>Metric</item>
+        <item>Imperial</item>
     </string-array>
 
     <string name="button_start">Start\nRecording</string>
