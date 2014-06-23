@@ -161,21 +161,12 @@
             android:layout_height="wrap_content"
             android:text="STOP-BANG" />
 
-        <TextView
-            android:id="@+id/Score1Display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <Button
             android:id="@+id/button_questionnaire2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Epworth Sleepiness Scale" />
 
-        <TextView
-            android:id="@+id/Score2Display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/button_questionnaire3"
@@ -183,21 +174,11 @@
             android:layout_height="wrap_content"
             android:text="Berlin Questionnaire" />
 
-        <TextView
-            android:id="@+id/Score3Display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <Button
             android:id="@+id/button_questionnaire4"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Snore Score" />
-
-        <TextView
-            android:id="@+id/Score4Display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/button_view_report"

@@ -15,25 +15,48 @@ import android.preference.PreferenceActivity;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.Recording;
 
-public class Prefs extends PreferenceActivity{
+public class PreferencesActivity extends PreferenceActivity{
 
-	Preference importPreference;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.prefs);
 
-		importPreference = (Preference) findPreference("import");
-		importPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		Preference importPref = (Preference) findPreference("import");
+		importPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				selectFileToImport();
 				return false;
 			}
 		});
+		Preference clearProfilePref = (Preference) findPreference("clear_profile");
+		clearProfilePref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				clearProfile();
+				return false;
+			}
+		});
+		Preference clearRecordingsPref = (Preference) findPreference("clear_recordings");
+		clearRecordingsPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				clearRecordings();
+				return false;
+			}
+		});
+	}
+	protected void clearRecordings() {
+		getContentResolver().delete(OxContentProvider.RECORDINGS_URI, null, null);
+	}
+	protected void clearProfile() {
+		getSharedPreferences("Profile", 0).edit().clear().commit();
+		getSharedPreferences("Questionnaire", 0).edit().clear().commit();
+		getSharedPreferences("Answers", 0).edit().clear().commit();
 	}
 	FilenameFilter csvFilter = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
@@ -73,12 +96,12 @@ public class Prefs extends PreferenceActivity{
 	public void importRecording(String file){
 		file = downloadsDir.getAbsolutePath()+"/"+file;
 		try {
-			Recording.importFromFile(Prefs.this, file);
+			Recording.importFromFile(PreferencesActivity.this, file);
 		} catch (FileNotFoundException e) {
-			Toast.makeText(Prefs.this, "Couldn't find file: "+file, Toast.LENGTH_LONG).show();
+			Toast.makeText(PreferencesActivity.this, "Couldn't find file: "+file, Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		} catch (IOException e) {
-			Toast.makeText(Prefs.this, "Error reading: "+file, Toast.LENGTH_LONG).show();
+			Toast.makeText(PreferencesActivity.this, "Error reading: "+file, Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
 	}

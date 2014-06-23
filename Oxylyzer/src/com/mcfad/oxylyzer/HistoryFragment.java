@@ -36,6 +36,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 	View rootView;
 	// view to hide after there are recordings found
 	View noRecordingsLayout;
+	View haveRecordingsLayout;
 
 	Spinner recordingsSpinner;
 	CursorAdapter recordingsAdapter;
@@ -50,6 +51,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
 		noRecordingsLayout = (View) rootView.findViewById(R.id.no_recordings);
+		haveRecordingsLayout = (View) rootView.findViewById(R.id.have_recordings);
 
 		recordingsSpinner = (Spinner) rootView.findViewById(R.id.records);
 		recordingsSpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
@@ -137,8 +139,10 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 		recordingsAdapter.changeCursor(cursor);
 		if(cursor.getCount()>0) {
 			noRecordingsLayout.setVisibility(View.GONE);
+			haveRecordingsLayout.setVisibility(View.VISIBLE);
 		} else {
 			noRecordingsLayout.setVisibility(View.VISIBLE);
+			haveRecordingsLayout.setVisibility(View.GONE);
 		}
 	}
 

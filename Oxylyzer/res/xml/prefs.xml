@@ -5,4 +5,12 @@
         android:summary="Import oximeter recordings (.csv) from your 'Downloads' folder"
         android:key="import" />
 
+    <Preference
+        android:title="Clear Profile Data"
+        android:summary="Delete all stored profile and questionnaire data"
+        android:key="clear_profile" />
+    <Preference
+        android:title="Clear Oximeter Data"
+        android:summary="Delete all saved oximeter recordings"
+        android:key="clear_recordings" />
 </PreferenceScreen>

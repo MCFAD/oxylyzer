@@ -40,7 +40,7 @@
             android:label="@string/title_activity_calendar" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.diagnosis.NewProfileActivity"
+            android:name="com.mcfad.oxylyzer.diagnosis.ProfileActivity"
             android:label="@string/title_activity_new_profile" >
         </activity>
         <activity
@@ -48,7 +48,7 @@
             android:label="@string/title_activity_report" >
         </activity>
         <activity
-            android:name="com.mcfad.oxylyzer.Prefs"
+            android:name="com.mcfad.oxylyzer.PreferencesActivity"
             android:label="Preferences" >
         </activity>
 

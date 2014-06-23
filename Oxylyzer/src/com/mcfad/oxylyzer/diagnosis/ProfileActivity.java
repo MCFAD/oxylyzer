@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.mcfad.oxylyzer.R;
 
-public class NewProfileActivity extends Activity {
+public class ProfileActivity extends Activity {
 
 	protected int spinnerGenderIndex;
 	protected int spinnerMetricIndex;
@@ -42,7 +42,7 @@ public class NewProfileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_profile_actvity);
+		setContentView(R.layout.activity_profile);
 
 		settings = getSharedPreferences("Profile", 0);
 		editor = settings.edit();
@@ -60,12 +60,12 @@ public class NewProfileActivity extends Activity {
 		weightTitle = (TextView) findViewById(R.id.weight_title);
 		neckTitle = (TextView) findViewById(R.id.neck_title);
 
-		ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(NewProfileActivity.this,
+		ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(ProfileActivity.this,
 				R.array.gender_array, android.R.layout.simple_spinner_item);
 		genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		genderSpinner.setAdapter(genderAdapter);
 
-		ArrayAdapter<CharSequence> unitsAdapter = ArrayAdapter.createFromResource(NewProfileActivity.this,
+		ArrayAdapter<CharSequence> unitsAdapter = ArrayAdapter.createFromResource(ProfileActivity.this,
 				R.array.measure_array, android.R.layout.simple_spinner_item);
 		unitsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		unitsSpinner.setAdapter(unitsAdapter);
@@ -81,17 +81,17 @@ public class NewProfileActivity extends Activity {
 		Button saveButton = (Button) findViewById(R.id.button_save);
 		saveButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v3) {
-
-
+				save();
 			}
 		});
+
+		updateUnits();
 
 		nameText.setText(settings.getString("FirstName", null));
 		ageText.setText(""+settings.getInt("Age", 0));
 		genderSpinner.setSelection(settings.getInt("spinnerGenderIndex",0));
 		unitsSpinner.setSelection(settings.getBoolean("isMetric",true)?0:1);
 
-		updateUnits();
 		heightText.setText(""+settings.getInt("Height",0));
 		weightText.setText(""+settings.getInt("Weight",0));
 		neckText.setText(""+settings.getInt("Neck",0));
@@ -102,7 +102,7 @@ public class NewProfileActivity extends Activity {
 				heightText.getText().length()==0|| weightText.getText().length()==0 || 
 				neckText.getText().length()==0 )
 		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(NewProfileActivity.this); //Read Update
+			AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this); //Read Update
 
 			builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {

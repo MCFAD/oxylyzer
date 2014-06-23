@@ -99,7 +99,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			startActivity(new Intent(this,Prefs.class));
+			startActivity(new Intent(this,PreferencesActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

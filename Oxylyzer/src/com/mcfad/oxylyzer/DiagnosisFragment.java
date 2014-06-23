@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.Recording;
-import com.mcfad.oxylyzer.diagnosis.NewProfileActivity;
+import com.mcfad.oxylyzer.diagnosis.ProfileActivity;
 import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm1;
 import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm2;
 import com.mcfad.oxylyzer.diagnosis.QuestionnaireForm3;
@@ -33,7 +33,7 @@ public class DiagnosisFragment extends Fragment {
 	SharedPreferences answersPrefs;
 	SharedPreferences questionnairePrefs;
 
-	ListView todoList;
+	Button profileButton;
 	Button reportButton;
 	
 	CheckBox todoProfile;
@@ -71,8 +71,8 @@ public class DiagnosisFragment extends Fragment {
 
 		updateTodoList();
 		
-		Button completeProfile = (Button) rootView.findViewById(R.id.button_profile);
-		completeProfile.setOnClickListener(new View.OnClickListener() {
+		profileButton = (Button) rootView.findViewById(R.id.button_profile);
+		profileButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v4) {
 				completeProfile();
 			}
@@ -99,8 +99,27 @@ public class DiagnosisFragment extends Fragment {
 		return rootView;
 	}
 
+	protected void completeProfile() {
+		Intent intent = new Intent(getActivity(), ProfileActivity.class);
+		startActivityForResult(intent, 0);
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+
+		if(!profileSaved()) {
+			profileButton.setText("Complete Profile");
+		} else {
+			profileButton.setText("Edit Profile");
+		}
+		
+		updateTodoList();
+	}
+
+	public boolean profileSaved() { return profilePrefs.getBoolean("ProfileSaved", false);}
 	private void updateTodoList() {
-		todoProfile.setChecked(profilePrefs.getBoolean("ProfileSaved", false));
+		todoProfile.setChecked(profileSaved());
 		todoQuestionnaire1.setChecked(answersPrefs.getBoolean("Answers1Saved", false));
 		todoQuestionnaire2.setChecked(answersPrefs.getBoolean("Answers2Saved", false));
 		todoQuestionnaire3.setChecked(answersPrefs.getBoolean("Answers3Saved", false));
@@ -112,54 +131,8 @@ public class DiagnosisFragment extends Fragment {
 		recordingsCursor.close();
 	}
 
-	protected void completeProfile() {
-		Intent intent = new Intent(getActivity(), NewProfileActivity.class);
-		startActivityForResult(intent, 0);
-	}
-
-	@Override
-	public void onResume(){
-		super.onResume();
-		updateScoreText();
-
-		boolean profile = profilePrefs.getBoolean("ProfileSaved", false);
-		reportButton.setEnabled(profile);
-		
-		updateTodoList();
-	}
-
 	public void viewReport(){
 		Intent intent2 = new Intent(getActivity(), Report.class);
 		DiagnosisFragment.this.startActivity(intent2);
-	}
-
-	public void updateScoreText() {
-		TextView score1 = (TextView) rootView.findViewById(R.id.Score1Display);
-		TextView score2 = (TextView) rootView.findViewById(R.id.Score2Display);
-		TextView score3 = (TextView) rootView.findViewById(R.id.Score3Display);
-		TextView score4 = (TextView) rootView.findViewById(R.id.Score4Display);
-
-
-		String Q1Result= questionnairePrefs.getString("Q1Result", "Questionaire hasn't been taken");
-		String Q2Result= questionnairePrefs.getString("Q2Result", "Questionaire hasn't been taken");
-		String Q3Result = questionnairePrefs.getString("Q3Result", "Questionaire hasn't been taken");
-		String Q4Result = questionnairePrefs.getString("Q4Result", "Questionaire hasn't been taken");
-
-		if(!Q1Result.equals("Questionaire hasn't been taken"))
-			Q1Result = "This Questionaire has been taken";
-
-		if(!Q2Result.equals("Questionaire hasn't been taken"))
-			Q2Result = "This Questionaire has been taken";
-
-		if(!Q3Result.equals("Questionaire hasn't been taken"))
-			Q3Result = "This Questionaire has been taken";
-
-		if(!Q4Result.equals("Questionaire hasn't been taken"))
-			Q4Result = "This Questionaire has been taken";
-
-		score1.setText(String.valueOf(Q1Result));
-		score2.setText(String.valueOf(Q2Result));
-		score3.setText(String.valueOf(Q3Result));
-		score4.setText(String.valueOf(Q4Result));
 	}
 }

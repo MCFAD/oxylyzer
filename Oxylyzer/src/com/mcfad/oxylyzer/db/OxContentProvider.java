@@ -108,10 +108,15 @@ public class OxContentProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		int uriType = sURIMatcher.match(uri);
 		SQLiteDatabase sqlDB = database.getWritableDatabase();
+		int uriType = sURIMatcher.match(uri);
 		int deleted = 0;
 		switch (uriType) {
+		case RECORDINGS:
+			deleted += sqlDB.delete(OxSQLiteHelper.TABLE_RECORDINGS, null, null);
+			deleted += sqlDB.delete(OxSQLiteHelper.TABLE_VALUES, null, null);
+			getContext().getContentResolver().notifyChange(RECORDINGS_URI, null);
+			break;
 		case RECORDING_ID:
 			int recordingId = Integer.parseInt(uri.getLastPathSegment());
 			deleted = sqlDB.delete(OxSQLiteHelper.TABLE_RECORDINGS, OxSQLiteHelper.COLUMN_ID+"="+recordingId, null);
