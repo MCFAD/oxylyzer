@@ -1,20 +1,17 @@
-package com.mcfad.oxylyzer.view;
+package com.mcfad.oxylyzer.view.graphview;
 
 import java.util.Date;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
-import com.mcfad.oxylyzer.R;
 
 public class RealtimeOxGraph extends OxGraph {
 	private long lastTouchTime;

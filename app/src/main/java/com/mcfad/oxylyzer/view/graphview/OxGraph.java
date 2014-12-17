@@ -1,4 +1,4 @@
-package com.mcfad.oxylyzer.view;
+package com.mcfad.oxylyzer.view.graphview;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import com.jjoe64.graphview.CustomLabelFormatter;
 import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
 
 public class OxGraph {
 

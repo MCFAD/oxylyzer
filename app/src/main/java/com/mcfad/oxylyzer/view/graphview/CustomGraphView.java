@@ -1,8 +1,4 @@
-package com.mcfad.oxylyzer.view;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+package com.mcfad.oxylyzer.view.graphview;
 
 import android.content.Context;
 import android.graphics.Canvas;

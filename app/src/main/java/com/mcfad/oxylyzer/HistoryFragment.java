@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.mcfad.oxylyzer.db.OxContentProvider;
 import com.mcfad.oxylyzer.db.OxSQLiteHelper;
 import com.mcfad.oxylyzer.db.Recording;
-import com.mcfad.oxylyzer.view.HistoryOxGraph;
+import com.mcfad.oxylyzer.view.graphview.HistoryOxGraph;
 
 public class HistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 

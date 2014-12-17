@@ -1,14 +1,10 @@
-package com.mcfad.oxylyzer.view;
-
-import java.util.ArrayList;
-import java.util.Date;
+package com.mcfad.oxylyzer.view.graphview;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.jjoe64.graphview.GraphViewSeries;
@@ -16,11 +12,12 @@ import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.mcfad.oxylyzer.db.DataPoint;
 import com.mcfad.oxylyzer.db.Recording;
 
-public class HistoryOxGraph extends OxGraph {
+public class ReportOxGraph extends OxGraph {
 
 	private GraphViewSeries apnea;
+	private java.util.ArrayList<DataPoint> array;
 	
-	public HistoryOxGraph(Context context, LinearLayout parent) {
+	public ReportOxGraph(Context context, LinearLayout parent) {
 		super(context,parent);
 
 		graphView.setBackgroundColor(Color.LTGRAY);
@@ -29,13 +26,15 @@ public class HistoryOxGraph extends OxGraph {
 		graphView.getGraphViewStyle().setTextSize(15.5f);
 		graphView.getGraphViewStyle().setGridColor(Color.LTGRAY);
 		//graphView.setShowLegend(true);
+
+		//This array stores only one event of apnea, it the array is cleared out one user go back to normal state
+		array = new java.util.ArrayList<DataPoint>();
 	}	
 
 	public int getBaseline(){
 		SharedPreferences prefs = context.getSharedPreferences("Profile", 0);
 		return prefs.getInt("baseline", 0);
 	}
-	public static int MAX_POINTS = 1000;
 	public void updateGraph(Context context,Recording recording){
 		// init example series data
 		spo2 = new GraphViewSeries(new GraphViewData[] {});
@@ -43,32 +42,6 @@ public class HistoryOxGraph extends OxGraph {
 		graphView.removeAllSeries();
 		
 		Cursor dataCursor = recording.queryDatapoints(context);
-		
-		int pointInterval = Math.max(dataCursor.getCount()/MAX_POINTS,1);
-		int pointNum = 0;
-		while(dataCursor.moveToPosition(pointNum)){
-			DataPoint dataPoint = new DataPoint(dataCursor);
-			if(secondsOffset==-1)
-				secondsOffset = dataPoint.time/1000;
-
-			double seconds = (double) ((dataPoint.time/1000)-secondsOffset);
-
-			//Log.d("Graph","pn: "+pointNum+" mod "+pointNum%pointInterval+" int "+pointInterval);
-			spo2.appendData(new GraphViewData(seconds, dataPoint.spo2), false);
-			bpm.appendData(new GraphViewData(seconds, dataPoint.bpm), false);
-			pointNum += pointInterval;
-		}
-
-		graphView.addSeries(spo2); // oxygen level
-		spo2.getStyle().color = Color.BLUE;
-		graphView.addSeries(bpm); // beats per minutes
-		bpm.getStyle().color = Color.RED;
-		graphView.setScrollable(true);
-		graphView.setScalable(true);
-		graphView.redrawAll();
-	}
-	public void analyzeData(Cursor dataCursor){
-		ArrayList<DataPoint> currentApneaEvent = new ArrayList<DataPoint>();
 		int apneaStartTime = Integer.MAX_VALUE;
 
 		int baseLine = getBaseline();//Set this to baseLine If baseline is available
@@ -76,9 +49,6 @@ public class HistoryOxGraph extends OxGraph {
 
 		int previousSPO2 = 0;
 		DataPoint previousDataPoint = null;
-		
-		ArrayList<Long> apneaEvents = new ArrayList<Long>();
-		
 		while(dataCursor.moveToNext()){
 			DataPoint dataPoint = new DataPoint(dataCursor);
 
@@ -87,45 +57,45 @@ public class HistoryOxGraph extends OxGraph {
 				secondsOffset = dataPoint.time/1000;
 
 			double seconds = (double) ((dataPoint.time/1000)-secondsOffset);
+			
+			spo2.appendData(new GraphViewData(seconds, dataPoint.spo2), false);
+			bpm.appendData(new GraphViewData(seconds, dataPoint.bpm), false);
 
-			// if spo2 is decreasing and is 3 or more below the baseline
-			if(dataPoint.spo2 < previousSPO2 && baseLine-previousSPO2 >= 3)
+			if((dataPoint.spo2 < previousSPO2 || (!array.isEmpty() && dataPoint.spo2 == previousSPO2)) && baseLine-previousSPO2 >= 3 )
 			{
-				currentApneaEvent.add(previousDataPoint);
+				array.add(previousDataPoint);
 			}
 			else
 			{
-				// if its been x seconds since the event started
-				if(seconds - apneaStartTime > apneaClassificationTime && !currentApneaEvent.isEmpty())
+				if(seconds - apneaStartTime > apneaClassificationTime && !array.isEmpty())
 				{
-					currentApneaEvent.add(previousDataPoint); //the last datapoint of an apnea event
+					array.add(previousDataPoint); //the last datapoint of an apnea event
 					apnea = new GraphViewSeries(new GraphViewData[] {});
 					apnea.getStyle().color = Color.MAGENTA;
 					apnea.getStyle().thickness = 10;
 					graphView.addSeries(apnea); //indicates where the apnea period.
-					for(int i = 0; i < currentApneaEvent.size(); i++)
+					for(int i = 0; i < array.size(); i++)
 					{
-						double apSeconds = (double) ((currentApneaEvent.get(i).time/1000)-secondsOffset);
-						int apSpO2 = currentApneaEvent.get(i).spo2;
+						double apSeconds = (double) ((array.get(i).time/1000)-secondsOffset);
+						int apSpO2 = array.get(i).spo2;
 						apnea.appendData(new GraphViewData(apSeconds, apSpO2), false);
 					}
-					apneaEvents.add(currentApneaEvent.get(0).time);
 				}
 
 				//reset the apnea data point and time after highlighting the apnea event
-				currentApneaEvent.clear();
+				array.clear();
 				apneaStartTime = (int) seconds; 
 			}
 			previousDataPoint = dataPoint;
 			previousSPO2 = dataPoint.spo2;
 		}
-		
-		/*int numApneaEvents = 0;
-		int apneaEventsPerHour = 0;
-		int time = apneaEvents.get(0) - apneaEvents.get(apneaEvents.size()-1);
-		for(Long apneaTime:apneaEvents){
-			
-			
-		}*/
+		graphView.addSeries(spo2); // oxygen level
+		spo2.getStyle().color = Color.BLUE;
+		graphView.addSeries(bpm); // beats per minutes
+		bpm.getStyle().color = Color.RED;
+		graphView.setScrollable(true);
+		graphView.setScalable(true);
+		//graphView.setFocusable(true);
+		graphView.redrawAll();
 	}
 }

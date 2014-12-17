@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.mcfad.oxylyzer.HistoryFragment;
 import com.mcfad.oxylyzer.R;
-import com.mcfad.oxylyzer.view.ReportOxGraph;
+import com.mcfad.oxylyzer.view.graphview.ReportOxGraph;
 
 public class Report extends Activity{
 

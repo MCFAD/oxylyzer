@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.GraphView.GraphViewData;
-import com.mcfad.oxylyzer.view.RealtimeOxGraph;
+import com.mcfad.oxylyzer.view.graphview.RealtimeOxGraph;
 import com.mcfad.oxylyzer.view.VerticalBar;
 
 public class RealtimeFragment extends Fragment {
