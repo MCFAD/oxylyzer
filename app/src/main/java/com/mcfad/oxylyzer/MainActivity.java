@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		
 		if(OximeterTest){
 			OximeterTester tester = new OximeterTester(this);
-			tester.generateRecording(6);
+			tester.generateRecording(1);
 		}
 
 	    registerReceiver(oxReceiver, new IntentFilter(OximeterService.BROADCAST_CONNECTION_STATE));

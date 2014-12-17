@@ -91,7 +91,7 @@ public class RealtimeOxGraph extends OxGraph {
 
 		if(new Date().getTime() - lastTouchTime > 5000) //after 5 second of inactivity, the graph will refresh
 		{
-			double viewportSize = graphView.getViewportSize();
+			double viewportSize = 30;//graphView.getViewportSize();
 			graphView.setViewPort( (seconds < viewportSize)? 0 : seconds-viewportSize, viewportSize);
 			graphView.redrawAll();
 		}
